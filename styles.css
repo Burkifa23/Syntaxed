@@ -1,0 +1,27 @@
+.highlight {
+    color: green;
+}
+
+.error {
+    color: red;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+
+#snippet {
+    white-space: pre-wrap;
+    margin-bottom: 20px;
+}
+
+textarea {
+    width: 100%;
+    padding: 10px;
+    font-family: monospace;
+}
+
+#results {
+    margin-top: 20px;
+}
