@@ -1,3 +1,3 @@
 # Syntaxed 
-For Now Supports JavaScript
+Supported Languages
 - [x] JavaScript
