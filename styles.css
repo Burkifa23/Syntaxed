@@ -24,18 +24,20 @@ body.dark-mode #snippet {
     color: #eee;
 }
 
-textarea {
+#input {
     width: 100%;
+    min-height: 150px;
     padding: 10px;
     font-family: monospace;
     border: 1px solid #ccc;
-    background-color: #fff; /* Light textarea background */
+    background-color: #fff;
     color: #333;
+    white-space: pre-wrap;
 }
 
-body.dark-mode textarea {
+body.dark-mode #input {
     border-color: #777;
-    background-color: #444; /* Dark textarea background */
+    background-color: #444;
     color: #eee;
 }
 
@@ -48,5 +50,6 @@ body.dark-mode textarea {
 }
 
 .error {
+    background-color: rgba(255, 0, 0, 0.2);
     color: red;
 }

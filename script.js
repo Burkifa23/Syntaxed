@@ -1,13 +1,15 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const codeSnippet = `function fibonacci(n) {
-        let a = 0, b = 1, temp;
-        while (n-- > 0) {
-            temp = a;
-            a = b;
-            b = temp + b;
-        }
-        return a;
-    }`;
+    const codeSnippet = 
+`function fibonacci(n) {
+    let a = 0, b = 1, temp;
+    while (n-- > 0) {
+        temp = a;
+        a = b;
+        b = temp + b;
+    }
+    return a;
+}`;
+
     const snippetDiv = document.getElementById("snippet");
     const inputArea = document.getElementById("input");
     const resultsDiv = document.getElementById("results");
@@ -23,9 +25,10 @@ document.addEventListener("DOMContentLoaded", () => {
     function resetTest() {
         startTime = null;
         errors = 0;
-        inputArea.value = "";
+        inputArea.innerHTML = "";
         resultsDiv.innerHTML = "";
         isRunning = false;
+        renderUserInput();
     }
 
     function stopTest() {
@@ -45,15 +48,42 @@ document.addEventListener("DOMContentLoaded", () => {
         isDarkMode = false;
     }
 
+    function renderUserInput() {
+        const userInput = inputArea.innerText;
+        let highlightedInput = "";
+        
+        for (let i = 0; i < Math.max(userInput.length, codeSnippet.length); i++) {
+            if (i < userInput.length) {
+                if (i < codeSnippet.length && userInput[i] !== codeSnippet[i]) {
+                    highlightedInput += `<span class="error">${userInput[i] || ''}</span>`;
+                } else {
+                    highlightedInput += userInput[i];
+                }
+            }
+        }
+        
+        inputArea.innerHTML = highlightedInput;
+        
+        // Place cursor at the end
+        const range = document.createRange();
+        const sel = window.getSelection();
+        range.selectNodeContents(inputArea);
+        range.collapse(false);
+        sel.removeAllRanges();
+        sel.addRange(range);
+    }
+
     inputArea.addEventListener("input", (e) => {
         if (!isRunning) {
             isRunning = true;
             startTime = new Date();
         }
 
-        const userInput = e.target.value;
+        renderUserInput();
+
+        const userInput = inputArea.innerText;
         errors = countErrors(userInput, codeSnippet);
-        const timeElapsed = (new Date() - startTime) / 1000; // in seconds
+        const timeElapsed = (new Date() - startTime) / 1000;
         const wpm = calculateWPM(userInput, timeElapsed);
         const accuracy = calculateAccuracy(userInput, codeSnippet);
 
@@ -117,4 +147,6 @@ document.addEventListener("DOMContentLoaded", () => {
             .filter((char, i) => char === snippet[i]).length;
         return Math.round((correctChars / snippet.length) * 100);
     }
+
+    renderUserInput();
 });
