@@ -11,6 +11,12 @@ body.dark-mode {
     color: #f4f4f4; /* Light text */
 }
 
+img {
+    max-width: 300px;
+    width: 100%;
+    height: auto;
+}
+
 #snippet {
     white-space: pre-wrap;
     margin-bottom: 20px;
@@ -52,4 +58,13 @@ body.dark-mode #input {
 .error {
     background-color: rgba(255, 0, 0, 0.2);
     color: red;
+}
+
+footer{
+    text-align: center;
+    margin-top: 20px;
+    color: #102f76;
+    font-weight: bold;
+    font-size: 16px;
+    font-family: Arial, sans-serif;
 }

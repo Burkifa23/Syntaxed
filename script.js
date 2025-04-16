@@ -102,10 +102,23 @@ document.addEventListener("DOMContentLoaded", () => {
     inputArea.addEventListener("keydown", (e) => {
         if (e.key === "Tab") {
             e.preventDefault();
-            const start = inputArea.selectionStart;
-            const end = inputArea.selectionEnd;
-            inputArea.value = inputArea.value.substring(0, start) + "\t" + inputArea.value.substring(end);
-            inputArea.selectionStart = inputArea.selectionEnd = start + 1;
+            
+            // Get current selection
+            const selection = window.getSelection();
+            const range = selection.getRangeAt(0);
+            
+            // Create and insert 4 spaces
+            const spaces = document.createTextNode("    "); // 4 spaces
+            range.insertNode(spaces);
+            
+            // Move cursor after spaces
+            range.setStartAfter(spaces);
+            range.setEndAfter(spaces);
+            selection.removeAllRanges();
+            selection.addRange(range);
+            
+            // Trigger input event to update highlighting
+            inputArea.dispatchEvent(new Event('input'));
         }
 
         // Keyboard shortcuts using Alt/Option key
