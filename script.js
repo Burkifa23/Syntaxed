@@ -11,12 +11,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const snippetDiv = document.getElementById("snippet");
     const inputArea = document.getElementById("input");
     const resultsDiv = document.getElementById("results");
-    const body = document.body; // Get the body element for dark mode
+    const body = document.body; // Get the body element for color mode
 
     snippetDiv.textContent = codeSnippet;
 
     let startTime;
     let errors = 0;
+    let isDarkMode = false; // Track the current color mode
     let isRunning = false; // Flag to track if the test is running
 
     function resetTest() {
@@ -29,12 +30,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function stopTest() {
         isRunning = false;
-        // Optionally, you can display a "Stopped" message
         resultsDiv.innerHTML += "<p>Test Stopped.</p>";
     }
 
     function toggleDarkMode() {
-        body.classList.toggle("dark-mode");
+        body.classList.add("dark-mode");
+        body.classList.remove("normal-mode");
+        isDarkMode = true;
+    }
+
+    function goToNormalMode() {
+        body.classList.add("normal-mode");
+        body.classList.remove("dark-mode");
+        isDarkMode = false;
     }
 
     inputArea.addEventListener("input", (e) => {
@@ -56,7 +64,6 @@ document.addEventListener("DOMContentLoaded", () => {
             <p>Accuracy: ${accuracy}%</p>
         `;
 
-        // Basic stop condition if the user types the entire snippet correctly
         if (userInput === codeSnippet) {
             stopTest();
         }
@@ -71,14 +78,16 @@ document.addEventListener("DOMContentLoaded", () => {
             inputArea.selectionStart = inputArea.selectionEnd = start + 1;
         }
 
-        // Keyboard shortcuts
-        if (e.ctrlKey) {
+        // Keyboard shortcuts using Alt/Option key
+        if (e.altKey) {
             if (e.key.toLowerCase() === "q") {
                 stopTest();
             } else if (e.key.toLowerCase() === "r") {
                 resetTest();
-            } else if (e.key.toLowerCase() === "w") {
+            } else if (e.key.toLowerCase() === "d") {
                 toggleDarkMode();
+            } else if (e.key.toLowerCase() === "w") {
+                goToNormalMode();
             }
         }
     });
