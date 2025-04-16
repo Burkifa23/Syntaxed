@@ -11,22 +11,40 @@ document.addEventListener("DOMContentLoaded", () => {
     const snippetDiv = document.getElementById("snippet");
     const inputArea = document.getElementById("input");
     const resultsDiv = document.getElementById("results");
+    const body = document.body; // Get the body element for dark mode
 
     snippetDiv.textContent = codeSnippet;
 
     let startTime;
     let errors = 0;
+    let isRunning = false; // Flag to track if the test is running
+
+    function resetTest() {
+        startTime = null;
+        errors = 0;
+        inputArea.value = "";
+        resultsDiv.innerHTML = "";
+        isRunning = false;
+    }
+
+    function stopTest() {
+        isRunning = false;
+        // Optionally, you can display a "Stopped" message
+        resultsDiv.innerHTML += "<p>Test Stopped.</p>";
+    }
+
+    function toggleDarkMode() {
+        body.classList.toggle("dark-mode");
+    }
 
     inputArea.addEventListener("input", (e) => {
-        // Existing input event listener code remains the same
-        const userInput = e.target.value;
-
-        if (!startTime) {
+        if (!isRunning) {
+            isRunning = true;
             startTime = new Date();
         }
 
+        const userInput = e.target.value;
         errors = countErrors(userInput, codeSnippet);
-
         const timeElapsed = (new Date() - startTime) / 1000; // in seconds
         const wpm = calculateWPM(userInput, timeElapsed);
         const accuracy = calculateAccuracy(userInput, codeSnippet);
@@ -37,22 +55,37 @@ document.addEventListener("DOMContentLoaded", () => {
             <p>WPM: ${wpm}</p>
             <p>Accuracy: ${accuracy}%</p>
         `;
+
+        // Basic stop condition if the user types the entire snippet correctly
+        if (userInput === codeSnippet) {
+            stopTest();
+        }
     });
 
-    // New event listener for Tab key press
     inputArea.addEventListener("keydown", (e) => {
         if (e.key === "Tab") {
-            e.preventDefault(); // Prevent default tab behavior (focus change)
-
+            e.preventDefault();
             const start = inputArea.selectionStart;
             const end = inputArea.selectionEnd;
-
-            // Insert a tab character at the current cursor position
             inputArea.value = inputArea.value.substring(0, start) + "\t" + inputArea.value.substring(end);
-
-            // Move the cursor position after the inserted tab
             inputArea.selectionStart = inputArea.selectionEnd = start + 1;
         }
+
+        // Keyboard shortcuts
+        if (e.ctrlKey) {
+            if (e.key.toLowerCase() === "q") {
+                stopTest();
+            } else if (e.key.toLowerCase() === "r") {
+                resetTest();
+            } else if (e.key.toLowerCase() === "w") {
+                toggleDarkMode();
+            }
+        }
+    });
+
+    // Disable pasting in the textarea
+    inputArea.addEventListener("paste", (e) => {
+        e.preventDefault();
     });
 
     function countErrors(input, snippet) {
