@@ -1,27 +1,52 @@
-.highlight {
-    color: green;
-}
-
-.error {
-    color: red;
-}
-
 body {
     font-family: Arial, sans-serif;
     padding: 20px;
+    background-color: #f4f4f4; /* Light background */
+    color: #333; /* Dark text */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+}
+
+body.dark-mode {
+    background-color: #333; /* Dark background */
+    color: #f4f4f4; /* Light text */
 }
 
 #snippet {
     white-space: pre-wrap;
     margin-bottom: 20px;
+    background-color: #ddd; /* Light snippet background */
+    padding: 10px;
+    border-radius: 5px;
+}
+
+body.dark-mode #snippet {
+    background-color: #555; /* Dark snippet background */
+    color: #eee;
 }
 
 textarea {
     width: 100%;
     padding: 10px;
     font-family: monospace;
+    border: 1px solid #ccc;
+    background-color: #fff; /* Light textarea background */
+    color: #333;
+}
+
+body.dark-mode textarea {
+    border-color: #777;
+    background-color: #444; /* Dark textarea background */
+    color: #eee;
 }
 
 #results {
     margin-top: 20px;
+}
+
+.highlight {
+    color: green;
+}
+
+.error {
+    color: red;
 }
