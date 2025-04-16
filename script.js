@@ -1,12 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
     const codeSnippet = `function fibonacci(n) {
-      let a = 0, b = 1, temp;
-      while (n-- > 0) {
-        temp = a;
-        a = b;
-        b = temp + b;
-      }
-      return a;
+        let a = 0, b = 1, temp;
+        while (n-- > 0) {
+            temp = a;
+            a = b;
+            b = temp + b;
+        }
+        return a;
     }`;
     const snippetDiv = document.getElementById("snippet");
     const inputArea = document.getElementById("input");
@@ -18,6 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let errors = 0;
 
     inputArea.addEventListener("input", (e) => {
+        // Existing input event listener code remains the same
         const userInput = e.target.value;
 
         if (!startTime) {
@@ -31,11 +32,27 @@ document.addEventListener("DOMContentLoaded", () => {
         const accuracy = calculateAccuracy(userInput, codeSnippet);
 
         resultsDiv.innerHTML = `
-        <p>Errors: ${errors}</p>
-        <p>Time: ${timeElapsed.toFixed(2)}s</p>
-        <p>WPM: ${wpm}</p>
-        <p>Accuracy: ${accuracy}%</p>
-      `;
+            <p>Errors: ${errors}</p>
+            <p>Time: ${timeElapsed.toFixed(2)}s</p>
+            <p>WPM: ${wpm}</p>
+            <p>Accuracy: ${accuracy}%</p>
+        `;
+    });
+
+    // New event listener for Tab key press
+    inputArea.addEventListener("keydown", (e) => {
+        if (e.key === "Tab") {
+            e.preventDefault(); // Prevent default tab behavior (focus change)
+
+            const start = inputArea.selectionStart;
+            const end = inputArea.selectionEnd;
+
+            // Insert a tab character at the current cursor position
+            inputArea.value = inputArea.value.substring(0, start) + "\t" + inputArea.value.substring(end);
+
+            // Move the cursor position after the inserted tab
+            inputArea.selectionStart = inputArea.selectionEnd = start + 1;
+        }
     });
 
     function countErrors(input, snippet) {
