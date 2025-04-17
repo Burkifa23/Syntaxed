@@ -36,3 +36,6 @@
 
 ### Supported Languages
 - [x] JavaScript
+
+## Tech Used
+Built in plain HTML, CSS & Javascript!
