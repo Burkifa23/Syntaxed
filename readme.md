@@ -36,6 +36,7 @@
 
 ### Supported Languages
 - [x] JavaScript
+- [ ] More coming soon
 
 ## Tech Used
 Plain ol'
