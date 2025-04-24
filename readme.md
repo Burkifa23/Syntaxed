@@ -1,5 +1,8 @@
 ![Syntaxed](full_Logo.png)
-# Syntaxed v.0.1
+
+### Syntaxed v.0.1
+
+# Features
 
 **Typing Test Interface:**
 - Pre-loaded JavaScript code snippet (fibonacci function) as typing content
@@ -34,11 +37,11 @@
 - Test stop functionality
 
 
-### Supported Languages
+# Supported Languages
 - [x] JavaScript
 - [ ] More coming soon
 
-## Tech Used
+# Tech Used
 Plain ol'
 <div align=center>  
             <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-plain-wordmark.svg" width=100/>
