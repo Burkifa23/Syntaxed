@@ -1,36 +1,103 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const codeSnippet = 
-`fn fibonacci(n: usize) usize {
-    var a: usize = 0;
-    var b: usize = 1;
-    while (n > 0) {
-        const temp = a;
-        a = b;
-        b = temp + b;
-        n -= 1;
-    }
-    return a;
-}`;
+    const codeSnippets = {
+        zig: {
+            variables: 'snippets/zig/variables.txt',
+            control_flow: 'snippets/zig/control_flow.txt',
+            functions: 'snippets/zig/functions.txt',
+        },
+        javascript: {
+            variables: 'snippets/javascript/variables.txt',
+            control_flow: 'snippets/javascript/control_flow.txt',
+            functions: 'snippets/javascript/functions.txt',
+        },
+        python: {
+            variables: 'snippets/python/variables.txt',
+            control_flow: 'snippets/python/control_flow.txt',
+            functions: 'snippets/python/functions.txt',
+        },
+    };
+
+    let currentLanguage = 'zig';
+    let currentTopic = 'variables';
+    let codeSnippet = '';
+    let monacoEditor;
 
     const snippetDiv = document.getElementById("snippet");
-    const inputArea = document.getElementById("input");
     const resultsDiv = document.getElementById("results");
-    const body = document.body; 
+    const body = document.body;
+    const languageSelect = document.getElementById("language-select");
+    const topicSelect = document.getElementById("topic-select");
+    const monacoContainer = document.getElementById("monaco-editor-container");
 
-    snippetDiv.textContent = codeSnippet;
+    function loadSnippet() {
+        const filePath = codeSnippets[currentLanguage]?.[currentTopic];
+        if (filePath) {
+            fetch(filePath)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(text => {
+                    codeSnippet = text;
+                    snippetDiv.textContent = codeSnippet;
+                    if (monaco && monacoEditor) {
+                        monacoEditor.setValue(codeSnippet);
+                        monacoEditor.getModel().setLanguage(currentLanguage); // Monaco infers from content, but you can be explicit
+                    }
+                    resetTest();
+                })
+                .catch(error => {
+                    console.error("Could not load snippet:", error);
+                    snippetDiv.textContent = "Error loading snippet.";
+                    codeSnippet = '';
+                    if (monaco && monacoEditor) {
+                        monacoEditor.setValue('');
+                    }
+                });
+        } else {
+            console.error("Snippet not found for:", currentLanguage, currentTopic);
+            snippetDiv.textContent = "Snippet not found.";
+            codeSnippet = '';
+            if (monaco && monacoEditor) {
+                monacoEditor.setValue('');
+            }
+        }
+    }
 
-    let startTime;
-    let errors = 0;
-    let isDarkMode = false; 
-    let isRunning = false; 
+    function populateTopics() {
+        topicSelect.innerHTML = ''; // Clear previous options
+        const topics = Object.keys(codeSnippets[currentLanguage] || {});
+        topics.forEach(topic => {
+            const option = document.createElement('option');
+            option.value = topic;
+            option.textContent = topic.charAt(0).toUpperCase() + topic.slice(1).replace(/_/g, ' '); // Format topic name
+            topicSelect.appendChild(option);
+        });
+        if (topics.includes(currentTopic)) {
+            topicSelect.value = currentTopic;
+        } else if (topics.length > 0) {
+            currentTopic = topics[0]; // Set default topic if previous is not available
+            topicSelect.value = currentTopic;
+        } else {
+            currentTopic = '';
+            snippetDiv.textContent = '';
+            if (monacoEditor) {
+                monacoEditor.setValue('');
+            }
+        }
+        loadSnippet();
+    }
 
     function resetTest() {
         startTime = null;
         errors = 0;
-        inputArea.innerHTML = "";
         resultsDiv.innerHTML = "";
         isRunning = false;
-        renderUserInput();
+        if (monacoEditor) {
+            monacoEditor.setValue(codeSnippet);
+        }
     }
 
     function stopTest() {
@@ -40,107 +107,85 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function toggleDarkMode() {
         body.classList.add("dark-mode");
-        body.classList.remove("normal-mode");
         isDarkMode = true;
+        if (monacoEditor) {
+            monaco.editor.setTheme(isDarkMode ? 'vs-dark' : 'vs-light');
+        }
     }
 
     function goToNormalMode() {
-        body.classList.add("normal-mode");
         body.classList.remove("dark-mode");
         isDarkMode = false;
+        if (monacoEditor) {
+            monaco.editor.setTheme(isDarkMode ? 'vs-dark' : 'vs-light');
+        }
     }
 
     function renderUserInput() {
-        const userInput = inputArea.innerText;
-        let highlightedInput = "";
-        
-        for (let i = 0; i < Math.max(userInput.length, codeSnippet.length); i++) {
-            if (i < userInput.length) {
-                if (i < codeSnippet.length && userInput[i] !== codeSnippet[i]) {
-                    highlightedInput += `<span class="error">${userInput[i] || ''}</span>`;
-                } else {
-                    highlightedInput += userInput[i];
-                }
-            }
-        }
-        
-        inputArea.innerHTML = highlightedInput;
-        
-        // Place cursor at the end
-        const range = document.createRange();
-        const sel = window.getSelection();
-        range.selectNodeContents(inputArea);
-        range.collapse(false);
-        sel.removeAllRanges();
-        sel.addRange(range);
+        snippetDiv.textContent = codeSnippet;
     }
 
-    inputArea.addEventListener("input", (e) => {
-        if (!isRunning) {
-            isRunning = true;
-            startTime = new Date();
-        }
+    let startTime;
+    let errors = 0;
+    let isDarkMode = false;
+    let isRunning = false;
 
-        renderUserInput();
+    require(['vs/editor/editor.main'], function () {
+        monacoEditor = monaco.editor.create(monacoContainer, {
+            value: codeSnippet,
+            language: currentLanguage,
+            theme: isDarkMode ? 'vs-dark' : 'vs-light',
+            readOnly: false,
+            automaticLayout: true,
+            scrollBeyondLastLine: false,
+            wordWrap: 'on',
+            minimap: { enabled: false }
+        });
 
-        const userInput = inputArea.innerText;
-        errors = countErrors(userInput, codeSnippet);
-        const timeElapsed = (new Date() - startTime) / 1000;
-        const wpm = calculateWPM(userInput, timeElapsed);
-        const accuracy = calculateAccuracy(userInput, codeSnippet);
+        populateTopics(); // Initial population of topics
+        loadSnippet(); // Initial load of the default snippet
 
-        resultsDiv.innerHTML = `
-            <p>Errors: ${errors}</p>
-            <p>Time: ${timeElapsed.toFixed(2)}s</p>
-            <p>WPM: ${wpm}</p>
-            <p>Accuracy: ${accuracy}%</p>
-        `;
-
-        if (userInput === codeSnippet) {
-            stopTest();
-        }
-    });
-
-    inputArea.addEventListener("keydown", (e) => {
-        if (e.key === "Tab") {
-            e.preventDefault();
-            
-            // Get current selection
-            const selection = window.getSelection();
-            const range = selection.getRangeAt(0);
-            
-            // Create and insert 4 spaces
-            const spaces = document.createTextNode("    "); // 4 spaces
-            range.insertNode(spaces);
-            
-            // Move cursor after spaces
-            range.setStartAfter(spaces);
-            range.setEndAfter(spaces);
-            selection.removeAllRanges();
-            selection.addRange(range);
-            
-            // Trigger input event to update highlighting
-            inputArea.dispatchEvent(new Event('input'));
-        }
-
-        // Keyboard shortcuts using Alt/Option key
-        if (e.altKey) {
-            if (e.key.toLowerCase() === "q") {
-                stopTest();
-            } else if (e.key.toLowerCase() === "r") {
-                resetTest();
-            } else if (e.key.toLowerCase() === "d") {
-                toggleDarkMode();
-            } else if (e.key.toLowerCase() === "w") {
-                goToNormalMode();
+        monacoEditor.onDidChangeModelContent(() => {
+            if (!isRunning && codeSnippet) {
+                isRunning = true;
+                startTime = new Date();
             }
-        }
+
+            const userInput = monacoEditor.getValue();
+            errors = countErrors(userInput, codeSnippet);
+            const timeElapsed = (new Date() - startTime) / 1000;
+            const wpm = calculateWPM(userInput, codeSnippet);
+            const accuracy = calculateAccuracy(userInput, codeSnippet);
+
+            resultsDiv.innerHTML = `
+                <p>Errors: ${errors}</p>
+                <p>Time: ${timeElapsed.toFixed(2)}s</p>
+                <p>WPM: ${wpm}</p>
+                <p>Accuracy: ${accuracy}%</p>
+            `;
+
+            if (userInput === codeSnippet && codeSnippet) {
+                stopTest();
+            }
+        });
     });
 
-    // Disable pasting in the textarea
-    inputArea.addEventListener("paste", (e) => {
-        e.preventDefault();
-    });
+    if (languageSelect) {
+        languageSelect.addEventListener("change", (event) => {
+            currentLanguage = event.target.value;
+            populateTopics(); // Update topics when language changes
+            if (monacoEditor) {
+                monacoEditor.getModel().setLanguage(currentLanguage);
+            }
+        });
+    }
+
+    if (topicSelect) {
+        topicSelect.addEventListener("change", (event) => {
+            currentTopic = event.target.value;
+            loadSnippet(); // Load new snippet when topic changes
+        });
+    }
 
     function countErrors(input, snippet) {
         let errorCount = 0;
@@ -164,4 +209,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     renderUserInput();
+
+    const darkModeButton = document.getElementById('dark-mode-button');
+    const normalModeButton = document.getElementById('normal-mode-button');
+
+    if (darkModeButton) {
+        darkModeButton.addEventListener('click', toggleDarkMode);
+    }
+
+    if (normalModeButton) {
+        normalModeButton.addEventListener('click', goToNormalMode);
+    }
 });
