@@ -38,8 +38,8 @@
 
 
 # Supported Languages
-- [x] JavaScript
-- [ ] More coming soon
+- [x] Zig
+- [ ] 
 
 # Tech Used
 Plain ol'
