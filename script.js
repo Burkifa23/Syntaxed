@@ -1,11 +1,13 @@
 document.addEventListener("DOMContentLoaded", () => {
     const codeSnippet = 
-`function fibonacci(n) {
-    let a = 0, b = 1, temp;
-    while (n-- > 0) {
-        temp = a;
+`fn fibonacci(n: usize) usize {
+    var a: usize = 0;
+    var b: usize = 1;
+    while (n > 0) {
+        const temp = a;
         a = b;
         b = temp + b;
+        n -= 1;
     }
     return a;
 }`;
@@ -13,14 +15,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const snippetDiv = document.getElementById("snippet");
     const inputArea = document.getElementById("input");
     const resultsDiv = document.getElementById("results");
-    const body = document.body; // Get the body element for color mode
+    const body = document.body; 
 
     snippetDiv.textContent = codeSnippet;
 
     let startTime;
     let errors = 0;
-    let isDarkMode = false; // Track the current color mode
-    let isRunning = false; // Flag to track if the test is running
+    let isDarkMode = false; 
+    let isRunning = false; 
 
     function resetTest() {
         startTime = null;
