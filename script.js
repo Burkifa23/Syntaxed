@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     snippetDiv.textContent = codeSnippet;
                     if (monaco && monacoEditor) {
                         monacoEditor.setValue(codeSnippet);
-                        monacoEditor.getModel().setLanguage(currentLanguage); // Monaco infers from content, but you can be explicit
+                        monacoEditor.getModel().setLanguage(currentLanguage);
                     }
                     resetTest();
                 })
@@ -67,18 +67,18 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function populateTopics() {
-        topicSelect.innerHTML = ''; // Clear previous options
+        topicSelect.innerHTML = '';
         const topics = Object.keys(codeSnippets[currentLanguage] || {});
         topics.forEach(topic => {
             const option = document.createElement('option');
             option.value = topic;
-            option.textContent = topic.charAt(0).toUpperCase() + topic.slice(1).replace(/_/g, ' '); // Format topic name
+            option.textContent = topic.charAt(0).toUpperCase() + topic.slice(1).replace(/_/g, ' ');
             topicSelect.appendChild(option);
         });
         if (topics.includes(currentTopic)) {
             topicSelect.value = currentTopic;
         } else if (topics.length > 0) {
-            currentTopic = topics[0]; // Set default topic if previous is not available
+            currentTopic = topics[0];
             topicSelect.value = currentTopic;
         } else {
             currentTopic = '';
@@ -142,8 +142,8 @@ document.addEventListener("DOMContentLoaded", () => {
             minimap: { enabled: false }
         });
 
-        populateTopics(); // Initial population of topics
-        loadSnippet(); // Initial load of the default snippet
+        populateTopics();
+        loadSnippet();
 
         monacoEditor.onDidChangeModelContent(() => {
             if (!isRunning && codeSnippet) {
@@ -170,10 +170,24 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
+    document.addEventListener("keydown", (e) => { // Listen on the document
+        if (e.altKey) {
+            if (e.key.toLowerCase() === "q") {
+                stopTest();
+            } else if (e.key.toLowerCase() === "r") {
+                resetTest();
+            } else if (e.key.toLowerCase() === "d") {
+                toggleDarkMode();
+            } else if (e.key.toLowerCase() === "w") {
+                goToNormalMode();
+            }
+        }
+    });
+
     if (languageSelect) {
         languageSelect.addEventListener("change", (event) => {
             currentLanguage = event.target.value;
-            populateTopics(); // Update topics when language changes
+            populateTopics();
             if (monacoEditor) {
                 monacoEditor.getModel().setLanguage(currentLanguage);
             }
@@ -183,14 +197,16 @@ document.addEventListener("DOMContentLoaded", () => {
     if (topicSelect) {
         topicSelect.addEventListener("change", (event) => {
             currentTopic = event.target.value;
-            loadSnippet(); // Load new snippet when topic changes
+            loadSnippet();
         });
     }
 
     function countErrors(input, snippet) {
         let errorCount = 0;
-        for (let i = 0; i < input.length; i++) {
-            if (input[i] !== snippet[i]) errorCount++;
+        for (let i = 0; i < Math.max(input.length, snippet.length); i++) {
+            if (input[i] !== (snippet[i] || '')) {
+                errorCount++;
+            }
         }
         return errorCount;
     }
@@ -204,8 +220,8 @@ document.addEventListener("DOMContentLoaded", () => {
     function calculateAccuracy(input, snippet) {
         const correctChars = input
             .split("")
-            .filter((char, i) => char === snippet[i]).length;
-        return Math.round((correctChars / snippet.length) * 100);
+            .filter((char, i) => char === (snippet[i] || '')).length;
+        return snippet.length > 0 ? Math.round((correctChars / snippet.length) * 100) : 0;
     }
 
     renderUserInput();
