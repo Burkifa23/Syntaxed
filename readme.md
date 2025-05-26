@@ -39,7 +39,14 @@
 
 # Supported Languages
 - [x] Zig
-- [ ] 
+- [x] Zig
+- [x] JavaScript
+- [x] Python
+- [x] C
+- [x] C++
+- [x] C#
+- [x] Kotlin
+- [x] Scala
 
 # Tech Used
 Plain ol'
