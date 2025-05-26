@@ -11,10 +11,11 @@ body.dark-mode {
     color: #f4f4f4; /* Light text */
 }
 
-img {
+.logo {
     max-width: 300px;
     width: 100%;
     height: auto;
+    margin-bottom: 20px;
 }
 
 #snippet {
@@ -102,4 +103,15 @@ body.dark-mode .control-buttons button {
 
 body.dark-mode .control-buttons button:hover {
     background-color: #4a76a8;
+}
+
+#monaco-editor-container {
+    width: 80%;
+    height: 200px;
+    border: 1px solid #ccc;
+    margin-bottom: 15px;
+}
+
+body.dark-mode #monaco-editor-container {
+    border-color: #777;
 }

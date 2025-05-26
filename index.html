@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    <img src="full_Logo.png" alt="Syntaxed Logo" style="max-width: 300px; width: 100%; height: auto; margin-bottom: 20px;">
+    <img src="full_Logo.png" alt="Syntaxed Logo" class="logo">
 
     <label for="language-select">Select Language:</label>
     <select id="language-select">
@@ -23,8 +23,8 @@
     <label for="topic-select">Select Topic:</label>
     <select id="topic-select"></select>
 
-    <div id="monaco-editor-container" style="width: 80%; height: 200px; border: 1px solid #ccc; margin-bottom: 15px;"></div>
-
+    <div id="monaco-editor-container"></div>
+    
     <div class="control-buttons">
         <button id="reset-button" title="Reset Test (Alt+R)">
             <span class="button-icon">↺</span> Reset
@@ -39,6 +39,7 @@
             <span class="button-icon">☀️</span> Light
         </button>
     </div>
+
 
     <div id="snippet"></div>
     <div id="results"></div>
