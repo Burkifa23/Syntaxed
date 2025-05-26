@@ -28,6 +28,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const languageSelect = document.getElementById("language-select");
     const topicSelect = document.getElementById("topic-select");
     const monacoContainer = document.getElementById("monaco-editor-container");
+    const resetButton = document.getElementById('reset-button');
+    const stopButton = document.getElementById('stop-button');
+    const darkModeButton = document.getElementById('dark-mode-button');
+    const lightModeButton = document.getElementById('light-mode-button');
 
     function loadSnippet() {
         const filePath = codeSnippets[currentLanguage]?.[currentTopic];
@@ -226,14 +230,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
     renderUserInput();
 
-    const darkModeButton = document.getElementById('dark-mode-button');
-    const normalModeButton = document.getElementById('normal-mode-button');
+    if (resetButton) {
+        resetButton.addEventListener('click', resetTest);
+    }
+
+    if (stopButton) {
+        stopButton.addEventListener('click', stopTest);
+    }
 
     if (darkModeButton) {
         darkModeButton.addEventListener('click', toggleDarkMode);
     }
 
-    if (normalModeButton) {
-        normalModeButton.addEventListener('click', goToNormalMode);
+    if (lightModeButton) {
+        lightModeButton.addEventListener('click', goToNormalMode);
     }
 });
