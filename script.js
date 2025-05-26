@@ -1,5 +1,25 @@
 document.addEventListener("DOMContentLoaded", () => {
     const codeSnippets = {
+        c: {
+            start: 'snippets/c/hello.txt'
+
+        },
+        cpp: {
+            start: 'snippets/cpp/hello.txt'
+
+        },
+        csharp: {
+            start: 'snippets/csharp/hello.txt'
+
+        },
+        kotlin: {
+            start: 'snippets/kotlin/hello.txt'
+
+        },
+        scala: {
+            start: 'snippets/scala/hello.txt'
+
+        },
         zig: {
             start: 'snippets/zig/hello.txt',
             variables: 'snippets/zig/variables.txt',
