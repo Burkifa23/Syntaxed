@@ -99,6 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
         errors = 0;
         resultsDiv.innerHTML = "";
         isRunning = false;
+        cancelAnimationFrame(timeUpdateId);
         if (monacoEditor) {
             monacoEditor.setValue(codeSnippet);
         }
@@ -106,6 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function stopTest() {
         isRunning = false;
+        cancelAnimationFrame(timeUpdateId);
         resultsDiv.innerHTML += "<p>Test Stopped.</p>";
     }
 
@@ -133,6 +135,26 @@ document.addEventListener("DOMContentLoaded", () => {
     let errors = 0;
     let isDarkMode = false;
     let isRunning = false;
+    let timeUpdateId;
+
+    function updateTime() {
+        if (isRunning) {
+            const timeElapsed = (new Date() - startTime) / 1000;
+            const userInput = monacoEditor.getValue();
+            errors = countErrors(userInput, codeSnippet);
+            const wpm = calculateWPM(userInput, timeElapsed);
+            const accuracy = calculateAccuracy(userInput, codeSnippet);
+
+            resultsDiv.innerHTML = `
+                <p>Errors: ${errors}</p>
+                <p>Time: ${timeElapsed.toFixed(2)}s</p>
+                <p>WPM: ${wpm}</p>
+                <p>Accuracy: ${accuracy}%</p>
+            `;
+            
+            timeUpdateId = requestAnimationFrame(updateTime);
+        }
+    }
 
     require(['vs/editor/editor.main'], function () {
         monacoEditor = monaco.editor.create(monacoContainer, {
@@ -153,23 +175,14 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!isRunning && codeSnippet) {
                 isRunning = true;
                 startTime = new Date();
+                updateTime();
             }
 
             const userInput = monacoEditor.getValue();
-            errors = countErrors(userInput, codeSnippet);
-            const timeElapsed = (new Date() - startTime) / 1000;
-            const wpm = calculateWPM(userInput, codeSnippet);
-            const accuracy = calculateAccuracy(userInput, codeSnippet);
-
-            resultsDiv.innerHTML = `
-                <p>Errors: ${errors}</p>
-                <p>Time: ${timeElapsed.toFixed(2)}s</p>
-                <p>WPM: ${wpm}</p>
-                <p>Accuracy: ${accuracy}%</p>
-            `;
-
             if (userInput === codeSnippet && codeSnippet) {
-                stopTest();
+                isRunning = false;
+                cancelAnimationFrame(timeUpdateId);
+                resultsDiv.innerHTML += "<p>Test Completed!</p>";
             }
         });
     });
@@ -180,7 +193,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 stopTest();
             } else if (e.key.toLowerCase() === "r") {
                 resetTest();
-            } else if (e.key.toLowerCase() === "d") {
+            } else if (e.key.toLowerCase() === "b") {
                 toggleDarkMode();
             } else if (e.key.toLowerCase() === "w") {
                 goToNormalMode();
