@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     const codeSnippets = {
         zig: {
+            start: 'snippets/zig/hello.txt',
             variables: 'snippets/zig/variables.txt',
             control_flow: 'snippets/zig/control_flow.txt',
             functions: 'snippets/zig/functions.txt',
@@ -18,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     let currentLanguage = 'zig';
-    let currentTopic = 'variables';
+    let currentTopic = 'start';
     let codeSnippet = '';
     let monacoEditor;
 
@@ -47,7 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     codeSnippet = text;
                     snippetDiv.textContent = codeSnippet;
                     if (monaco && monacoEditor) {
-                        monacoEditor.setValue(codeSnippet);
+                        monacoEditor.setValue(''); // Start with empty editor
                         monacoEditor.getModel().setLanguage(currentLanguage);
                     }
                     resetTest();
@@ -101,7 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
         isRunning = false;
         cancelAnimationFrame(timeUpdateId);
         if (monacoEditor) {
-            monacoEditor.setValue(codeSnippet);
+            monacoEditor.setValue(''); // Reset to empty editor
         }
     }
 
@@ -158,7 +159,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     require(['vs/editor/editor.main'], function () {
         monacoEditor = monaco.editor.create(monacoContainer, {
-            value: codeSnippet,
+            value: '', // Start with empty editor
             language: currentLanguage,
             theme: isDarkMode ? 'vs-dark' : 'vs-light',
             readOnly: false,
