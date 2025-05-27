@@ -1,41 +1,89 @@
 document.addEventListener("DOMContentLoaded", () => {
     const codeSnippets = {
+        bash: {
+            start: 'snippets/bash/hello.txt'
+        },
         c: {
             start: 'snippets/c/hello.txt'
-
+        },
+        clojure: {
+            start: 'snippets/clojure/hello.txt'
+        },
+        cobol: {
+            start: 'snippets/cobol/hello.txt'
         },
         cpp: {
             start: 'snippets/cpp/hello.txt'
-
         },
         csharp: {
             start: 'snippets/csharp/hello.txt'
-
+        },
+        dart: {
+            start: 'snippets/dart/hello.txt'
+        },
+        elixir: {
+            start: 'snippets/elixir/hello.txt'
+        },
+        erlang: {
+            start: 'snippets/erlang/hello.txt'
+        },
+        fortran: {
+            start: 'snippets/fortran/hello.txt'
+        },
+        go: {
+            start: 'snippets/go/hello.txt'
+        },
+        haskell: {
+            start: 'snippets/haskell/hello.txt'
         },
         kotlin: {
             start: 'snippets/kotlin/hello.txt'
-
+        },
+        java: {
+            start: 'snippets/java/hello.txt'
+        },
+        javascript: {
+            start: 'snippets/javascript/hello.txt',
+            variables: 'snippets/javascript/variables.txt',
+            control_flow: 'snippets/javascript/control_flow.txt',
+            functions: 'snippets/javascript/functions.txt'
+        },
+        julia: {
+            start: 'snippets/julia/hello.txt'
+        },
+        lua: {
+            start: 'snippets/lua/hello.txt'
+        },
+        php: {
+            start: 'snippets/php/hello.txt'
+        },
+        python: {
+            start: 'snippets/python/hello.txt',
+            variables: 'snippets/python/variables.txt',
+            control_flow: 'snippets/python/control_flow.txt',
+            functions: 'snippets/python/functions.txt'
+        },
+        r: {
+            start: 'snippets/r/hello.txt'
+        },
+        rust: {
+            start: 'snippets/rust/hello.txt'
         },
         scala: {
             start: 'snippets/scala/hello.txt'
-
+        },
+        swift: {
+            start: 'snippets/swift/hello.txt'
+        },
+        typescript: {
+            start: 'snippets/typescript/hello.txt'
         },
         zig: {
             start: 'snippets/zig/hello.txt',
             variables: 'snippets/zig/variables.txt',
             control_flow: 'snippets/zig/control_flow.txt',
-            functions: 'snippets/zig/functions.txt',
-        },
-        javascript: {
-            variables: 'snippets/javascript/variables.txt',
-            control_flow: 'snippets/javascript/control_flow.txt',
-            functions: 'snippets/javascript/functions.txt',
-        },
-        python: {
-            variables: 'snippets/python/variables.txt',
-            control_flow: 'snippets/python/control_flow.txt',
-            functions: 'snippets/python/functions.txt',
-        },
+            functions: 'snippets/zig/functions.txt'
+        }
     };
 
     let currentLanguage = 'zig';
@@ -74,8 +122,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     resetTest();
                 })
                 .catch(error => {
-                    console.error("Could not load snippet:", error);
-                    snippetDiv.textContent = "Error loading snippet.";
+                    console.error("Could not load snippet:", error, "Path:", filePath);
+                    snippetDiv.textContent = `Error loading snippet: ${filePath}`;
                     codeSnippet = '';
                     if (monaco && monacoEditor) {
                         monacoEditor.setValue('');
@@ -83,7 +131,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
         } else {
             console.error("Snippet not found for:", currentLanguage, currentTopic);
-            snippetDiv.textContent = "Snippet not found.";
+            snippetDiv.textContent = `Snippet not found for ${currentLanguage}/${currentTopic}`;
             codeSnippet = '';
             if (monaco && monacoEditor) {
                 monacoEditor.setValue('');
@@ -177,6 +225,18 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    function populateLanguageSelect() {
+        languageSelect.innerHTML = '';
+        const languages = Object.keys(codeSnippets);
+        languages.sort().forEach(lang => {
+            const option = document.createElement('option');
+            option.value = lang;
+            option.textContent = lang.charAt(0).toUpperCase() + lang.slice(1);
+            languageSelect.appendChild(option);
+        });
+        languageSelect.value = currentLanguage;
+    }
+
     require(['vs/editor/editor.main'], function () {
         monacoEditor = monaco.editor.create(monacoContainer, {
             value: '', // Start with empty editor
@@ -189,6 +249,7 @@ document.addEventListener("DOMContentLoaded", () => {
             minimap: { enabled: false }
         });
 
+        populateLanguageSelect();
         populateTopics();
         loadSnippet();
 
