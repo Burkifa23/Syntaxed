@@ -58,7 +58,8 @@ _You May Also Choose to Use Buttons as a civilized person._
             <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg" width=100/>  
             <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original-wordmark.svg" width=100/>  
             <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/rust/rust-original.svg" width=100/>
-            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/scala/scala-original-wordmark.svg" width=100/>  
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/scala/scala-original-wordmark.svg" width=100/>    
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/swift/swift-original-wordmark.svg" width=100/>          
             <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-plain.svg" width=100/>  
             <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/zig/zig-original-wordmark.svg" width=100/>         
 </div>
@@ -66,7 +67,6 @@ _You May Also Choose to Use Buttons as a civilized person._
 ## Others Include:
 
 - [x] Cobol
-- [x] Swift
 
 
 
