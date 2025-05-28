@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     const codeSnippets = {
-         bash: {
+        bash: {
             start: 'snippets/bash/hello.txt'
         },
         c: {
@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    let currentLanguage = 'zig';
+    let currentLanguage = 'c';
     let currentTopic = 'start';
     let codeSnippet = '';
     let monacoEditor;
@@ -102,6 +102,107 @@ document.addEventListener("DOMContentLoaded", () => {
     const darkModeButton = document.getElementById('dark-mode-button');
     const lightModeButton = document.getElementById('light-mode-button');
     
+    // Stats tracking
+    let stats = loadStats();
+    
+    function loadStats() {
+        try {
+            const savedStats = localStorage.getItem('syntaxed-stats');
+            return savedStats ? JSON.parse(savedStats) : {
+                languages: {},
+                totalTests: 0,
+                bestWPM: 0,
+                bestAccuracy: 0
+            };
+        } catch (error) {
+            console.error("Error loading stats:", error);
+            return {
+                languages: {},
+                totalTests: 0,
+                bestWPM: 0,
+                bestAccuracy: 0
+            };
+        }
+    }
+    
+    function saveStats() {
+        try {
+            localStorage.setItem('syntaxed-stats', JSON.stringify(stats));
+        } catch (error) {
+            console.error("Error saving stats:", error);
+        }
+    }
+    
+    function updateStats(language, topic, wpm, accuracy, errors) {
+        // Update language-specific stats
+        if (!stats.languages[language]) {
+            stats.languages[language] = {
+                tests: 0,
+                bestWPM: 0,
+                bestAccuracy: 0,
+                topics: {}
+            };
+        }
+        
+        const langStats = stats.languages[language];
+        langStats.tests++;
+        langStats.bestWPM = Math.max(langStats.bestWPM, wpm);
+        langStats.bestAccuracy = Math.max(langStats.bestAccuracy, accuracy);
+        
+        // Update topic-specific stats
+        if (!langStats.topics[topic]) {
+            langStats.topics[topic] = {
+                tests: 0,
+                bestWPM: 0,
+                bestAccuracy: 0,
+                lastCompleted: null
+            };
+        }
+        
+        const topicStats = langStats.topics[topic];
+        topicStats.tests++;
+        topicStats.bestWPM = Math.max(topicStats.bestWPM, wpm);
+        topicStats.bestAccuracy = Math.max(topicStats.bestAccuracy, accuracy);
+        topicStats.lastCompleted = new Date().toISOString();
+        
+        // Update global stats
+        stats.totalTests++;
+        stats.bestWPM = Math.max(stats.bestWPM, wpm);
+        stats.bestAccuracy = Math.max(stats.bestAccuracy, accuracy);
+        
+        // Save to localStorage
+        saveStats();
+    }
+    
+    function displayPersonalBest() {
+        const langStats = stats.languages[currentLanguage];
+        const topicStats = langStats?.topics[currentTopic];
+        
+        if (!topicStats || topicStats.tests === 0) {
+            return '';
+        }
+        
+        return `
+            <div class="personal-best">
+                <h3>Personal Best</h3>
+                <div class="best-stats">
+                    <div class="best-stat">
+                        <span class="best-label">Best WPM:</span>
+                        <span class="best-value">${topicStats.bestWPM}</span>
+                    </div>
+                    <div class="best-stat">
+                        <span class="best-label">Best Accuracy:</span>
+                        <span class="best-value">${topicStats.bestAccuracy}%</span>
+                    </div>
+                    <div class="best-stat">
+                        <span class="best-label">Completed:</span>
+                        <span class="best-value">${topicStats.tests} times</span>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+    
     // Optimized timing and state management
     class TypingTest {
         constructor() {
@@ -111,6 +212,8 @@ document.addEventListener("DOMContentLoaded", () => {
             this.timeUpdateId = null;
             this.lastUpdateTime = 0;
             this.updateInterval = 100; // Update every 100ms instead of every frame
+            this.finalWPM = 0;
+            this.finalAccuracy = 0;
         }
 
         start() {
@@ -194,7 +297,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
         complete() {
             this.stop();
-            resultsDiv.innerHTML += '<div class="completion-message">🎉 Test Completed!</div>';
+            
+            // Calculate final stats
+            const timeElapsed = (performance.now() - this.startTime) / 1000;
+            const userInput = monacoEditor?.getValue() || '';
+            this.finalWPM = this.calculateWPM(userInput, timeElapsed);
+            this.finalAccuracy = this.calculateAccuracy(userInput, codeSnippet);
+            
+            // Update stats
+            updateStats(
+                currentLanguage,
+                currentTopic,
+                this.finalWPM,
+                this.finalAccuracy,
+                this.errors
+            );
+            
+            // Display completion message with personal best
+            resultsDiv.innerHTML += `
+                <div class="completion-message">
+                    <p>🎉 Test Completed!</p>
+                    ${displayPersonalBest()}
+                </div>
+            `;
         }
 
         // Debounced content change handler
@@ -409,6 +534,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 toggleDarkMode();
             } else if (e.key.toLowerCase() === "w") {
                 goToNormalMode();
+            } else if (e.key.toLowerCase() === "s") {
+                showStatsModal();
             }
         }
     });
@@ -450,5 +577,120 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (lightModeButton) {
         lightModeButton.addEventListener('click', goToNormalMode);
+    }
+    
+
+    if (document.getElementById('stats-button')) {
+    document.getElementById('stats-button').addEventListener('click', showStatsModal);
+    }
+    
+    function showStatsModal() {
+        // Create modal container
+        const modal = document.createElement('div');
+        modal.className = 'stats-modal';
+        modal.setAttribute('role', 'dialog');
+        modal.setAttribute('aria-labelledby', 'stats-title');
+        modal.setAttribute('aria-modal', 'true');
+        
+        // Get global stats
+        const globalStats = `
+            <div class="stats-section">
+                <h3>Global Stats</h3>
+                <p>Total Tests Completed: ${stats.totalTests}</p>
+                <p>Best WPM: ${stats.bestWPM}</p>
+                <p>Best Accuracy: ${stats.bestAccuracy}%</p>
+            </div>
+        `;
+        
+        // Get language stats
+        let languageStatsHTML = '';
+        Object.keys(stats.languages).forEach(lang => {
+            const langStats = stats.languages[lang];
+            languageStatsHTML += `
+                <details class="language-stats">
+                    <summary>${lang.charAt(0).toUpperCase() + lang.slice(1)} (${langStats.tests} tests)</summary>
+                    <div class="language-details">
+                        <p>Best WPM: ${langStats.bestWPM}</p>
+                        <p>Best Accuracy: ${langStats.bestAccuracy}%</p>
+                        <h4>Topics:</h4>
+                        <ul>
+            `;
+            
+            Object.keys(langStats.topics).forEach(topic => {
+                const topicStats = langStats.topics[topic];
+                const lastCompleted = topicStats.lastCompleted 
+                    ? new Date(topicStats.lastCompleted).toLocaleDateString() 
+                    : 'Never';
+                
+                languageStatsHTML += `
+                    <li>
+                        <strong>${topic.charAt(0).toUpperCase() + topic.slice(1).replace(/_/g, ' ')}</strong>
+                        <p>Best WPM: ${topicStats.bestWPM}</p>
+                        <p>Best Accuracy: ${topicStats.bestAccuracy}%</p>
+                        <p>Completed: ${topicStats.tests} times</p>
+                        <p>Last completed: ${lastCompleted}</p>
+                    </li>
+                `;
+            });
+            
+            languageStatsHTML += `
+                        </ul>
+                    </div>
+                </details>
+            `;
+        });
+        
+        // Create modal content
+        modal.innerHTML = `
+            <div class="stats-modal-content">
+                <button class="close-modal" aria-label="Close stats">×</button>
+                <h2 id="stats-title">Your Typing Statistics</h2>
+                ${globalStats}
+                <div class="stats-section">
+                    <h3>Language Stats</h3>
+                    ${languageStatsHTML || '<p>No language stats available yet.</p>'}
+                </div>
+                <button class="reset-stats">Reset All Stats</button>
+            </div>
+        `;
+        
+        // Add modal to the document
+        document.body.appendChild(modal);
+        
+        // Focus the close button for keyboard accessibility
+        modal.querySelector('.close-modal').focus();
+        
+        // Add event listeners
+        modal.querySelector('.close-modal').addEventListener('click', () => {
+            document.body.removeChild(modal);
+        });
+        
+        modal.querySelector('.reset-stats').addEventListener('click', () => {
+            if (confirm('Are you sure you want to reset all your typing statistics? This cannot be undone.')) {
+                stats = {
+                    languages: {},
+                    totalTests: 0,
+                    bestWPM: 0,
+                    bestAccuracy: 0
+                };
+                saveStats();
+                document.body.removeChild(modal);
+            }
+        });
+        
+        // Close modal when clicking outside
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                document.body.removeChild(modal);
+            }
+        });
+        
+        // Close modal with Escape key
+        document.addEventListener('keydown', function closeModal(e) {
+            if (e.key === 'Escape') {
+                document.body.removeChild(modal);
+                document.removeEventListener('keydown', closeModal);
+            }
+        });
     }
 });

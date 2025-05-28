@@ -31,12 +31,6 @@ body.dark-mode #snippet {
     color: #eee;
 }
 
-body.dark-mode #input {
-    border-color: #777;
-    background-color: #444;
-    color: #eee;
-}
-
 #results {
     margin-top: 20px;
 }
@@ -53,7 +47,7 @@ body.dark-mode #input {
 footer{
     text-align: center;
     margin-top: 20px;
-    color: #102f76;
+    color: #4a76a8;
     font-weight: bold;
     font-size: 16px;
     font-family: Arial, sans-serif;
@@ -189,6 +183,228 @@ body.dark-mode .completion-message {
     }
     
     .metric {
+        min-width: auto;
+    }
+}
+
+/* Stats button */
+#stats-button {
+    background-color: #4a76a8;
+}
+
+#stats-button:hover {
+    background-color: #3a5f8a;
+}
+
+body.dark-mode #stats-button {
+    background-color: #4a76a8;
+}
+
+body.dark-mode #stats-button:hover {
+    background-color: #3a5f8a;
+}
+
+/* Personal best display */
+.personal-best {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #e6f7ff;
+    border-radius: 5px;
+    border-left: 4px solid #1890ff;
+}
+
+body.dark-mode .personal-best {
+    background-color: #1a365d;
+    border-left-color: #4299e1;
+}
+
+.personal-best h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #0050b3;
+    font-size: 1.1em;
+}
+
+body.dark-mode .personal-best h3 {
+    color: #63b3ed;
+}
+
+.best-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.best-stat {
+    flex: 1;
+    min-width: 100px;
+}
+
+.best-label {
+    font-weight: bold;
+    display: block;
+    font-size: 0.9em;
+    color: #555;
+}
+
+body.dark-mode .best-label {
+    color: #a0aec0;
+}
+
+.best-value {
+    font-size: 1.1em;
+    color: #333;
+}
+
+body.dark-mode .best-value {
+    color: #e2e8f0;
+}
+
+/* Stats modal */
+.stats-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.stats-modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 800px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+body.dark-mode .stats-modal-content {
+    background-color: #2d3748;
+    color: #e2e8f0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.close-modal {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #666;
+}
+
+body.dark-mode .close-modal {
+    color: #a0aec0;
+}
+
+.close-modal:hover {
+    color: #333;
+}
+
+body.dark-mode .close-modal:hover {
+    color: #e2e8f0;
+}
+
+.stats-section {
+    margin-bottom: 20px;
+}
+
+.stats-section h3 {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+body.dark-mode .stats-section h3 {
+    border-bottom-color: #4a5568;
+    color: #e2e8f0;
+}
+
+.language-stats {
+    margin-bottom: 10px;
+    border: 1px solid #eee;
+    border-radius: 4px;
+}
+
+body.dark-mode .language-stats {
+    border-color: #4a5568;
+}
+
+.language-stats summary {
+    padding: 10px;
+    cursor: pointer;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+body.dark-mode .language-stats summary {
+    background-color: #3a4a5e;
+}
+
+.language-details {
+    padding: 10px;
+}
+
+.language-details ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.language-details li {
+    margin-bottom: 15px;
+    padding-left: 10px;
+    border-left: 2px solid #ddd;
+}
+
+body.dark-mode .language-details li {
+    border-left-color: #4a5568;
+}
+
+.reset-stats {
+    background-color: #f56565;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.reset-stats:hover {
+    background-color: #e53e3e;
+}
+
+body.dark-mode .reset-stats {
+    background-color: #c53030;
+}
+
+body.dark-mode .reset-stats:hover {
+    background-color: #9b2c2c;
+}
+
+@media (max-width: 600px) {
+    .stats-modal-content {
+        width: 95%;
+        padding: 15px;
+    }
+    
+    .best-stats {
+        flex-direction: column;
+    }
+    
+    .best-stat {
         min-width: auto;
     }
 }
