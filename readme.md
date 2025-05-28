@@ -100,6 +100,7 @@
 </div>
 
 ### Plus Additional Languages:
+- ✅ **ASSEMBLY X86-64 LINUX NASM**
 - ✅ **COBOL** - Legacy systems programming
 - ✅ **And more coming soon!**
 
