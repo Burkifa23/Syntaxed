@@ -102,42 +102,65 @@ document.addEventListener("DOMContentLoaded", () => {
     const darkModeButton = document.getElementById('dark-mode-button');
     const lightModeButton = document.getElementById('light-mode-button');
 
-    function loadSnippet() {
-        const filePath = codeSnippets[currentLanguage]?.[currentTopic];
-        if (filePath) {
-            fetch(filePath)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    return response.text();
-                })
-                .then(text => {
-                    codeSnippet = text;
-                    snippetDiv.textContent = codeSnippet;
-                    if (monaco && monacoEditor) {
-                        monacoEditor.setValue(''); // Start with empty editor
-                        monacoEditor.getModel().setLanguage(currentLanguage);
-                    }
-                    resetTest();
-                })
-                .catch(error => {
-                    console.error("Could not load snippet:", error, "Path:", filePath);
-                    snippetDiv.textContent = `Error loading snippet: ${filePath}`;
-                    codeSnippet = '';
-                    if (monaco && monacoEditor) {
-                        monacoEditor.setValue('');
-                    }
-                });
-        } else {
-            console.error("Snippet not found for:", currentLanguage, currentTopic);
-            snippetDiv.textContent = `Snippet not found for ${currentLanguage}/${currentTopic}`;
-            codeSnippet = '';
-            if (monaco && monacoEditor) {
-                monacoEditor.setValue('');
+    async function loadSnippet() {
+    const filePath = codeSnippets[currentLanguage]?.[currentTopic];
+    
+    if (!filePath) {
+        console.error("Snippet not found for:", currentLanguage, currentTopic);
+        snippetDiv.textContent = `No snippet available for ${currentLanguage}/${currentTopic}`;
+        codeSnippet = '';
+        if (monaco && monacoEditor) {
+            monacoEditor.setValue('');
+        }
+        return;
+    }
+
+    try {
+        const response = await fetch(filePath);
+        
+        if (!response.ok) {
+            throw new Error(`Failed to load snippet (HTTP ${response.status})`);
+        }
+        
+        const text = await response.text();
+        
+        if (!text.trim()) {
+            throw new Error('Snippet file is empty');
+        }
+        
+        // Successfully loaded snippet
+        codeSnippet = text;
+        snippetDiv.textContent = codeSnippet;
+        
+        // Safely update Monaco Editor
+        if (monaco && monacoEditor) {
+            monacoEditor.setValue(''); // Start with empty editor
+            
+            // Check if the model exists before setting language
+            const model = monacoEditor.getModel();
+            if (model) {
+                model.setLanguage(currentLanguage);
             }
         }
+        
+        resetTest();
+        
+    } catch (error) {
+        console.error("Could not load snippet:", error, "Path:", filePath);
+        
+        // User-friendly error message
+        const errorMsg = error.message.includes('HTTP') 
+            ? `Unable to load snippet file. Please check if ${filePath} exists.`
+            : `Error loading snippet: ${error.message}`;
+            
+        snippetDiv.textContent = errorMsg;
+        codeSnippet = '';
+        
+        if (monaco && monacoEditor) {
+            monacoEditor.setValue('');
+        }
     }
+}
 
     function populateTopics() {
         topicSelect.innerHTML = '';

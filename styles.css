@@ -31,17 +31,6 @@ body.dark-mode #snippet {
     color: #eee;
 }
 
-#input {
-    width: 100%;
-    min-height: 150px;
-    padding: 10px;
-    font-family: monospace;
-    border: 1px solid #ccc;
-    background-color: #fff;
-    color: #333;
-    white-space: pre-wrap;
-}
-
 body.dark-mode #input {
     border-color: #777;
     background-color: #444;
@@ -91,6 +80,11 @@ footer{
 
 .control-buttons button:hover {
     background-color: #3a5f8a;
+}
+
+.control-buttons button:focus {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
 }
 
 .button-icon {
