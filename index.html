@@ -4,23 +4,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="Syntaxed_Logo.png" type="image/x-icon">
-    <title>Syntaxed</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Syntaxed - Professional code typing trainer supporting 25+ programming languages. Improve your coding speed and accuracy with real-time metrics, personal statistics, and Monaco Editor integration.">
+    <meta name="keywords" content="code typing, programming practice, typing trainer, coding speed, Monaco Editor, JavaScript, Python, C++, programming languages, developer tools">
+    <meta name="author" content="Burkifa23, Programmer-233">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Syntaxed - Professional Code Typing Trainer">
+    <meta property="og:description" content="Master your coding speed with our professional typing trainer. Practice with 25+ programming languages, track your progress, and improve your development efficiency.">
+    <meta property="og:image" content="syntaxed-preview.png">
+    <meta property="og:url" content="https://burkifa23.github.io/Syntaxed/">
+    <meta property="og:site_name" content="Syntaxed">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Syntaxed - Professional Code Typing Trainer">
+    <meta name="twitter:description" content="Master your coding speed with our professional typing trainer. Practice with 25+ programming languages and track your progress.">
+    <meta name="twitter:image" content="syntaxed-preview.png">
+    <meta name="twitter:creator" content="@burkifa23">
+    
+    <!-- Performance & Technical -->
+    <meta name="theme-color" content="#4a76a8">
+    <meta name="color-scheme" content="light dark">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    
+    <!-- Favicon and Icons -->
+    <link rel="icon" href="Syntaxed_Logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="Syntaxed_Logo.png">
+    <link rel="shortcut icon" href="Syntaxed_Logo.png">
+    
+    <!-- Page Info -->
+    <title>Syntaxed - Professional Code Typing Trainer | 25+ Programming Languages</title>
+    
+    <!-- Stylesheets -->
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" data-name="vs/editor/editor.main" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.52.2/min/vs/editor/editor.main.min.css">
+    
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Syntaxed",
+        "description": "Professional code typing trainer supporting 25+ programming languages with real-time metrics and progress tracking.",
+        "url": "https://burkifa23.github.io/Syntaxed/",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Web Browser",
+        "author": [
+            {
+                "@type": "Person",
+                "name": "Burkifa23",
+                "url": "https://github.com/burkifa23"
+            },
+            {
+                "@type": "Person", 
+                "name": "Programmer-233",
+                "url": "https://github.com/programmer-233"
+            }
+        ],
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "screenshot": "syntaxed-preview.png"
+    }
+    </script>
 </head>
 
 <body>
     <img src="full_Logo.png" alt="Syntaxed Logo" class="logo">
 
-    <!-- Enhanced HTML with accessibility features -->
+    
     <div class="language-topic-selectors" role="region" aria-label="Code snippet selection">
         <div class="selector-group">
             <label for="language-select" id="language-label">Programming Language:</label>
             <select id="language-select" 
                     aria-labelledby="language-label"
                     aria-describedby="language-help">
-                <!-- This will be populated dynamically from the codeSnippets object -->
+                
             </select>
             <div id="language-help" class="sr-only">
                 Choose the programming language for your typing practice
@@ -32,7 +98,7 @@
             <select id="topic-select" 
                     aria-labelledby="topic-label"
                     aria-describedby="topic-help">
-                <!-- This will be populated dynamically -->
+                
             </select>
             <div id="topic-help" class="sr-only">
                 Choose the coding topic to practice
@@ -41,16 +107,16 @@
     </div>
 
     <div id="snippet" 
-         role="region" 
-         aria-label="Code to type"
-         aria-live="polite"
-         tabindex="0"></div>
+        role="region" 
+        aria-label="Code to type"
+        aria-live="polite"
+        tabindex="0"></div>
 
     <div id="monaco-editor-container" 
-         role="textbox" 
-         aria-label="Type the code here"
-         aria-describedby="typing-instructions"></div>
-         
+        role="textbox" 
+        aria-label="Type the code here"
+        aria-describedby="typing-instructions"></div>
+
     <div id="typing-instructions" class="sr-only">
         Type the code shown above. Your progress will be tracked in real-time.
     </div>
@@ -103,9 +169,9 @@
     </div>
 
     <div id="results" 
-         role="region" 
-         aria-label="Typing test results"
-         aria-live="polite"></div>
+        role="region" 
+        aria-label="Typing test results"
+        aria-live="polite"></div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.52.2/min/vs/loader.min.js"></script>
     <script>

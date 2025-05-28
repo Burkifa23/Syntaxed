@@ -237,7 +237,7 @@ document.addEventListener("DOMContentLoaded", () => {
             this.startTime = null;
             this.errors = 0;
             this.clearResults();
-            if (isMonacoReady()) {
+            if (typeof monaco !== 'undefined' && monaco && monacoEditor) {
                 monacoEditor.setValue('');
             }
         }
@@ -377,10 +377,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Create instance
     const typingTest = new TypingTest();
-
+    populateLanguageSelect();
+    populateTopics();
+    console.log("Language select options count:", languageSelect.children.length);
+    console.log("Topic select options count:", topicSelect.children.length);
     // Helper function to check if Monaco is ready
     function isMonacoReady() {
-        return monaco && monacoEditor;
+        return typeof monaco !== 'undefined' && monaco && monacoEditor;
     }
 
     async function loadSnippet() {
@@ -390,9 +393,9 @@ document.addEventListener("DOMContentLoaded", () => {
             console.error("Snippet not found for:", currentLanguage, currentTopic);
             snippetDiv.textContent = `No snippet available for ${currentLanguage}/${currentTopic}`;
             codeSnippet = '';
-            if (isMonacoReady()) {
-                monacoEditor.setValue('');
-            }
+            // if (isMonacoReady()) {
+            //    monacoEditor.setValue('');
+            //}
             return;
         }
 
@@ -437,7 +440,7 @@ document.addEventListener("DOMContentLoaded", () => {
             snippetDiv.textContent = errorMsg;
             codeSnippet = '';
             
-            if (isMonacoReady()) {
+            if (typeof monaco !== 'undefined' && monaco && monacoEditor) {
                 monacoEditor.setValue('');
             }
         }
@@ -513,8 +516,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
 
-        populateLanguageSelect();
-        populateTopics();
+        
         loadSnippet();
 
         // Use the debounced handler for content changes
