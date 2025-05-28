@@ -1,5 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
     const codeSnippets = {
+        assembly: {
+            start: 'snippets/assembly/hello.txt'
+        },
         bash: {
             start: 'snippets/bash/hello.txt'
         },
@@ -86,7 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    let currentLanguage = 'c';
+    let currentLanguage = 'assembly';
     let currentTopic = 'start';
     let codeSnippet = '';
     let monacoEditor;
@@ -379,8 +382,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const typingTest = new TypingTest();
     populateLanguageSelect();
     populateTopics();
-    console.log("Language select options count:", languageSelect.children.length);
-    console.log("Topic select options count:", topicSelect.children.length);
+    
     // Helper function to check if Monaco is ready
     function isMonacoReady() {
         return typeof monaco !== 'undefined' && monaco && monacoEditor;
