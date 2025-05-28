@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     const codeSnippets = {
-        bash: {
+         bash: {
             start: 'snippets/bash/hello.txt'
         },
         c: {
@@ -101,66 +101,222 @@ document.addEventListener("DOMContentLoaded", () => {
     const stopButton = document.getElementById('stop-button');
     const darkModeButton = document.getElementById('dark-mode-button');
     const lightModeButton = document.getElementById('light-mode-button');
-
-    async function loadSnippet() {
-    const filePath = codeSnippets[currentLanguage]?.[currentTopic];
     
-    if (!filePath) {
-        console.error("Snippet not found for:", currentLanguage, currentTopic);
-        snippetDiv.textContent = `No snippet available for ${currentLanguage}/${currentTopic}`;
-        codeSnippet = '';
-        if (monaco && monacoEditor) {
-            monacoEditor.setValue('');
+    // Optimized timing and state management
+    class TypingTest {
+        constructor() {
+            this.startTime = null;
+            this.errors = 0;
+            this.isRunning = false;
+            this.timeUpdateId = null;
+            this.lastUpdateTime = 0;
+            this.updateInterval = 100; // Update every 100ms instead of every frame
         }
-        return;
-    }
 
-    try {
-        const response = await fetch(filePath);
-        
-        if (!response.ok) {
-            throw new Error(`Failed to load snippet (HTTP ${response.status})`);
-        }
-        
-        const text = await response.text();
-        
-        if (!text.trim()) {
-            throw new Error('Snippet file is empty');
-        }
-        
-        // Successfully loaded snippet
-        codeSnippet = text;
-        snippetDiv.textContent = codeSnippet;
-        
-        // Safely update Monaco Editor
-        if (monaco && monacoEditor) {
-            monacoEditor.setValue(''); // Start with empty editor
+        start() {
+            if (this.isRunning) return;
             
-            // Check if the model exists before setting language
-            const model = monacoEditor.getModel();
-            if (model) {
-                model.setLanguage(currentLanguage);
+            this.isRunning = true;
+            this.startTime = performance.now();
+            this.scheduleUpdate();
+        }
+
+        stop() {
+            this.isRunning = false;
+            if (this.timeUpdateId) {
+                cancelAnimationFrame(this.timeUpdateId);
+                this.timeUpdateId = null;
             }
         }
-        
-        resetTest();
-        
-    } catch (error) {
-        console.error("Could not load snippet:", error, "Path:", filePath);
-        
-        // User-friendly error message
-        const errorMsg = error.message.includes('HTTP') 
-            ? `Unable to load snippet file. Please check if ${filePath} exists.`
-            : `Error loading snippet: ${error.message}`;
+
+        reset() {
+            this.stop();
+            this.startTime = null;
+            this.errors = 0;
+            this.clearResults();
+            if (isMonacoReady()) {
+                monacoEditor.setValue('');
+            }
+        }
+
+        scheduleUpdate() {
+            if (!this.isRunning) return;
+
+            this.timeUpdateId = requestAnimationFrame((currentTime) => {
+                if (currentTime - this.lastUpdateTime >= this.updateInterval) {
+                    this.updateMetrics();
+                    this.lastUpdateTime = currentTime;
+                }
+                this.scheduleUpdate();
+            });
+        }
+
+        updateMetrics() {
+            if (!this.isRunning || !this.startTime) return;
+
+            const timeElapsed = (performance.now() - this.startTime) / 1000;
+            const userInput = monacoEditor?.getValue() || '';
             
-        snippetDiv.textContent = errorMsg;
-        codeSnippet = '';
-        
-        if (monaco && monacoEditor) {
-            monacoEditor.setValue('');
+            this.errors = this.countErrors(userInput, codeSnippet);
+            const wpm = this.calculateWPM(userInput, timeElapsed);
+            const accuracy = this.calculateAccuracy(userInput, codeSnippet);
+
+            this.renderResults(timeElapsed, wpm, accuracy);
+            
+            // Check completion
+            if (userInput === codeSnippet && codeSnippet) {
+                this.complete();
+            }
+        }
+
+        renderResults(time, wpm, accuracy) {
+            resultsDiv.innerHTML = `
+                <div class="metrics">
+                    <div class="metric">
+                        <span class="metric-label">Time:</span>
+                        <span class="metric-value">${time.toFixed(1)}s</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">WPM:</span>
+                        <span class="metric-value">${wpm}</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Accuracy:</span>
+                        <span class="metric-value">${accuracy}%</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Errors:</span>
+                        <span class="metric-value error-count">${this.errors}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        complete() {
+            this.stop();
+            resultsDiv.innerHTML += '<div class="completion-message">🎉 Test Completed!</div>';
+        }
+
+        // Debounced content change handler
+        handleContentChange = this.debounce(() => {
+            if (!this.isRunning && codeSnippet && monacoEditor?.getValue()) {
+                this.start();
+            }
+        }, 150);
+
+        debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        countErrors(input, target) {
+            let errorCount = 0;
+            const maxLength = Math.max(input.length, target.length);
+            
+            for (let i = 0; i < maxLength; i++) {
+                if (input[i] !== (target[i] || '')) {
+                    errorCount++;
+                }
+            }
+            return errorCount;
+        }
+
+        calculateWPM(input, timeInSeconds) {
+            if (timeInSeconds < 1) return 0;
+            const words = input.trim().split(/\s+/).length;
+            const minutes = timeInSeconds / 60;
+            return Math.round(words / minutes);
+        }
+
+        calculateAccuracy(input, target) {
+            if (target.length === 0) return 100;
+            
+            const correctChars = input
+                .split("")
+                .filter((char, i) => char === (target[i] || '')).length;
+            
+            return Math.round((correctChars / target.length) * 100);
+        }
+
+        clearResults() {
+            resultsDiv.innerHTML = '';
         }
     }
-}
+
+    // Create instance
+    const typingTest = new TypingTest();
+
+    // Helper function to check if Monaco is ready
+    function isMonacoReady() {
+        return monaco && monacoEditor;
+    }
+
+    async function loadSnippet() {
+        const filePath = codeSnippets[currentLanguage]?.[currentTopic];
+        
+        if (!filePath) {
+            console.error("Snippet not found for:", currentLanguage, currentTopic);
+            snippetDiv.textContent = `No snippet available for ${currentLanguage}/${currentTopic}`;
+            codeSnippet = '';
+            if (isMonacoReady()) {
+                monacoEditor.setValue('');
+            }
+            return;
+        }
+
+        try {
+            const response = await fetch(filePath);
+            
+            if (!response.ok) {
+                throw new Error(`Failed to load snippet (HTTP ${response.status})`);
+            }
+            
+            const text = await response.text();
+            
+            if (!text.trim()) {
+                throw new Error('Snippet file is empty');
+            }
+            
+            // Successfully loaded snippet
+            codeSnippet = text;
+            snippetDiv.textContent = codeSnippet;
+            
+            // Safely update Monaco Editor
+            if (isMonacoReady()) {
+                monacoEditor.setValue(''); // Start with empty editor
+                
+                // Check if the model exists before setting language
+                const model = monacoEditor.getModel();
+                if (model) {
+                    monaco.editor.setModelLanguage(model, currentLanguage);
+                }
+            }
+            
+            typingTest.reset();
+            
+        } catch (error) {
+            console.error("Could not load snippet:", error, "Path:", filePath);
+            
+            // User-friendly error message
+            const errorMsg = error.message.includes('HTTP') 
+                ? `Unable to load snippet file. Please check if ${filePath} exists.`
+                : `Error loading snippet: ${error.message}`;
+                
+            snippetDiv.textContent = errorMsg;
+            codeSnippet = '';
+            
+            if (isMonacoReady()) {
+                monacoEditor.setValue('');
+            }
+        }
+    }
 
     function populateTopics() {
         topicSelect.innerHTML = '';
@@ -186,68 +342,6 @@ document.addEventListener("DOMContentLoaded", () => {
         loadSnippet();
     }
 
-    function resetTest() {
-        startTime = null;
-        errors = 0;
-        resultsDiv.innerHTML = "";
-        isRunning = false;
-        cancelAnimationFrame(timeUpdateId);
-        if (monacoEditor) {
-            monacoEditor.setValue(''); // Reset to empty editor
-        }
-    }
-
-    function stopTest() {
-        isRunning = false;
-        cancelAnimationFrame(timeUpdateId);
-        resultsDiv.innerHTML += "<p>Test Stopped.</p>";
-    }
-
-    function toggleDarkMode() {
-        body.classList.add("dark-mode");
-        isDarkMode = true;
-        if (monacoEditor) {
-            monaco.editor.setTheme(isDarkMode ? 'vs-dark' : 'vs-light');
-        }
-    }
-
-    function goToNormalMode() {
-        body.classList.remove("dark-mode");
-        isDarkMode = false;
-        if (monacoEditor) {
-            monaco.editor.setTheme(isDarkMode ? 'vs-dark' : 'vs-light');
-        }
-    }
-
-    function renderUserInput() {
-        snippetDiv.textContent = codeSnippet;
-    }
-
-    let startTime;
-    let errors = 0;
-    let isDarkMode = false;
-    let isRunning = false;
-    let timeUpdateId;
-
-    function updateTime() {
-        if (isRunning) {
-            const timeElapsed = (new Date() - startTime) / 1000;
-            const userInput = monacoEditor.getValue();
-            errors = countErrors(userInput, codeSnippet);
-            const wpm = calculateWPM(userInput, timeElapsed);
-            const accuracy = calculateAccuracy(userInput, codeSnippet);
-
-            resultsDiv.innerHTML = `
-                <p>Errors: ${errors}</p>
-                <p>Time: ${timeElapsed.toFixed(2)}s</p>
-                <p>WPM: ${wpm}</p>
-                <p>Accuracy: ${accuracy}%</p>
-            `;
-            
-            timeUpdateId = requestAnimationFrame(updateTime);
-        }
-    }
-
     function populateLanguageSelect() {
         languageSelect.innerHTML = '';
         const languages = Object.keys(codeSnippets);
@@ -260,6 +354,24 @@ document.addEventListener("DOMContentLoaded", () => {
         languageSelect.value = currentLanguage;
     }
 
+    function toggleDarkMode() {
+        body.classList.add("dark-mode");
+        isDarkMode = true;
+        if (isMonacoReady()) {
+            monaco.editor.setTheme('vs-dark');
+        }
+    }
+
+    function goToNormalMode() {
+        body.classList.remove("dark-mode");
+        isDarkMode = false;
+        if (isMonacoReady()) {
+            monaco.editor.setTheme('vs-light');
+        }
+    }
+
+    let isDarkMode = false;
+
     require(['vs/editor/editor.main'], function () {
         monacoEditor = monaco.editor.create(monacoContainer, {
             value: '', // Start with empty editor
@@ -269,35 +381,30 @@ document.addEventListener("DOMContentLoaded", () => {
             automaticLayout: true,
             scrollBeyondLastLine: false,
             wordWrap: 'on',
-            minimap: { enabled: false }
+            minimap: { enabled: false },
+            padding: {
+                top: 15,
+                bottom: 15
+            }
         });
 
         populateLanguageSelect();
         populateTopics();
         loadSnippet();
 
+        // Use the debounced handler for content changes
         monacoEditor.onDidChangeModelContent(() => {
-            if (!isRunning && codeSnippet) {
-                isRunning = true;
-                startTime = new Date();
-                updateTime();
-            }
-
-            const userInput = monacoEditor.getValue();
-            if (userInput === codeSnippet && codeSnippet) {
-                isRunning = false;
-                cancelAnimationFrame(timeUpdateId);
-                resultsDiv.innerHTML += "<p>Test Completed!</p>";
-            }
+            typingTest.handleContentChange();
         });
     });
 
-    document.addEventListener("keydown", (e) => { // Listen on the document
+    document.addEventListener("keydown", (e) => {
         if (e.altKey) {
             if (e.key.toLowerCase() === "q") {
-                stopTest();
+                typingTest.stop();
+                resultsDiv.innerHTML += "<p>Test Stopped.</p>";
             } else if (e.key.toLowerCase() === "r") {
-                resetTest();
+                typingTest.reset();
             } else if (e.key.toLowerCase() === "b") {
                 toggleDarkMode();
             } else if (e.key.toLowerCase() === "w") {
@@ -310,8 +417,11 @@ document.addEventListener("DOMContentLoaded", () => {
         languageSelect.addEventListener("change", (event) => {
             currentLanguage = event.target.value;
             populateTopics();
-            if (monacoEditor) {
-                monacoEditor.getModel().setLanguage(currentLanguage);
+            if (isMonacoReady()) {
+                const model = monacoEditor.getModel();
+                if (model) {
+                    monaco.editor.setModelLanguage(model, currentLanguage);
+                }
             }
         });
     }
@@ -323,37 +433,15 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    function countErrors(input, snippet) {
-        let errorCount = 0;
-        for (let i = 0; i < Math.max(input.length, snippet.length); i++) {
-            if (input[i] !== (snippet[i] || '')) {
-                errorCount++;
-            }
-        }
-        return errorCount;
-    }
-
-    function calculateWPM(input, time) {
-        const words = input.split(/\s+/).length;
-        const minutes = time / 60;
-        return Math.round(words / minutes);
-    }
-
-    function calculateAccuracy(input, snippet) {
-        const correctChars = input
-            .split("")
-            .filter((char, i) => char === (snippet[i] || '')).length;
-        return snippet.length > 0 ? Math.round((correctChars / snippet.length) * 100) : 0;
-    }
-
-    renderUserInput();
-
     if (resetButton) {
-        resetButton.addEventListener('click', resetTest);
+        resetButton.addEventListener('click', () => typingTest.reset());
     }
 
     if (stopButton) {
-        stopButton.addEventListener('click', stopTest);
+        stopButton.addEventListener('click', () => {
+            typingTest.stop();
+            resultsDiv.innerHTML += "<p>Test Stopped.</p>";
+        });
     }
 
     if (darkModeButton) {

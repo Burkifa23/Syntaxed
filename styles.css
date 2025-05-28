@@ -100,7 +100,7 @@ body.dark-mode .control-buttons button:hover {
 }
 
 #monaco-editor-container {
-    width: 80%;
+    width: 100%;
     height: 200px;
     border: 1px solid #ccc;
     margin-bottom: 15px;
@@ -108,4 +108,87 @@ body.dark-mode .control-buttons button:hover {
 
 body.dark-mode #monaco-editor-container {
     border-color: #777;
+}
+
+/* Styling for the metrics display */
+.metrics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: space-between;
+}
+
+.metric {
+    background-color: #f8f8f8;
+    padding: 10px 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    flex: 1;
+    min-width: 100px;
+    text-align: center;
+}
+
+body.dark-mode .metric {
+    background-color: #444;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.metric-label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+body.dark-mode .metric-label {
+    color: #ccc;
+}
+
+.metric-value {
+    font-size: 1.2em;
+    color: #333;
+}
+
+body.dark-mode .metric-value {
+    color: #fff;
+}
+
+.error-count {
+    color: #e74c3c;
+}
+
+body.dark-mode .error-count {
+    color: #ff6b6b;
+}
+
+.completion-message {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #d4edda;
+    color: #155724;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+    animation: fadeIn 0.5s;
+}
+
+body.dark-mode .completion-message {
+    background-color: #264c36;
+    color: #7dd3a7;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@media (max-width: 768px) {
+    .metrics {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .metric {
+        min-width: auto;
+    }
 }
