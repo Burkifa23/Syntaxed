@@ -13,35 +13,99 @@
 <body>
     <img src="full_Logo.png" alt="Syntaxed Logo" class="logo">
 
-    <label for="language-select">Select Language:</label>
-    <select id="language-select"></select>
+    <!-- Enhanced HTML with accessibility features -->
+    <div class="language-topic-selectors" role="region" aria-label="Code snippet selection">
+        <div class="selector-group">
+            <label for="language-select" id="language-label">Programming Language:</label>
+            <select id="language-select" 
+                    aria-labelledby="language-label"
+                    aria-describedby="language-help">
+                <!-- This will be populated dynamically from the codeSnippets object -->
+            </select>
+            <div id="language-help" class="sr-only">
+                Choose the programming language for your typing practice
+            </div>
+        </div>
 
-    <label for="topic-select">Select Topic:</label>
-    <select id="topic-select"></select>
-    
-    <div id="snippet"></div>
-
-    <div id="monaco-editor-container"></div>
-    
-    <div class="control-buttons">
-        <button id="reset-button" title="Reset Test (Alt+R)">
-            <span class="button-icon">↺</span> Reset
-        </button>
-        <button id="stop-button" title="Stop Test (Alt+Q)">
-            <span class="button-icon">■</span> Stop
-        </button>
-        <button id="dark-mode-button" title="Dark Mode (Alt+B)">
-            <span class="button-icon">🌙</span> Dark
-        </button>
-        <button id="light-mode-button" title="Light Mode (Alt+W)">
-            <span class="button-icon">☀️</span> Light
-        </button>
-        <button id="stats-button" title="View Stats (Alt+S)">
-            <span class="button-icon">📊</span> Stats
-        </button>
+        <div class="selector-group">
+            <label for="topic-select" id="topic-label">Topic:</label>
+            <select id="topic-select" 
+                    aria-labelledby="topic-label"
+                    aria-describedby="topic-help">
+                <!-- This will be populated dynamically -->
+            </select>
+            <div id="topic-help" class="sr-only">
+                Choose the coding topic to practice
+            </div>
+        </div>
     </div>
 
-    <div id="results"></div>
+    <div id="snippet" 
+         role="region" 
+         aria-label="Code to type"
+         aria-live="polite"
+         tabindex="0"></div>
+
+    <div id="monaco-editor-container" 
+         role="textbox" 
+         aria-label="Type the code here"
+         aria-describedby="typing-instructions"></div>
+         
+    <div id="typing-instructions" class="sr-only">
+        Type the code shown above. Your progress will be tracked in real-time.
+    </div>
+
+    <div class="control-buttons" role="toolbar" aria-label="Test controls">
+        <button id="reset-button" 
+                type="button"
+                aria-describedby="reset-help"
+                title="Reset Test (Alt+R)">
+            <span class="button-icon" aria-hidden="true">↺</span>
+            <span class="button-text">Reset</span>
+        </button>
+        <div id="reset-help" class="sr-only">Reset the current typing test</div>
+        
+        <button id="stop-button" 
+                type="button"
+                aria-describedby="stop-help"
+                title="Stop Test (Alt+Q)">
+            <span class="button-icon" aria-hidden="true">■</span>
+            <span class="button-text">Stop</span>
+        </button>
+        <div id="stop-help" class="sr-only">Stop the current typing test</div>
+        
+        <button id="dark-mode-button" 
+                type="button"
+                aria-describedby="dark-help"
+                title="Dark Mode (Alt+B)">
+            <span class="button-icon" aria-hidden="true">🌙</span>
+            <span class="button-text">Dark</span>
+        </button>
+        <div id="dark-help" class="sr-only">Switch to dark theme</div>
+        
+        <button id="light-mode-button" 
+                type="button"
+                aria-describedby="light-help"
+                title="Light Mode (Alt+W)">
+            <span class="button-icon" aria-hidden="true">☀️</span>
+            <span class="button-text">Light</span>
+        </button>
+        <div id="light-help" class="sr-only">Switch to light theme</div>
+        
+        <button id="stats-button" 
+                type="button"
+                aria-describedby="stats-help"
+                title="View Stats (Alt+S)">
+            <span class="button-icon" aria-hidden="true">📊</span>
+            <span class="button-text">Stats</span>
+        </button>
+        <div id="stats-help" class="sr-only">View your typing statistics</div>
+    </div>
+
+    <div id="results" 
+         role="region" 
+         aria-label="Typing test results"
+         aria-live="polite"></div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.52.2/min/vs/loader.min.js"></script>
     <script>
