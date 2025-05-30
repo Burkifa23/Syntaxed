@@ -75,6 +75,9 @@ document.addEventListener("DOMContentLoaded", () => {
         scala: {
             start: 'snippets/scala/hello.txt'
         },
+        solidity: {
+            start: 'snippets/solidity/hello.txt'
+        },
         swift: {
             start: 'snippets/swift/hello.txt'
         },
