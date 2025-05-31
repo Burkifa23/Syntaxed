@@ -57,6 +57,9 @@ document.addEventListener("DOMContentLoaded", () => {
         lua: {
             start: 'snippets/lua/hello.txt'
         },
+        mokoto: {
+            start: 'snippets/mokoto/hello.txt'
+        },
         php: {
             start: 'snippets/php/hello.txt'
         },
