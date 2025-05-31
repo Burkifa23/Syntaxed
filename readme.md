@@ -103,6 +103,7 @@
 ### Plus Additional Languages:
 - ✅ **ASSEMBLY X86-64 LINUX NASM**
 - ✅ **COBOL** - Legacy systems programming
+- ✅ **MOKOTO** ICP Programming Language
 - ✅ **And more coming soon!**
 
 ---
