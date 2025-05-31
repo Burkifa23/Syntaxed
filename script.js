@@ -210,6 +210,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     
     // Optimized timing and state management
+    // Move normalizeForComparison outside the class to make it globally available
+    function normalizeForComparison(str) {
+        return str
+            .replace(/\r\n/g, '\n')        // Normalize line endings (CRLF to LF)
+            .replace(/\t/g, '    ')        // Normalize tabs to 4 spaces
+            .replace(/\s+$/gm, '')         // Remove trailing whitespace per line
+            .trim();                       // Remove leading/trailing whitespace
+    }
+
     class TypingTest {
         constructor() {
             this.startTime = null;
@@ -220,6 +229,7 @@ document.addEventListener("DOMContentLoaded", () => {
             this.updateInterval = 100; // Update every 100ms instead of every frame
             this.finalWPM = 0;
             this.finalAccuracy = 0;
+            this.completionProgress = 0;
         }
 
         start() {
@@ -266,14 +276,24 @@ document.addEventListener("DOMContentLoaded", () => {
             const timeElapsed = (performance.now() - this.startTime) / 1000;
             const userInput = monacoEditor?.getValue() || '';
             
+            // Use normalized strings for both error counting and completion check
+            const normalizedInput = normalizeForComparison(userInput);
+            const normalizedTarget = normalizeForComparison(codeSnippet);
+            
+            // Count errors using normalized strings for more accurate feedback
             this.errors = this.countErrors(userInput, codeSnippet);
             const wpm = this.calculateWPM(userInput, timeElapsed);
             const accuracy = this.calculateAccuracy(userInput, codeSnippet);
+            
+            // Calculate completion progress
+            this.completionProgress = normalizedTarget.length > 0 
+                ? Math.min(normalizedInput.length / normalizedTarget.length * 100, 100) 
+                : 0;
 
             this.renderResults(timeElapsed, wpm, accuracy);
             
-            // Check completion
-            if (userInput === codeSnippet && codeSnippet) {
+            // Check completion with normalized strings
+            if (normalizedInput === normalizedTarget && normalizedTarget) {
                 this.complete();
             }
         }
@@ -296,6 +316,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     <div class="metric">
                         <span class="metric-label">Errors:</span>
                         <span class="metric-value error-count">${this.errors}</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Progress:</span>
+                        <span class="metric-value">${Math.round(this.completionProgress)}%</span>
                     </div>
                 </div>
             `;
@@ -347,12 +371,17 @@ document.addEventListener("DOMContentLoaded", () => {
             };
         }
 
+        // Enhanced error counting function
         countErrors(input, target) {
+            // Normalize both strings to handle whitespace and line ending differences
+            const normalizedInput = normalizeForComparison(input);
+            const normalizedTarget = normalizeForComparison(target);
+            
             let errorCount = 0;
-            const maxLength = Math.max(input.length, target.length);
+            const maxLength = Math.max(normalizedInput.length, normalizedTarget.length);
             
             for (let i = 0; i < maxLength; i++) {
-                if (input[i] !== (target[i] || '')) {
+                if (normalizedInput[i] !== (normalizedTarget[i] || '')) {
                     errorCount++;
                 }
             }
