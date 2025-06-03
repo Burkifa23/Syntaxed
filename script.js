@@ -33,6 +33,9 @@ document.addEventListener("DOMContentLoaded", () => {
         fortran: {
             start: 'snippets/fortran/hello.txt'
         },
+        git: {
+            start: 'snippets/git/hello.txt'
+        },
         go: {
             start: 'snippets/go/hello.txt'
         },
