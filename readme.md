@@ -17,7 +17,8 @@
 - **25+ programming languages** supported with authentic code snippets
 - **Multiple topics per language** (Variables, Control Flow, Functions, and more)
 - **Real-time syntax highlighting** for each programming language
-
+- **Desktop Version** Built in Tauri Also on GitHub [syntaxed-desktop](https://github.com/Burkifa23/syntaxed-desktop)
+  
 ### 📊 **Advanced Performance Metrics**
 - **Words Per Minute (WPM)** calculation with precision timing
 - **Real-time accuracy tracking** with error detection
