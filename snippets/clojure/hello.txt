@@ -1,6 +1,6 @@
 (ns my-project.core
-  (:gen-class))
+    (:gen-class))
 
 (defn -main
-  [& args]
-  (println "Hello, World!"))
+    [& args]
+    (println "Hello, World!"))
