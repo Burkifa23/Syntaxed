@@ -1,7 +1,7 @@
 defmodule MyGreeter do
-  def say_hello do
-    IO.puts "Hello, World!"
-  end
+    def say_hello do
+        IO.puts "Hello, World!"
+    end
 end
 
 MyGreeter.say_hello()
