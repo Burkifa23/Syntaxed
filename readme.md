@@ -105,7 +105,7 @@
 - ✅ **ASSEMBLY X86-64 LINUX NASM**
 - ✅ **COBOL** - Legacy systems programming
 - ✅ **MOKOTO** ICP Programming Language
-- ✅ **And more coming soon!**
+- ✅ **Oen an issue to suggest a path or ideas.**
 
 ---
 
