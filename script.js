@@ -75,6 +75,9 @@ document.addEventListener("DOMContentLoaded", () => {
         r: {
             start: 'snippets/r/hello.txt'
         },
+        ruby: {
+            start: 'snippets/ruby/hello.txt'
+        },
         rust: {
             start: 'snippets/rust/hello.txt'
         },
