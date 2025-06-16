@@ -109,6 +109,13 @@
 
 ---
 
+### Plan is From Zero To Hero
+- [X]  Hello, World!
+- [ ]  Language Specific Syntax
+- [ ]  Calculator
+- [ ]  Data Structures
+- [ ]  Algorithms
+
 ## 🛠️ Tech Stack
 
 Built with modern web technologies for optimal performance:
