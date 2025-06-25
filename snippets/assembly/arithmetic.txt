@@ -1,0 +1,16 @@
+section .data
+    num1 dq 15
+    num2 dq 7
+    result dq 0
+
+section .text
+    global _start
+
+_start:
+    mov rax, [num1]
+    add rax, [num2]
+    mov [result], rax
+    
+    mov rax, 60
+    mov rdi, 0
+    syscall
