@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
             start: 'snippets/assembly/hello.txt',
             data: 'snippets/assembly/data-section.txt',
             text: 'snippets/assembly/text-section.txt',
+            comments: 'snippets/assembly/comments.txt',
             variables: 'snippets/assembly/variables.txt',
             arithmetic: 'snippets/assembly/arithmetic.txt',
             registers: 'snippets/assembly/registers.txt',

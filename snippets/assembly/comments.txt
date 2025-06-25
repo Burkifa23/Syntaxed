@@ -1,0 +1,19 @@
+section .data
+    msg db 'Comments example', 0xA, 0 ; Inline comment
+    msg_len equ $ - msg - 1 ; Calculate length
+
+section .text
+    global _start
+
+_start:
+    ; This is a line comment
+    ; System call to write
+    mov rax, 1 ; sys_write
+    mov rdi, 1 ; stdout
+    mov rsi, msg ; message
+    mov rdx, msg_len ; length
+    syscall
+    
+    mov rax, 60 ; sys_exit
+    mov rdi, 0  ; status
+    syscall
