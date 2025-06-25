@@ -1,0 +1,25 @@
+section .data
+    msg1 db 'First line', 0xA, 0
+    msg1_len equ $ - msg1 - 1
+    msg2 db 'Second line', 0xA, 0
+    msg2_len equ $ - msg2 - 1
+
+section .text
+    global _start
+
+_start:
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, msg1
+    mov rdx, msg1_len
+    syscall
+    
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, msg2
+    mov rdx, msg2_len
+    syscall
+    
+    mov rax, 60
+    mov rdi, 0
+    syscall
