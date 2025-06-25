@@ -1,7 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
     const codeSnippets = {
         assembly: {
-            start: 'snippets/assembly/hello.txt'
+            start: 'snippets/assembly/hello.txt',
+            variables: 'snippets/assembly/variables.txt',
+            arithmetic: 'snippets/assembly/arithmetic.txt',
+            registers: 'snippets/assembly/registers.txt',
+            multiple_output: 'snippets/assembly/multiple_output.txt',
+            conditionals: 'snippets/assembly/conditionals.txt'
         },
         bash: {
             start: 'snippets/bash/hello.txt'
