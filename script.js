@@ -335,31 +335,49 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         complete() {
-            this.stop();
-            
-            // Calculate final stats
-            const timeElapsed = (performance.now() - this.startTime) / 1000;
-            const userInput = monacoEditor?.getValue() || '';
-            this.finalWPM = this.calculateWPM(userInput, timeElapsed);
-            this.finalAccuracy = this.calculateAccuracy(userInput, codeSnippet);
-            
-            // Update stats
-            updateStats(
-                currentLanguage,
-                currentTopic,
-                this.finalWPM,
-                this.finalAccuracy,
-                this.errors
-            );
-            
-            // Display completion message with personal best
-            resultsDiv.innerHTML += `
-                <div class="completion-message">
-                    <p>🎉 Test Completed!</p>
-                    ${displayPersonalBest()}
-                </div>
-            `;
-        }
+    this.stop();
+    
+    // Calculate final stats
+    const timeElapsed = (performance.now() - this.startTime) / 1000;
+    const userInput = monacoEditor?.getValue() || '';
+    this.finalWPM = this.calculateWPM(userInput, timeElapsed);
+    this.finalAccuracy = this.calculateAccuracy(userInput, codeSnippet);
+    
+    // Update stats FIRST
+    updateStats(
+        currentLanguage,
+        currentTopic,
+        this.finalWPM,
+        this.finalAccuracy,
+        this.errors
+    );
+    
+    // Then REPLACE (not append) the entire results
+    resultsDiv.innerHTML = `
+        <div class="metrics">
+            <div class="metric">
+                <span class="metric-label">Final Time:</span>
+                <span class="metric-value">${timeElapsed.toFixed(1)}s</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Final WPM:</span>
+                <span class="metric-value">${this.finalWPM}</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Final Accuracy:</span>
+                <span class="metric-value">${this.finalAccuracy}%</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Errors:</span>
+                <span class="metric-value error-count">${this.errors}</span>
+            </div>
+        </div>
+        <div class="completion-message">
+            <p>🎉 Test Completed!</p>
+            ${displayPersonalBest()}
+        </div>
+    `;
+}
 
         // Debounced content change handler
         handleContentChange = this.debounce(() => {
