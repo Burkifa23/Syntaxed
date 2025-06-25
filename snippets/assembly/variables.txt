@@ -1,0 +1,18 @@
+section .data
+    byte_val db 42
+    word_val dw 1024
+    dword_val dd 65536
+    qword_val dq 1000000
+
+section .text
+    global _start
+
+_start:
+    mov al, [byte_val]
+    mov ax, [word_val]
+    mov eax, [dword_val]
+    mov rax, [qword_val]
+    
+    mov rax, 60
+    mov rdi, 0
+    syscall
