@@ -1,0 +1,15 @@
+section .data
+    my_string db 'Data goes here', 0
+    my_number dq 42
+    my_array db 1, 2, 3, 4, 5
+
+section .text
+    global _start
+
+_start:
+    mov rax, [my_number]
+    mov al, [my_array]
+    
+    mov rax, 60
+    mov rdi, 0
+    syscall
