@@ -1,0 +1,15 @@
+section .data
+    value dq 0x123456789ABCDEF0
+
+section .text
+    global _start
+
+_start:
+    mov rax, [value]
+    mov eax, 0x12345678
+    mov ax, 0x1234
+    mov al, 0x12
+    
+    mov rax, 60
+    mov rdi, 0
+    syscall
