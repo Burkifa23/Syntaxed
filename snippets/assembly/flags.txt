@@ -1,0 +1,19 @@
+section .text
+    global _start
+
+_start:
+    mov rax, 10
+    sub rax, 10
+    jz zero_flag_set
+    
+    mov rbx, 1
+    test rbx, rbx
+    jnz not_zero
+    
+zero_flag_set:
+    mov rcx, 100
+    
+not_zero:
+    mov rax, 60
+    mov rdi, 0
+    syscal
