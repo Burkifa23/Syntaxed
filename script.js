@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
             register_sizes: 'snippets/assembly/register-sizes.txt',
             immediate_addressing: 'snippets/assembly/immediate-addressing.txt',
             register_addressing: 'snippets/assembly/register-addressing.txt',
+            memory_addressing: 'snippets/assembly/memory-addressing.txt',
             general_purposes: 'snippets/assembly/general-purposes.txt',
             multiple_output: 'snippets/assembly/multiple-output.txt',
             conditionals: 'snippets/assembly/conditionals.txt'
