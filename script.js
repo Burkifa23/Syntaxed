@@ -30,6 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
             comparisons: 'snippets/assembly/comparisons.txt',
             loops: 'snippets/assembly/loops.txt',
             flags: 'snippets/assembly/flags.txt',
+            functions: 'snippets/assembly/functions.txt',
         },
         bash: {
             start: 'snippets/bash/hello.txt'
