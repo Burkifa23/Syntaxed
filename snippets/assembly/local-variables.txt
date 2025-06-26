@@ -1,0 +1,34 @@
+section .text
+    global _start
+
+_start:
+    mov rdi, 5
+    call factorial
+    
+    mov rdi, rax
+    mov rax, 60
+    syscall
+
+factorial:
+    push rbp
+    mov rbp, rsp
+    sub rsp, 8
+    
+    mov [rbp - 8], rdi
+    
+    cmp rdi, 1
+    jle base_case
+    
+    dec rdi
+    call factorial
+    
+    mul qword [rbp - 8]
+    jmp done
+    
+base_case:
+    mov rax, 1
+    
+done:
+    add rsp, 8
+    pop rbp
+    ret

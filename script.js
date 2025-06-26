@@ -33,6 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
             functions: 'snippets/assembly/functions.txt',
             stack_operations: 'snippets/assembly/stack-operation.txt',
             parameters: 'snippets/assembly/parameters.txt',
+            local_variables: 'snippets/assembly/local-variables.txt',
         },
         bash: {
             start: 'snippets/bash/hello.txt'
