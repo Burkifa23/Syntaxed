@@ -1,0 +1,19 @@
+section .text
+    global _start
+
+_start:
+    mov r8, 100
+    mov r9, 200
+    mov r10, 300
+    mov r11, 400
+    mov r12, 500
+    mov r13, 600
+    mov r14, 700
+    mov r15, 800
+    
+    add r8, r9
+    sub r10, r11
+    
+    mov rax, 60
+    mov rdi, r8
+    syscall

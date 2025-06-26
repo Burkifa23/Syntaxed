@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
             arithmetic: 'snippets/assembly/arithmetic.txt',
             registers: 'snippets/assembly/registers.txt',
             index_registers: 'snippets/assembly/index-registers.txt',
+            extended_registers: 'snippets/assembly/extended-registers.txt',
             general_purposes: 'snippets/assembly/general_purposes.txt',
             multiple_output: 'snippets/assembly/multiple_output.txt',
             conditionals: 'snippets/assembly/conditionals.txt'
