@@ -25,7 +25,8 @@ document.addEventListener("DOMContentLoaded", () => {
             indexed_addressing: 'snippets/assembly/indexed-addressing.txt',
             general_purposes: 'snippets/assembly/general-purposes.txt',
             multiple_output: 'snippets/assembly/multiple-output.txt',
-            conditionals: 'snippets/assembly/conditionals.txt'
+            conditionals: 'snippets/assembly/conditionals.txt',
+            jumps: 'snippets/assembly/jumps.txt'
         },
         bash: {
             start: 'snippets/bash/hello.txt'

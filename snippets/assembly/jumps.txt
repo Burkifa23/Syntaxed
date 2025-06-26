@@ -1,0 +1,15 @@
+section .text
+    global _start
+
+_start:
+    mov rax, 5
+    jmp skip_code
+    
+    mov rax, 10
+    
+skip_code:
+    add rax, 20
+    
+    mov rdi, rax
+    mov rax, 60
+    syscall
