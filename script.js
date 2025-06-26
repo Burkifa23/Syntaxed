@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
             basic_math: 'snippets/assembly/basic-math.txt',
             increment_decrement: 'snippets/assembly/increment-decrement.txt',
             bitwise: 'snippets/assembly/bitwise.txt',
+            shifts: 'snippets/assembly/shifts.txt',
             registers: 'snippets/assembly/registers.txt',
             index_registers: 'snippets/assembly/index-registers.txt',
             extended_registers: 'snippets/assembly/extended-registers.txt',
