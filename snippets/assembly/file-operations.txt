@@ -1,0 +1,27 @@
+section .data
+    filename db 'test.txt', 0
+    content db 'Hello file!', 0xA
+    content_len equ $ - content
+
+section .text
+    global _start
+
+_start:
+    mov rax, 2
+    mov rdi, filename
+    mov rsi, 577
+    mov rdx, 644
+    syscall
+    
+    mov rdi, rax
+    mov rax, 1
+    mov rsi, content
+    mov rdx, content_len
+    syscall
+    
+    mov rax, 3
+    syscall
+    
+    mov rax, 60
+    mov rdi, 0
+    syscall
