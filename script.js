@@ -31,6 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
             loops: 'snippets/assembly/loops.txt',
             flags: 'snippets/assembly/flags.txt',
             functions: 'snippets/assembly/functions.txt',
+            stack_operations: 'snippets/assembly/stack-operation.txt',
         },
         bash: {
             start: 'snippets/bash/hello.txt'
