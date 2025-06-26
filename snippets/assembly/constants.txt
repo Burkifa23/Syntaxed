@@ -1,0 +1,15 @@
+section .data
+    MAX_SIZE equ 1024
+    PI equ 314159
+    buffer times MAX_SIZE db 0
+
+section .text
+    global _start
+
+_start:
+    mov rax, MAX_SIZE
+    mov rbx, PI
+    
+    mov rax, 60
+    mov rdi, 0
+    syscall
