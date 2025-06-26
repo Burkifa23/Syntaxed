@@ -1,0 +1,18 @@
+section .text
+    global _start
+
+_start:
+    mov rdi, 10
+    mov rsi, 20
+    mov rdx, 30
+    call sum_three
+    
+    mov rdi, rax
+    mov rax, 60
+    syscall
+
+sum_three:
+    mov rax, rdi
+    add rax, rsi
+    add rax, rdx
+    ret
