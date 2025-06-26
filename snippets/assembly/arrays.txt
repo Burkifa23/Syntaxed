@@ -1,0 +1,16 @@
+section .data
+    numbers db 10, 20, 30, 40, 50
+    array_size equ 5
+
+section .text
+    global _start
+
+_start:
+    mov rsi, numbers
+    mov al, [rsi]
+    mov al, [rsi + 1]
+    mov al, [rsi + 2]
+    
+    mov rax, 60
+    mov rdi, 0
+    syscall
