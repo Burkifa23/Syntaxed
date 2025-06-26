@@ -1,0 +1,27 @@
+section .text
+    global _start
+
+_start:
+    mov rax, 10
+    mov rbx, 5
+    
+    cmp rax, rbx
+    jg greater
+    jl less
+    je equal
+    
+greater:
+    mov rcx, 1
+    jmp done
+    
+less:
+    mov rcx, 2
+    jmp done
+    
+equal:
+    mov rcx, 3
+    
+done:
+    mov rax, 60
+    mov rdi, rcx
+    syscall

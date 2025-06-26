@@ -26,7 +26,8 @@ document.addEventListener("DOMContentLoaded", () => {
             general_purposes: 'snippets/assembly/general-purposes.txt',
             multiple_output: 'snippets/assembly/multiple-output.txt',
             conditionals: 'snippets/assembly/conditionals.txt',
-            jumps: 'snippets/assembly/jumps.txt'
+            jumps: 'snippets/assembly/jumps.txt',
+            comparisons: 'snippets/assembly/comparisons.txt',
         },
         bash: {
             start: 'snippets/bash/hello.txt'
