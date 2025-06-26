@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
             constants: 'snippets/assembly/constants.txt',
             arithmetic: 'snippets/assembly/arithmetic.txt',
             basic_math: 'snippets/assembly/basic-math.txt',
+            increment_decrement: 'snippets/assembly/increment-decrement.txt',
             registers: 'snippets/assembly/registers.txt',
             index_registers: 'snippets/assembly/index-registers.txt',
             extended_registers: 'snippets/assembly/extended-registers.txt',
