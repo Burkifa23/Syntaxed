@@ -1,0 +1,15 @@
+section .text
+    global _start
+
+_start:
+    mov rcx, 5
+    mov rax, 0
+    
+loop_start:
+    add rax, rcx
+    dec rcx
+    jnz loop_start
+    
+    mov rdi, rax
+    mov rax, 60
+    syscall
