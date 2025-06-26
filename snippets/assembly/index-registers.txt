@@ -1,0 +1,17 @@
+section .data
+    numbers dq 10, 20, 30, 40
+
+section .text
+    global _start
+
+_start:
+    mov rsi, numbers
+    mov rdi, numbers + 16
+    mov rbp, rsp
+    
+    mov rax, [rsi]
+    mov rbx, [rdi]
+    
+    mov rax, 60
+    mov rdi, 0
+    syscall
