@@ -65,6 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
             recursions: 'snippets/assembly/recursions.txt',
             data_structures: 'snippets/assembly/data-structures.txt',
             stack_frames: 'snippets/assembly/stack-frames.txt',
+            hash_tables: 'snippets/assembly/hash-tables.txt',
             algorithms: 'snippets/assembly/algorithms.txt',
             interfacing: 'snippets/assembly/interfacing.txt',
             error_handling: 'snippets/assembly/error-handling.txt',
