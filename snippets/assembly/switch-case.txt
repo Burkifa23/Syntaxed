@@ -1,0 +1,36 @@
+section .data
+    jump_table dq case_0, case_1, case_2, case_3, default_case
+
+section .text
+    global _start
+
+_start:
+    mov rax, 2          ; Test value
+    cmp rax, 4
+    jae default_case
+    
+    jmp [jump_table + rax * 8]
+
+case_0:
+    mov rbx, 100
+    jmp done
+
+case_1:
+    mov rbx, 200
+    jmp done
+
+case_2:
+    mov rbx, 300
+    jmp done
+
+case_3:
+    mov rbx, 400
+    jmp done
+
+default_case:
+    mov rbx, 0
+
+done:
+    mov rax, 60
+    mov rdi, rbx
+    syscall

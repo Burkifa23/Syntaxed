@@ -30,6 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
             conditionals: 'snippets/assembly/conditionals.txt',
             jumps: 'snippets/assembly/jumps.txt',
             comparisons: 'snippets/assembly/comparisons.txt',
+            switch_case: 'snippets/assembly/switch-case.txt',
             loops: 'snippets/assembly/loops.txt',
             flags: 'snippets/assembly/flags.txt',
             functions: 'snippets/assembly/functions.txt',
