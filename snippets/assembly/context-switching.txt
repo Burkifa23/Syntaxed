@@ -1,0 +1,63 @@
+section .data
+    task1_name db 'Task 1', 0
+    task2_name db 'Task 2', 0
+
+section .bss
+    task1_context resq 16 ; Context save area
+    task2_context resq 16 ; Context save area
+    current_task dq 1
+    
+section .text
+    global _start
+
+_start:
+    ; Initialize task contexts
+    call init_tasks
+    
+    ; Main scheduler loop
+scheduler_loop:
+    call schedule_next_task
+    call context_switch
+    
+    ; Simple exit condition
+    dec qword [current_task]
+    cmp qword [current_task], 0
+    jg scheduler_loop
+    
+    mov rax, 60
+    mov rdi, 0
+    syscall
+
+init_tasks:
+    ; Initialize task control blocks
+    ret
+
+schedule_next_task:
+    ; Simple round-robin scheduler
+    mov rax, [current_task]
+    xor rdx, rdx
+    mov rbx, 2
+    div rbx
+    
+    cmp rdx, 0
+    je switch_to_task1
+    jmp switch_to_task2
+
+switch_to_task1:
+    mov qword [current_task], 1
+    ret
+
+switch_to_task2:
+    mov qword [current_task], 2
+    ret
+
+context_switch:
+    ; Save current context and switch to new task
+    push rbp
+    mov rbp, rsp
+    
+    ; This is a simplified context switch
+    ; Real implementation would save all registers
+    
+    pop rbp
+    ret

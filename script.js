@@ -84,6 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
             build_system_assembly: 'snippets/assembly/build-system2.txt',
             coroutines: 'snippets/assembly/coroutines.txt',
             state_machinces: 'snippets/assembly/state-machines.txt',
+            context_switching: 'snippets/assembly/context-switching.txt',
         },
         bash: {
             start: 'snippets/bash/hello.txt'
