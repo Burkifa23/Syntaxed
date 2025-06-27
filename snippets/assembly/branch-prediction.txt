@@ -1,0 +1,72 @@
+section .data
+    test_array times 1000 dq 0
+    array_size equ 1000
+
+section .text
+    global _start
+
+_start:
+    ; Initialize array with pattern
+    call init_array
+    
+    ; Predictable branches
+    call predictable_loop
+    
+    ; Unpredictable branches
+    call unpredictable_loop
+    
+    mov rax, 60
+    mov rdi, 0
+    syscall
+
+init_array:
+    mov rsi, test_array
+    mov rcx, array_size
+    xor rax, rax
+    
+init_loop:
+    mov [rsi], rcx
+    add rsi, 8
+    dec rcx
+    jnz init_loop
+    ret
+
+predictable_loop:
+    ; Branch predictor friendly - consistent pattern
+    mov rsi, test_array
+    mov rcx, array_size
+    xor rax, rax
+    
+pred_loop:
+    cmp qword [rsi], 500 ; Predictable comparison
+    jl pred_less
+    add rax, [rsi]
+    jmp pred_next
+pred_less:
+    sub rax, [rsi]
+pred_next:
+    add rsi, 8
+    dec rcx
+    jnz pred_loop
+    ret
+
+unpredictable_loop:
+    ; Branch predictor unfriendly - random pattern
+    mov rsi, test_array
+    mov rcx, array_size
+    xor rax, rax
+    
+unpred_loop:
+    mov rdx, [rsi]
+    and rdx, 1 ; Unpredictable (odd/even)
+    test rdx, rdx
+    jz unpred_even
+    add rax, [rsi]
+    jmp unpred_next
+unpred_even:
+    sub rax, [rsi]
+unpred_next:
+    add rsi, 8
+    dec rcx
+    jnz unpred_loop
+    ret
