@@ -1,0 +1,32 @@
+section .data
+    big_number dq 0x123456789ABCDEF0
+    byte_array db 0x12, 0x34, 0x56, 0x78
+
+section .text
+    global _start
+
+_start:
+    ; Load multi-byte value
+    mov rax, [big_number]
+    
+    ; Extract bytes (little-endian order)
+    mov bl, al ; Least significant byte (0xF0)
+    mov cl, ah ; Second byte (0xDE)
+    shr rax, 16
+    mov dl, al ; Third byte (0xBC)
+    mov dh, ah ; Fourth byte (0x9A)
+    
+    ; Byte swapping for endian conversion
+    mov rax, [big_number]
+    bswap rax ; Reverse byte order
+    
+    ; Manual byte extraction from array
+    mov rsi, byte_array
+    mov al, [rsi] ; 0x12
+    mov bl, [rsi + 1] ; 0x34
+    mov cl, [rsi + 2] ; 0x56
+    mov dl, [rsi + 3] ; 0x78
+    
+    mov rax, 60
+    mov rdi, 0
+    syscall

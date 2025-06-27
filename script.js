@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
             arrays: 'snippets/assembly/arrays.txt',
             constants: 'snippets/assembly/constants.txt',
             data_alignment: 'snippets/assembly/data-alignment.txt',
+            endianness: 'snippets/assembly/endianness.txt',
             arithmetic: 'snippets/assembly/arithmetic.txt',
             basic_math: 'snippets/assembly/basic-math.txt',
             division: 'snippets/assembly/division.txt',
