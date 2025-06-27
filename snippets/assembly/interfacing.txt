@@ -1,0 +1,23 @@
+section .text
+    global _start
+    global asm_function
+
+_start:
+    mov rdi, 10
+    mov rsi, 20
+    call asm_function
+    
+    mov rdi, rax
+    mov rax, 60
+    syscall
+
+asm_function:
+    push rbp
+    mov rbp, rsp
+    
+    mov rax, rdi
+    add rax, rsi
+    mul rdi
+    
+    pop rbp
+    ret
