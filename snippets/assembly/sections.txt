@@ -1,0 +1,19 @@
+section .data
+    initialized_data dq 42
+
+section .bss
+    uninitialized_data resq 1
+
+section .rodata
+    constant_data db 'Read only', 0
+
+section .text
+    global _start
+
+_start:
+    mov rax, [initialized_data]
+    mov [uninitialized_data], rax
+    
+    mov rax, 60
+    mov rdi, 0
+    syscall
