@@ -55,6 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
             interfacing: 'snippets/assembly/interfacing.txt',
             error_handling: 'snippets/assembly/error-handling.txt',
             command_line_arguments: 'snippets/assembly/command-line-args.txt',
+            multi_threading: 'snippets/assembly/multi-threading.txt',
         },
         bash: {
             start: 'snippets/bash/hello.txt'

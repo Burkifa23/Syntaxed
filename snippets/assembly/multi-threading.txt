@@ -1,0 +1,56 @@
+section .data
+    thread_msg db 'Thread executed', 0xA, 0
+    thread_msg_len equ $ - thread_msg - 1
+    main_msg db 'Main thread', 0xA, 0
+    main_msg_len equ $ - main_msg - 1
+
+section .bss
+    stack_space resb 4096
+    stack_top equ stack_space + 4096
+
+section .text
+    global _start
+
+_start:
+    ; Print main thread message
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, main_msg
+    mov rdx, main_msg_len
+    syscall
+    
+    ; Create new thread using clone syscall
+    mov rax, 56 ; sys_clone
+    mov rdi, 0x00010000 ; CLONE_VM flag
+    mov rsi, stack_top ; Stack pointer for new thread
+    mov rdx, 0 ; parent_tidptr
+    mov r10, 0 ; child_tidptr
+    mov r8, 0 ; tls
+    syscall
+    
+    test rax, rax
+    jz thread_function  ; Child thread
+    
+    ; Parent thread waits for child
+    mov rdi, rax ; Child PID
+    mov rax, 61 ; sys_wait4
+    mov rsi, 0
+    mov rdx, 0
+    mov r10, 0
+    syscall
+    
+    mov rax, 60
+    mov rdi, 0
+    syscall
+
+thread_function:
+    ; Thread execution
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, thread_msg
+    mov rdx, thread_msg_len
+    syscall
+    
+    mov rax, 60
+    mov rdi, 0
+    syscall
