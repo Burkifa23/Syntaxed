@@ -1,0 +1,20 @@
+section .data
+    array dq 1, 2, 3, 4, 5, 6, 7, 8
+
+section .text
+    global _start
+
+_start:
+    mov rsi, array
+    mov rcx, 8
+    xor rax, rax
+    
+sum_loop:
+    add rax, [rsi]
+    add rsi, 8
+    dec rcx
+    jnz sum_loop
+    
+    mov rdi, rax
+    mov rax, 60
+    syscall
