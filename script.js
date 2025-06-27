@@ -36,6 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
             functions: 'snippets/assembly/functions.txt',
             stack_operations: 'snippets/assembly/stack-operation.txt',
             parameters: 'snippets/assembly/parameters.txt',
+            calling_conventions: 'snippets/assembly/calling-conventions.txt',
             local_variables: 'snippets/assembly/local-variables.txt',
             linux_syscall: 'snippets/assembly/linux-syscall.txt',
             file_operations: 'snippets/assembly/file-operations.txt',

@@ -1,0 +1,40 @@
+section .text
+    global _start
+
+_start:
+    ; System V AMD64 ABI calling convention
+    mov rdi, 10 ; 1st argument
+    mov rsi, 20 ; 2nd argument
+    mov rdx, 30 ; 3rd argument
+    mov rcx, 40 ; 4th argument
+    mov r8, 50 ; 5th argument
+    mov r9, 60 ; 6th argument
+    
+    call six_param_function
+    
+    mov rdi, rax
+    mov rax, 60
+    syscall
+
+six_param_function:
+    push rbp
+    mov rbp, rsp
+    
+    ; Save callee-saved registers
+    push rbx
+    push r12
+    
+    ; Use the parameters
+    mov rax, rdi
+    add rax, rsi
+    add rax, rdx
+    add rax, rcx
+    add rax, r8
+    add rax, r9
+    
+    ; Restore callee-saved registers
+    pop r12
+    pop rbx
+    
+    pop rbp
+    ret
