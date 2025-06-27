@@ -1,0 +1,26 @@
+section .data
+    interrupt_msg db 'Interrupt handler called', 0xA, 0
+    interrupt_msg_len equ $ - interrupt_msg - 1
+
+section .text
+    global _start
+
+_start:
+    ; Software interrupt example
+    ; int 0x80 would trigger system call on older systems
+    
+    ; Using syscall instruction instead (modern way)
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, interrupt_msg
+    mov rdx, interrupt_msg_len
+    syscall
+    
+    ; Trigger divide by zero exception (for demonstration)
+    ; mov rax, 1
+    ; mov rbx, 0
+    ; div rbx ; This would cause SIGFPE
+    
+    mov rax, 60
+    mov rdi, 0
+    syscall

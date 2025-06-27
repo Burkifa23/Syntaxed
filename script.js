@@ -62,6 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
             algorithms: 'snippets/assembly/algorithms.txt',
             interfacing: 'snippets/assembly/interfacing.txt',
             error_handling: 'snippets/assembly/error-handling.txt',
+            interrupts: 'snippets/assembly/interrupts.txt',
             command_line_arguments: 'snippets/assembly/command-line-args.txt',
             multi_threading: 'snippets/assembly/multi-threading.txt',
         },
