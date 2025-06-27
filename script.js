@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
             comments: 'snippets/assembly/comments.txt',
             variables: 'snippets/assembly/variables.txt',
             integers: 'snippets/assembly/integers.txt',
+            floating_point: 'snippets/assembly/floating-point.txt',
             strings: 'snippets/assembly/strings.txt',
             arrays: 'snippets/assembly/arrays.txt',
             constants: 'snippets/assembly/constants.txt',

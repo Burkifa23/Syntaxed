@@ -1,0 +1,20 @@
+section .data
+    float_val dd 3.14159
+    double_val dq 2.71828
+    result dq 0.0
+
+section .text
+    global _start
+
+_start:
+    movss xmm0, [float_val]
+    movsd xmm1, [double_val]
+    
+    ; Convert float to double and add
+    cvtss2sd xmm0, xmm0
+    addsd xmm0, xmm1
+    movsd [result], xmm0
+    
+    mov rax, 60
+    mov rdi, 0
+    syscall
