@@ -1,0 +1,42 @@
+section .data
+    input_val dq 25
+    output_val dq 0
+
+section .text
+    global _start
+
+_start:
+    mov rax, [input_val]
+    
+    ; Inline assembly style operations
+    ; Square root approximation using Newton's method
+    mov rbx, rax
+    shr rbx, 1 ; Initial guess: x/2
+    
+sqrt_loop:
+    mov rdx, rax
+    mov rcx, rbx
+    xor rax, rax
+    div rcx ; rax = input_val / guess
+    add rax, rbx ; rax = guess + (input_val / guess)
+    shr rax, 1 ; rax = (guess + (input_val / guess)) / 2
+    
+    sub rax, rbx
+    cmp rax, 1
+    jg continue_sqrt
+    cmp rax, -1
+    jl continue_sqrt
+    jmp sqrt_done
+    
+continue_sqrt:
+    add rax, rbx
+    mov rbx, rax
+    mov rax, [input_val]
+    jmp sqrt_loop
+    
+sqrt_done:
+    mov [output_val], rbx
+    
+    mov rax, 60
+    mov rdi, 0
+    syscall
