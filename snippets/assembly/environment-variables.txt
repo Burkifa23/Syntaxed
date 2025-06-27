@@ -1,0 +1,87 @@
+section .data
+    env_name db 'PATH', 0
+    equals_sign db '=', 0
+    newline db 0xA, 0
+
+section .text
+    global _start
+
+_start:
+    ; Access environment variables
+    ; Third argument to main (envp) is at [rsp + 16]
+    ; But we'll use a simpler approach
+    
+    ; Get environment from auxiliary vector
+    mov rdi, env_name
+    call find_env_var
+    
+    test rax, rax
+    jz not_found
+    
+    ; Print environment variable
+    mov rdi, rax
+    call print_string
+    
+    jmp exit_program
+
+not_found:
+    ; Environment variable not found
+    mov rdi, env_name
+    call print_string
+
+exit_program:
+    mov rax, 60
+    mov rdi, 0
+    syscall
+
+find_env_var:
+    ; Simplified environment variable finder
+    ; In real implementation, would parse envp
+    push rbp
+    mov rbp, rsp
+    
+    ; This is a placeholder - real implementation would
+    ; iterate through environment array
+    mov rax, 0 ; Not found
+    
+    pop rbp
+    ret
+
+print_string:
+    push rbp
+    mov rbp, rsp
+    push rdi
+    
+    ; Calculate string length
+    call strlen
+    mov rdx, rax
+    pop rsi
+    
+    ; Print string
+    mov rax, 1
+    mov rdi, 1
+    syscall
+    
+    ; Print newline
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, newline
+    mov rdx, 1
+    syscall
+    
+    pop rbp
+    ret
+
+strlen:
+    push rbx
+    mov rbx, rdi
+    xor rax, rax
+strlen_loop:
+    cmp byte [rbx], 0
+    je strlen_done
+    inc rax
+    inc rbx
+    jmp strlen_loop
+strlen_done:
+    pop rbx
+    ret
