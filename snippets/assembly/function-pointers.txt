@@ -1,0 +1,50 @@
+section .data
+    operation_table dq add_func, sub_func, mul_func, div_func
+
+section .text
+    global _start
+
+_start:
+    mov rdi, 10 ; First operand
+    mov rsi, 5 ; Second operand
+    mov rdx, 0 ; Operation index (0=add)
+    
+    call execute_operation
+    
+    mov rdi, rax
+    mov rax, 60
+    syscall
+
+execute_operation:
+    push rbp
+    mov rbp, rsp
+    
+    ; Get function pointer from table
+    mov rax, [operation_table + rdx * 8]
+    
+    ; Call the function through pointer
+    call rax
+    
+    pop rbp
+    ret
+
+add_func:
+    mov rax, rdi
+    add rax, rsi
+    ret
+
+sub_func:
+    mov rax, rdi
+    sub rax, rsi
+    ret
+
+mul_func:
+    mov rax, rdi
+    mul rsi
+    ret
+
+div_func:
+    mov rax, rdi
+    xor rdx, rdx
+    div rsi
+    ret
