@@ -1,0 +1,81 @@
+section .data
+    pipe_msg db 'Hello through pipe!', 0xA, 0
+    pipe_msg_len equ $ - pipe_msg - 1
+    read_buffer resb 64
+
+section .bss
+    pipe_fds resq 2 ; Array for pipe file descriptors
+
+section .text
+    global _start
+
+_start:
+    ; Create pipe
+    mov rax, 22 ; sys_pipe
+    mov rdi, pipe_fds
+    syscall
+    
+    ; Fork process
+    mov rax, 57 ; sys_fork
+    syscall
+    
+    test rax, rax
+    jz child_process
+    
+parent_process:
+    ; Close read end in parent
+    mov rax, 3 ; sys_close
+    mov rdi, [pipe_fds] ; Read end
+    syscall
+    
+    ; Write to pipe
+    mov rax, 1 ; sys_write
+    mov rdi, [pipe_fds + 8] ; Write end
+    mov rsi, pipe_msg
+    mov rdx, pipe_msg_len
+    syscall
+    
+    ; Close write end
+    mov rax, 3 ; sys_close
+    mov rdi, [pipe_fds + 8]
+    syscall
+    
+    ; Wait for child
+    mov rax, 61 ; sys_wait4
+    mov rdi, 0 ; Any child
+    mov rsi, 0
+    mov rdx, 0
+    mov r10, 0
+    syscall
+    
+    jmp exit_program
+
+child_process:
+    ; Close write end in child
+    mov rax, 3 ; sys_close
+    mov rdi, [pipe_fds + 8] ; Write end
+    syscall
+    
+    ; Read from pipe
+    mov rax, 0 ; sys_read
+    mov rdi, [pipe_fds] ; Read end
+    mov rsi, read_buffer
+    mov rdx, 64
+    syscall
+    
+    ; Write to stdout
+    mov rdx, rax ; Bytes read
+    mov rax, 1 ; sys_write
+    mov rdi, 1 ; stdout
+    mov rsi, read_buffer
+    syscall
+    
+    ; Close read end
+    mov rax, 3 ; sys_close
+    mov rdi, [pipe_fds]
+    syscall
+
+exit_program:
+    mov rax, 60
+    mov rdi, 0
+    syscall
