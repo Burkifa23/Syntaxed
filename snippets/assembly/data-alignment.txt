@@ -1,0 +1,36 @@
+section .data
+    ; Properly aligned data
+    align 8
+    aligned_qword dq 0x123456789ABCDEF0
+    
+    align 4
+    aligned_dword dd 0x12345678
+    
+    align 2
+    aligned_word dw 0x1234
+    
+    ; Structure with padding
+    align 16
+    person_struct:
+        .name resb 16 ; 16 bytes
+        .age dd 0 ; 4 bytes
+        .padding resb 4 ; 4 bytes padding for alignment
+        .salary dq 0 ; 8 bytes (aligned to 8-byte boundary)
+    person_struct_size equ $ - person_struct
+
+section .text
+    global _start
+
+_start:
+    ; Demonstrate alignment requirements
+    mov rax, person_struct
+    and rax, 0xF ; Check 16-byte alignment
+    
+    ; Fill structure
+    mov qword [person_struct.name], 'John Doe'
+    mov dword [person_struct.age], 30
+    mov qword [person_struct.salary], 50000
+    
+    mov rax, 60
+    mov rdi, 0
+    syscall

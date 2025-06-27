@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
             strings: 'snippets/assembly/strings.txt',
             arrays: 'snippets/assembly/arrays.txt',
             constants: 'snippets/assembly/constants.txt',
+            data_alignment: 'snippets/assembly/data-alignment.txt',
             arithmetic: 'snippets/assembly/arithmetic.txt',
             basic_math: 'snippets/assembly/basic-math.txt',
             division: 'snippets/assembly/division.txt',
