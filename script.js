@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
             index_registers: 'snippets/assembly/index-registers.txt',
             extended_registers: 'snippets/assembly/extended-registers.txt',
             register_sizes: 'snippets/assembly/register-sizes.txt',
+            addressing_modes: 'snippets/assembly/addressing-modes.txt',
             immediate_addressing: 'snippets/assembly/immediate-addressing.txt',
             register_addressing: 'snippets/assembly/register-addressing.txt',
             memory_addressing: 'snippets/assembly/memory-addressing.txt',

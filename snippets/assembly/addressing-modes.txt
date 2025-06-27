@@ -1,0 +1,38 @@
+section .data
+    base_array dq 10, 20, 30, 40, 50
+    scale_factor equ 8
+
+section .text
+    global _start
+
+_start:
+    ; Direct addressing
+    mov rax, [base_array]
+    
+    ; Register indirect
+    mov rbx, base_array
+    mov rax, [rbx]
+    
+    ; Register + displacement
+    mov rax, [rbx + 8]
+    
+    ; Register + index
+    mov rcx, 2
+    mov rax, [rbx + rcx]
+    
+    ; Register + index * scale
+    mov rax, [rbx + rcx * 8]
+    
+    ; Register + index * scale + displacement
+    mov rax, [rbx + rcx * 8 + 16]
+    
+    ; RIP-relative addressing (position independent)
+    mov rax, [rel base_array]
+    
+    ; Complex addressing example
+    mov rsi, 1 ; Index
+    mov rax, [base_array + rsi * scale_factor + 8]
+    
+    mov rax, 60
+    mov rdi, 0
+    syscall
