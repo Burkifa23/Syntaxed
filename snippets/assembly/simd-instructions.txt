@@ -1,0 +1,28 @@
+section .data
+    align 16
+    vector1 dq 1.0, 2.0
+    vector2 dq 3.0, 4.0
+    result dq 0.0, 0.0
+
+section .text
+    global _start
+
+_start:
+    ; SIMD operations using SSE
+    movupd xmm0, [vector1] ; Load first vector
+    movupd xmm1, [vector2] ; Load second vector
+    
+    ; Vector addition
+    addpd xmm0, xmm1
+    movupd [result], xmm0
+    
+    ; Vector multiplication
+    movupd xmm0, [vector1]
+    mulpd xmm0, xmm1
+    
+    ; Horizontal operations
+    haddpd xmm0, xmm0 ; Horizontal add
+    
+    mov rax, 60
+    mov rdi, 0
+    syscall
