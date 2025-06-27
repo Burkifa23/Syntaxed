@@ -42,6 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
             sections: 'snippets/assembly/sections.txt',
             linking: 'snippets/assembly/linking.txt',
             optimization: 'snippets/assembly/optimization.txt',
+            string_operations: 'snippets/assembly/string-operations.txt',
         },
         bash: {
             start: 'snippets/bash/hello.txt'

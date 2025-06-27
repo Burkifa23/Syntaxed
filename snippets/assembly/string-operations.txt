@@ -1,0 +1,32 @@
+section .data
+    source db 'Hello Assembly', 0
+    dest times 20 db 0
+
+section .text
+    global _start
+
+_start:
+    mov rsi, source
+    mov rdi, dest
+    call string_copy
+    
+    mov rax, 60
+    mov rdi, 0
+    syscall
+
+string_copy:
+    push rbp
+    mov rbp, rsp
+    
+copy_loop:
+    mov al, [rsi]
+    mov [rdi], al
+    test al, al
+    jz copy_done
+    inc rsi
+    inc rdi
+    jmp copy_loop
+    
+copy_done:
+    pop rbp
+    ret
