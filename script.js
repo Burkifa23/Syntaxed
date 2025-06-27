@@ -54,6 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
             inline_assembly: 'snippets/assembly/inline-assembly.txt',
             conditional_assembly: 'snippets/assembly/conditional-assembly.txt',
             string_operations: 'snippets/assembly/string-operations.txt',
+            recursions: 'snippets/assembly/recursions.txt',
             data_structures: 'snippets/assembly/data-structures.txt',
             algorithms: 'snippets/assembly/algorithms.txt',
             interfacing: 'snippets/assembly/interfacing.txt',

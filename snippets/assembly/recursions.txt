@@ -1,0 +1,36 @@
+section .text
+    global _start
+
+_start:
+    mov rdi, 5 ; Calculate 5!
+    call factorial
+    
+    mov rdi, rax
+    mov rax, 60
+    syscall
+
+factorial:
+    push rbp
+    mov rbp, rsp
+    push rbx ; Save callee-saved register
+    
+    mov rbx, rdi ; Save n
+    
+    ; Base case: if n <= 1, return 1
+    cmp rdi, 1
+    jle base_case
+    
+    ; Recursive case: n * factorial(n-1)
+    dec rdi
+    call factorial ; factorial(n-1)
+    
+    mul rbx ; n * factorial(n-1)
+    jmp done
+    
+base_case:
+    mov rax, 1
+    
+done:
+    pop rbx
+    pop rbp
+    ret
