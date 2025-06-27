@@ -1,0 +1,6 @@
+extern long asm_add(long a, long b);
+int main() {
+    long result = asm_add(10, 20);
+    printf("Result: %ld\n", result);
+    return 0;
+}

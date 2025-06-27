@@ -1,0 +1,15 @@
+section .text
+    global asm_add ; Export function to C
+    extern printf ; Import C function
+
+asm_add:
+    ; Function callable from C
+    ; Parameters in rdi, rsi (System V ABI)
+    push rbp
+    mov rbp, rsp
+    
+    mov rax, rdi
+    add rax, rsi
+    
+    pop rbp
+    ret
