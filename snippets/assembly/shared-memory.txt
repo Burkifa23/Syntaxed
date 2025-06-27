@@ -1,0 +1,52 @@
+section .data
+    shm_key equ 12345
+    shm_size equ 4096
+    
+section .bss
+    shm_id resd 1
+    shm_addr resq 1
+
+section .text
+    global _start
+
+_start:
+    ; Create shared memory segment
+    call create_shared_memory
+    
+    ; Attach to shared memory
+    call attach_shared_memory
+    
+    ; Write to shared memory
+    mov rax, [shm_addr]
+    mov qword [rax], 0x1234567890ABCDEF
+    
+    ; Detach shared memory
+    call detach_shared_memory
+    
+    mov rax, 60
+    mov rdi, 0
+    syscall
+
+create_shared_memory:
+    ; This would use shmget() system call in real implementation
+    ; Simplified for demonstration
+    ret
+
+attach_shared_memory:
+    ; This would use shmat() system call in real implementation
+    ; For demo, just use a regular memory allocation
+    mov rax, 12 ; sys_brk
+    mov rdi, 0
+    syscall
+    
+    mov [shm_addr], rax
+    add rax, shm_size
+    mov rdi, rax
+    mov rax, 12 ; sys_brk
+    syscall
+    
+    ret
+
+detach_shared_memory:
+    ; This would use shmdt() system call in real implementation
+    ret
