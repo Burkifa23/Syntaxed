@@ -1,0 +1,48 @@
+section .text
+    global _start
+
+_start:
+    ; Call sum_variadic(3, 10, 20, 30)
+    mov rdi, 3 ; Count of arguments
+    mov rsi, 10 ; First value
+    mov rdx, 20 ; Second value
+    mov rcx, 30 ; Third value
+    call sum_variadic
+    
+    mov rdi, rax
+    mov rax, 60
+    syscall
+
+sum_variadic:
+    push rbp
+    mov rbp, rsp
+    
+    ; Save registers that contain arguments
+    push rsi
+    push rdx
+    push rcx
+    
+    xor rax, rax ; Sum accumulator
+    mov rbx, rdi ; Counter
+    
+    ; Sum the register arguments first
+    test rbx, rbx
+    jz done_sum
+    add rax, rsi
+    dec rbx
+    jz done_sum
+    add rax, rdx
+    dec rbx
+    jz done_sum
+    add rax, rcx
+    dec rbx
+    
+    ; If more arguments, they would be on stack
+    ; (This is a simplified example)
+    
+done_sum:
+    pop rcx
+    pop rdx
+    pop rsi
+    pop rbp
+    ret

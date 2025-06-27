@@ -38,6 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
             flags: 'snippets/assembly/flags.txt',
             functions: 'snippets/assembly/functions.txt',
             function_pointers: 'snippets/assembly/function-pointers.txt',
+            variadic_functions: 'snippets/assembly/variadic-functions.txt',
             stack_operations: 'snippets/assembly/stack-operation.txt',
             parameters: 'snippets/assembly/parameters.txt',
             calling_conventions: 'snippets/assembly/calling-conventions.txt',
