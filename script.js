@@ -53,6 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
             macros: 'snippets/assembly/macros.txt',
             sections: 'snippets/assembly/sections.txt',
             linking: 'snippets/assembly/linking.txt',
+            dynamic_linking: 'snippets/assembly/dynamic-linking.txt',
             optimization: 'snippets/assembly/optimization.txt',
             inline_assembly: 'snippets/assembly/inline-assembly.txt',
             conditional_assembly: 'snippets/assembly/conditional-assembly.txt',

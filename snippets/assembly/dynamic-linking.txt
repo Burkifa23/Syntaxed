@@ -1,0 +1,29 @@
+section .data
+    external_symbol dq 0
+
+section .text
+    global _start
+    extern printf ; External function (if linking with libc)
+
+_start:
+    ; Demonstrate GOT/PLT concept
+    ; In real dynamic linking, this would go through PLT
+    
+    ; Simulate PLT stub
+    mov rax, [rel external_symbol]
+    test rax, rax
+    jnz call_external
+    
+    ; Resolve symbol (simplified)
+    mov qword [rel external_symbol], external_function
+    
+call_external:
+    call [rel external_symbol]
+    
+    mov rax, 60
+    mov rdi, 0
+    syscall
+
+external_function:
+    ; Placeholder for external function
+    ret
