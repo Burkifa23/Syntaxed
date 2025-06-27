@@ -58,6 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
             cache_optimization: 'snippets/assembly/cache-optimization.txt',
             simd_instructions: 'snippets/assembly/simd-instructions.txt',
             branch_prediction: 'snippets/assembly/simd-instructions.txt',
+            profiling: 'snippets/assembly/profiling.txt',
             inline_assembly: 'snippets/assembly/inline-assembly.txt',
             conditional_assembly: 'snippets/assembly/conditional-assembly.txt',
             string_operations: 'snippets/assembly/string-operations.txt',
