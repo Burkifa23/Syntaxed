@@ -1,0 +1,21 @@
+# NASM = nasm
+# LD = ld
+# NASMFLAGS = -f elf64 -g -F dwarf
+# LDFLAGS = 
+#
+# OBJECTS = main.o utils.o
+# TARGET = program
+#
+# all: $(TARGET)
+#
+# $(TARGET): $(OBJECTS)
+# 	$(LD) $(LDFLAGS) -o $@ $^
+#
+# %.o: %.asm
+# 	$(NASM) $(NASMFLAGS) -o $@ $<
+#
+# clean:
+# 	rm -f $(OBJECTS) $(TARGET)
+#
+# debug: NASMFLAGS += -g
+# debug: $(TARGET)

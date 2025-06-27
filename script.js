@@ -78,6 +78,8 @@ document.addEventListener("DOMContentLoaded", () => {
             debugging_techniques: 'snippets/assembly/debugging-techniques.txt',
             assembly_with_c: 'snippets/assembly/assembly-with-c1.txt',
             calling_assembly_in_c: 'snippets/assembly/assembly-with-c2.txt',
+            build_system_makefile: 'snippets/assembly/build-system1.txt',
+            build_system_assembly: 'snippets/assembly/build-system2.txt',
         },
         bash: {
             start: 'snippets/bash/hello.txt'
