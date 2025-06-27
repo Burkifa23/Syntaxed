@@ -1,0 +1,47 @@
+section .data
+    canary_value dq 0xDEADBEEFCAFEBABE
+    buffer resb 64
+    message db 'Security demonstration', 0xA, 0
+    message_len equ $ - message - 1
+
+section .text
+    global _start
+
+_start:
+    ; Demonstrate stack canary concept
+    call secure_function
+    
+    mov rax, 60
+    mov rdi, 0
+    syscall
+
+secure_function:
+    push rbp
+    mov rbp, rsp
+    
+    ; Simulate stack canary placement
+    push qword [canary_value]
+    
+    ; Allocate local buffer
+    sub rsp, 64
+    
+    ; Use buffer safely
+    mov rsi, rsp
+    mov rdi, message
+    mov rcx, message_len
+    rep movsb
+    
+    ; Check canary before return
+    add rsp, 64
+    pop rax
+    cmp rax, [canary_value]
+    jne stack_overflow_detected
+    
+    pop rbp
+    ret
+
+stack_overflow_detected:
+    ; Handle stack overflow
+    mov rax, 60
+    mov rdi, 1 ; Exit with error
+    syscall

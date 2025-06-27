@@ -68,6 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
             multi_threading: 'snippets/assembly/multi-threading.txt',
             ipc: 'snippets/assembly/ipc.txt',
             environment_variables: 'snippets/assembly/environment-variables.txt',
+            security_features: 'snippets/assembly/security-features.txt',
         },
         bash: {
             start: 'snippets/bash/hello.txt'
