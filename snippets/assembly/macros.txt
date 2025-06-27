@@ -1,0 +1,21 @@
+%macro print_string 2
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, %1
+    mov rdx, %2
+    syscall
+%endmacro
+
+section .data
+    msg db 'Macro example', 0xA, 0
+    msg_len equ $ - msg - 1
+
+section .text
+    global _start
+
+_start:
+    print_string msg, msg_len
+    
+    mov rax, 60
+    mov rdi, 0
+    syscall

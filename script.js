@@ -38,6 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
             file_operations: 'snippets/assembly/file-operations.txt',
             memory_management: 'snippets/assembly/memory-management.txt',
             process_control: 'snippets/assembly/process-control.txt',
+            macros: 'snippets/assembly/macros.txt',
         },
         bash: {
             start: 'snippets/bash/hello.txt'
