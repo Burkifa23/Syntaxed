@@ -1,0 +1,37 @@
+section .data
+    debug_msg db 'Debug checkpoint reached', 0xA, 0
+    debug_msg_len equ $ - debug_msg - 1
+    value_to_debug dq 42
+
+section .text
+    global _start
+
+_start:
+    ; Software breakpoint (for GDB)
+    ; int3 ; Uncomment for breakpoint
+    
+    ; Debug output
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, debug_msg
+    mov rdx, debug_msg_len
+    syscall
+    
+    ; Load value for inspection
+    mov rax, [value_to_debug]
+    
+    ; Conditional debug output
+    cmp rax, 42
+    jne skip_debug
+    
+    ; Print debug info if condition met
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, debug_msg
+    mov rdx, debug_msg_len
+    syscall
+    
+skip_debug:
+    mov rax, 60
+    mov rdi, 0
+    syscall

@@ -75,6 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
             environment_variables: 'snippets/assembly/environment-variables.txt',
             security_features: 'snippets/assembly/security-features.txt',
             position_independent_code: 'snippets/assembly/position-inde-code.txt',
+            debugging_techniques: 'snippets/assembly/debugging-techniques.txt',
         },
         bash: {
             start: 'snippets/bash/hello.txt'
