@@ -81,6 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
             build_system_makefile: 'snippets/assembly/build-system1.txt',
             build_system_assembly: 'snippets/assembly/build-system2.txt',
             coroutines: 'snippets/assembly/coroutines.txt',
+            state_machinces: 'snippets/assembly/state-machines.txt',
         },
         bash: {
             start: 'snippets/bash/hello.txt'

@@ -1,0 +1,72 @@
+section .data
+    ; State machine states
+    STATE_INIT equ 0
+    STATE_PROCESS equ 1
+    STATE_WAIT equ 2
+    STATE_DONE equ 3
+    
+    current_state dq STATE_INIT
+    input_value dq 5
+    
+    ; State transition table
+    state_table dq state_init, state_process, state_wait, state_done
+
+section .text
+    global _start
+
+_start:
+    ; Run state machine
+state_machine_loop:
+    mov rax, [current_state]
+    cmp rax, STATE_DONE
+    je state_machine_done
+    
+    ; Call state handler
+    call [state_table + rax * 8]
+    
+    jmp state_machine_loop
+
+state_machine_done:
+    mov rax, 60
+    mov rdi, 0
+    syscall
+
+state_init:
+    ; Initialize state logic
+    mov rax, [input_value]
+    cmp rax, 0
+    jle error_state
+    
+    ; Transition to PROCESS state
+    mov qword [current_state], STATE_PROCESS
+    ret
+
+state_process:
+    ; Processing state logic
+    dec qword [input_value]
+    
+    ; Check if done processing
+    cmp qword [input_value], 0
+    je transition_to_done
+    
+    ; Transition to WAIT state
+    mov qword [current_state], STATE_WAIT
+    ret
+
+transition_to_done:
+    mov qword [current_state], STATE_DONE
+    ret
+
+state_wait:
+    ; Wait state logic (simplified)
+    ; Transition back to PROCESS
+    mov qword [current_state], STATE_PROCESS
+    ret
+
+state_done:
+    ; Done state - should not be called
+    ret
+
+error_state:
+    mov qword [current_state], STATE_DONE
+    ret
