@@ -1,0 +1,106 @@
+section .data
+    ; Application data
+    app_name db 'Sample Assembly Application', 0
+    menu_text db 'Choose option: 1) Add 2) Subtract 3) Exit', 0xA, 0
+    menu_len equ $ - menu_text - 1
+    prompt db 'Enter choice: ', 0
+    prompt_len equ $ - prompt - 1
+    result_msg db 'Result: ', 0
+    result_len equ $ - result_msg - 1
+    newline db 0xA, 0
+    
+section .bss
+    input_buffer resb 16
+    num1 resq 1
+    num2 resq 1
+    choice resb 1
+
+section .text
+    global _start
+
+_start:
+    ; Main application loop
+main_loop:
+    ; Display menu
+    call print_menu
+    
+    ; Get user choice
+    call get_choice
+    
+    ; Process choice
+    mov al, [choice]
+    cmp al, '1'
+    je do_addition
+    cmp al, '2'
+    je do_subtraction
+    cmp al, '3'
+    je exit_app
+    
+    jmp main_loop
+
+do_addition:
+    call get_numbers
+    mov rax, [num1]
+    add rax, [num2]
+    call print_result
+    jmp main_loop
+
+do_subtraction:
+    call get_numbers
+    mov rax, [num1]
+    sub rax, [num2]
+    call print_result
+    jmp main_loop
+
+print_menu:
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, menu_text
+    mov rdx, menu_len
+    syscall
+    ret
+
+get_choice:
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, prompt
+    mov rdx, prompt_len
+    syscall
+    
+    mov rax, 0
+    mov rdi, 0
+    mov rsi, choice
+    mov rdx, 1
+    syscall
+    ret
+
+get_numbers:
+    ; Simplified - in real app would parse input
+    mov qword [num1], 10
+    mov qword [num2], 5
+    ret
+
+print_result:
+    push rax
+    
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, result_msg
+    mov rdx, result_len
+    syscall
+    
+    ; Convert number to string and print (simplified)
+    pop rax
+    ; In real implementation, would convert rax to ASCII
+    
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, newline
+    mov rdx, 1
+    syscall
+    ret
+
+exit_app:
+    mov rax, 60
+    mov rdi, 0
+    syscall
