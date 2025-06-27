@@ -1,0 +1,74 @@
+section .data
+    timer_interval dq 1000000 ; 1ms in nanoseconds
+    
+section .bss
+    start_time resq 2 ; timespec structure
+    end_time resq 2
+
+section .text
+    global _start
+
+_start:
+    ; Real-time task example
+    call set_real_time_priority
+    call precise_timing_loop
+    
+    mov rax, 60
+    mov rdi, 0
+    syscall
+
+set_real_time_priority:
+    ; Set real-time scheduling policy
+    mov rax, 144 ; sys_sched_setscheduler
+    mov rdi, 0 ; Current process
+    mov rsi, 1 ; SCHED_FIFO
+    mov rdx, sched_param
+    syscall
+    ret
+
+precise_timing_loop:
+    push rbp
+    mov rbp, rsp
+    
+    mov rcx, 10 ; Loop 10 times
+    
+timing_loop:
+    push rcx
+    
+    ; Get current time
+    mov rax, 228 ; sys_clock_gettime
+    mov rdi, 1 ; CLOCK_MONOTONIC
+    mov rsi, start_time
+    syscall
+    
+    ; Do some real-time work
+    call real_time_task
+    
+    ; Sleep for precise interval
+    mov rax, 230 ; sys_clock_nanosleep
+    mov rdi, 1 ; CLOCK_MONOTONIC
+    mov rsi, 0 ; Absolute time
+    mov rdx, timer_spec
+    mov r10, 0
+    syscall
+    
+    pop rcx
+    dec rcx
+    jnz timing_loop
+    
+    pop rbp
+    ret
+
+real_time_task:
+    ; Simulated real-time work
+    mov rax, 1000
+rt_work_loop:
+    dec rax
+    jnz rt_work_loop
+    ret
+
+section .data
+    sched_param dq 50 ; Priority
+    timer_spec:
+        dq 0 ; seconds
+        dq 1000000 ; nanoseconds (1ms)

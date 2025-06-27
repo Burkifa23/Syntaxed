@@ -88,6 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
             context_switching: 'snippets/assembly/context-switching.txt',
             atomic_operations: 'snippets/assembly/atomic-operations.txt',
             vectorized_operations: 'snippets/assembly/atomic-operations.txt',
+            real_time_programming: 'snippets/assembly/real-time-programming.txt',
         },
         bash: {
             start: 'snippets/bash/hello.txt'
