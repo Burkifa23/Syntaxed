@@ -1,0 +1,38 @@
+%define DEBUG 1
+%define VERSION 2
+
+section .data
+%if DEBUG
+    debug_msg db 'Debug mode enabled', 0xA, 0
+    debug_len equ $ - debug_msg - 1
+%endif
+
+%if VERSION >= 2
+    version_msg db 'Version 2.0', 0xA, 0
+    version_len equ $ - version_msg - 1
+%else
+    version_msg db 'Version 1.0', 0xA, 0
+    version_len equ $ - version_msg - 1
+%endif
+
+section .text
+    global _start
+
+_start:
+%if DEBUG
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, debug_msg
+    mov rdx, debug_len
+    syscall
+%endif
+
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, version_msg
+    mov rdx, version_len
+    syscall
+    
+    mov rax, 60
+    mov rdi, 0
+    syscall
