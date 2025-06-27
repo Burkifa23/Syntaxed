@@ -1,5 +1,26 @@
 # Complete Assembly x86-64 Programming Guide
 
+## Brief report
+90 Assembly x86-64 snippets in total!
+Here's the breakdown by categories:
+
+- Basics: 5 snippets (hello, data-section, text-section, comments, variables)
+- Data Types: 7 snippets (integers, floating-point, strings, arrays, constants, data-alignment, endianness)
+- Arithmetic: 6 snippets (arithmetic, basic-math, division, increment-decrement, bitwise, shifts)
+- Registers: 4 snippets (registers, index-registers, extended-registers, register-sizes)
+- Addressing: 5 snippets (addressing-modes, immediate, register, memory, indexed addressing)
+- Control Flow: 8 snippets (general-purposes, multiple-output, conditionals, jumps, comparisons, switch-case, loops, flags)
+- Functions: 9 snippets (functions, function-pointers, variadic-functions, stack-operations, parameters, calling-conventions, local-variables, recursions, stack-frames)
+- System Programming: 12 snippets (linux-syscall, signal-handling, file-operations, memory-models, memory-management, memory-mapping, memory-allocators, shared-memory, process-control, interrupts, ipc, environment-variables)
+- Advanced Assembly: 6 snippets (macros, sections, linking, dynamic-linking, inline-assembly, conditional-assembly)
+- Performance: 6 snippets (optimization, cache-optimization, simd-instructions, branch-prediction, profiling, vectorized-operations)
+- Security: 2 snippets (security-features, position-independent-code)
+- Development: 5 snippets (debugging-techniques, assembly-with-c, calling-assembly-in-c, build-system-makefile, build-system-assembly)
+- Data Structures: 4 snippets (string-operations, data-structures, hash-tables, algorithms)
+- Specialized: 5 snippets (coroutines, state-machines, context-switching, atomic-operations, real-time-programming)
+- Applications: 6 snippets (interfacing, error-handling, command-line-arguments, multi-threading, menu-app, performance-benchmark)
+
+
 ## Table of Contents
 
 1. [Introduction](#introduction)
@@ -17,6 +38,8 @@
 13. [Real-World Applications](#real-world-applications)
 
 ---
+
+
 
 ## Introduction
 
