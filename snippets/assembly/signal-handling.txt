@@ -1,0 +1,52 @@
+section .data
+    msg db 'Signal handler called', 0xA, 0
+    msg_len equ $ - msg - 1
+
+section .text
+    global _start
+
+_start:
+    ; Set up signal handler for SIGINT (Ctrl+C)
+    mov rax, 13 ; sys_rt_sigaction
+    mov rdi, 2 ; SIGINT
+    mov rsi, sigaction_struct
+    mov rdx, 0
+    mov r10, 8
+    syscall
+    
+    ; Infinite loop waiting for signal
+loop:
+    mov rax, 162 ; sys_nanosleep
+    mov rdi, timespec
+    mov rsi, 0
+    syscall
+    jmp loop
+
+signal_handler:
+    push rax
+    push rdi
+    push rsi
+    push rdx
+    
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, msg
+    mov rdx, msg_len
+    syscall
+    
+    pop rdx
+    pop rsi
+    pop rdi
+    pop rax
+    ret
+
+section .data
+    sigaction_struct:
+        dq signal_handler ; sa_handler
+        dq 0 ; sa_flags
+        dq 0 ; sa_restorer
+        times 16 db 0 ; sa_mask
+    
+    timespec:
+        dq 1 ; seconds
+        dq 0 ; nanoseconds
