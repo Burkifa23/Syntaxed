@@ -1,0 +1,32 @@
+section .data
+    pic_message db 'Position Independent Code', 0xA, 0
+    pic_message_len equ $ - pic_message - 1
+
+section .text
+    global _start
+
+_start:
+    ; Use RIP-relative addressing for PIC
+    mov rsi, [rel pic_message]
+    lea rdi, [rel pic_message]
+    
+    ; Call function using RIP-relative addressing
+    call print_pic_message
+    
+    mov rax, 60
+    mov rdi, 0
+    syscall
+
+print_pic_message:
+    push rbp
+    mov rbp, rsp
+    
+    ; RIP-relative addressing for data access
+    mov rax, 1 ; sys_write
+    mov rdi, 1 ; stdout
+    lea rsi, [rel pic_message]
+    mov rdx, pic_message_len
+    syscall
+    
+    pop rbp
+    ret

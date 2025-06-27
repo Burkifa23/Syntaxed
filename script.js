@@ -69,6 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
             ipc: 'snippets/assembly/ipc.txt',
             environment_variables: 'snippets/assembly/environment-variables.txt',
             security_features: 'snippets/assembly/security-features.txt',
+            position_independent_code: 'snippets/assembly/position-inde-code.txt',
         },
         bash: {
             start: 'snippets/bash/hello.txt'
