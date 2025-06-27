@@ -1,0 +1,67 @@
+section .data
+    filename db 'test_mmap.txt', 0
+    test_data db 'Memory mapped file content', 0
+    test_data_len equ $ - test_data - 1
+
+section .text
+    global _start
+
+_start:
+    ; Create and write to file first
+    mov rax, 2 ; sys_open
+    mov rdi, filename
+    mov rsi, 0x241 ; O_WRONLY | O_CREAT | O_TRUNC
+    mov rdx, 0644 ; File permissions
+    syscall
+    
+    mov r8, rax ; Save file descriptor
+    
+    ; Write test data
+    mov rax, 1 ; sys_write
+    mov rdi, r8
+    mov rsi, test_data
+    mov rdx, test_data_len
+    syscall
+    
+    ; Close file
+    mov rax, 3 ; sys_close
+    mov rdi, r8
+    syscall
+    
+    ; Open file for reading
+    mov rax, 2 ; sys_open
+    mov rdi, filename
+    mov rsi, 0 ; O_RDONLY
+    syscall
+    
+    mov r8, rax ; Save file descriptor
+    
+    ; Memory map the file
+    mov rax, 9 ; sys_mmap
+    mov rdi, 0 ; addr (let kernel choose)
+    mov rsi, 4096 ; length
+    mov rdx, 1 ; PROT_READ
+    mov r10, 1 ; MAP_SHARED
+    mov r9, 0 ; offset
+    syscall
+    
+    ; rax now contains the mapped address
+    mov r9, rax ; Save mapped address
+    
+    ; Read first byte from mapped memory
+    mov al, [r9]
+    
+    ; Unmap memory
+    mov rax, 11 ; sys_munmap
+    mov rdi, r9
+    mov rsi, 4096
+    syscall
+    
+    ; Close file
+    mov rax, 3 ; sys_close
+    mov rdi, r8
+    syscall
+    
+    mov rax, 60
+    mov rdi, 0
+    syscall

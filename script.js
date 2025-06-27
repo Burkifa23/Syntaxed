@@ -48,6 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
             file_operations: 'snippets/assembly/file-operations.txt',
             memory_models: 'snippets/assembly/memory-models.txt',
             memory_management: 'snippets/assembly/memory-management.txt',
+            memory_mapping: 'snippets/assembly/memory-mapping.txt',
             process_control: 'snippets/assembly/process-control.txt',
             macros: 'snippets/assembly/macros.txt',
             sections: 'snippets/assembly/sections.txt',
