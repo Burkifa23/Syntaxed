@@ -1,0 +1,147 @@
+section .data
+    test_iterations equ 1000000
+    benchmark_msg db 'Running performance benchmark...', 0xA, 0
+    benchmark_len equ $ - benchmark_msg - 1
+
+section .bss
+    benchmark_start resq 1
+    benchmark_end resq 1
+    test_data resq test_iterations
+
+section .text
+    global _start
+
+_start:
+    ; Initialize test data
+    call init_benchmark_data
+    
+    ; Print benchmark message
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, benchmark_msg
+    mov rdx, benchmark_len
+    syscall
+    
+    ; Benchmark 1: Memory access patterns
+    call benchmark_sequential_access
+    call benchmark_random_access
+    
+    ; Benchmark 2: Arithmetic operations
+    call benchmark_integer_math
+    call benchmark_floating_point_math
+    
+    ; Benchmark 3: Function call overhead
+    call benchmark_function_calls
+    
+    mov rax, 60
+    mov rdi, 0
+    syscall
+
+init_benchmark_data:
+    mov rsi, test_data
+    mov rcx, test_iterations
+    xor rax, rax
+
+init_loop:
+    mov [rsi], rcx
+    add rsi, 8
+    dec rcx
+    jnz init_loop
+    ret
+
+benchmark_sequential_access:
+    ; Start timer
+    rdtsc
+    mov [benchmark_start], rax
+    
+    ; Sequential access test
+    mov rsi, test_data
+    mov rcx, test_iterations
+    xor rax, rax
+
+seq_test_loop:
+    add rax, [rsi]
+    add rsi, 8
+    dec rcx
+    jnz seq_test_loop
+    
+    ; End timer
+    rdtsc
+    mov [benchmark_end], rax
+    
+    ret
+
+benchmark_random_access:
+    ; Random access pattern benchmark
+    rdtsc
+    mov [benchmark_start], rax
+    
+    mov rcx, test_iterations / 10
+    mov rsi, test_data
+
+random_test_loop:
+    ; Simulate random access
+    mov rax, [rsi]
+    add rsi, 80 ; Jump by 10 elements
+    dec rcx
+    jnz random_test_loop
+    
+    rdtsc
+    mov [benchmark_end], rax
+    ret
+
+benchmark_integer_math:
+    rdtsc
+    mov [benchmark_start], rax
+    
+    mov rcx, test_iterations
+    mov rax, 1
+
+int_math_loop:
+    mul rcx
+    xor rdx, rdx
+    div rcx
+    dec rcx
+    jnz int_math_loop
+    
+    rdtsc
+    mov [benchmark_end], rax
+    ret
+
+benchmark_floating_point_math:
+    rdtsc
+    mov [benchmark_start], rax
+    
+    mov rcx, test_iterations
+    movsd xmm0, [fp_constant]
+
+fp_math_loop:
+    mulsd xmm0, [fp_constant]
+    divsd xmm0, [fp_constant]
+    dec rcx
+    jnz fp_math_loop
+    
+    rdtsc
+    mov [benchmark_end], rax
+    ret
+
+benchmark_function_calls:
+    rdtsc
+    mov [benchmark_start], rax
+    
+    mov rcx, test_iterations
+
+call_test_loop:
+    call dummy_function
+    dec rcx
+    jnz call_test_loop
+    
+    rdtsc
+    mov [benchmark_end], rax
+    ret
+
+dummy_function:
+    ret
+
+section .rodata
+    fp_constant dq 1.1

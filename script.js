@@ -90,6 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
             vectorized_operations: 'snippets/assembly/atomic-operations.txt',
             real_time_programming: 'snippets/assembly/real-time-programming.txt',
             menu_app: 'snippets/assembly/menu-app.txt',
+            performance_benchmark: 'snippets/assembly/performance-benchmark.txt',
         },
         bash: {
             start: 'snippets/bash/hello.txt'
