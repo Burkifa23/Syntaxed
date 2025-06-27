@@ -1,0 +1,50 @@
+section .data
+    filename db 'nonexistent.txt', 0
+    error_msg db 'Error: File not found', 0xA, 0
+    error_len equ $ - error_msg - 1
+    success_msg db 'File opened successfully', 0xA, 0
+    success_len equ $ - success_msg - 1
+
+section .text
+    global _start
+
+_start:
+    ; Try to open a file
+    mov rax, 2 ; sys_open
+    mov rdi, filename
+    mov rsi, 0 ; O_RDONLY
+    syscall
+    
+    ; Check for error (negative return value)
+    test rax, rax
+    js handle_error
+    
+    ; Success case
+    mov rdi, rax ; Save file descriptor
+    mov rax, 1 ; sys_write
+    mov rdi, 1 ; stdout
+    mov rsi, success_msg
+    mov rdx, success_len
+    syscall
+    
+    ; Close file
+    mov rax, 3 ; sys_close
+    syscall
+    jmp exit_program
+    
+handle_error:
+    mov rax, 1 ; sys_write
+    mov rdi, 2 ; stderr
+    mov rsi, error_msg
+    mov rdx, error_len
+    syscall
+    
+    mov rdi, 1 ; Exit with error code
+    jmp exit_with_code
+
+exit_program:
+    mov rdi, 0 ; Exit with success code
+
+exit_with_code:
+    mov rax, 60 ; sys_exit
+    syscall
