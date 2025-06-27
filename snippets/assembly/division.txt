@@ -1,0 +1,26 @@
+section .data
+    dividend dq 100
+    divisor dq 7
+    quotient dq 0
+    remainder dq 0
+
+section .text
+    global _start
+
+_start:
+    mov rax, [dividend]
+    xor rdx, rdx; Clear rdx for unsigned division
+    div qword [divisor]
+    
+    mov [quotient], rax
+    mov [remainder], rdx
+    
+    ; Signed division example
+    mov rax, -100
+    cqo; Sign extend rax to rdx:rax
+    mov rbx, 7
+    idiv rbx
+    
+    mov rax, 60
+    mov rdi, 0
+    syscall

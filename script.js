@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
             constants: 'snippets/assembly/constants.txt',
             arithmetic: 'snippets/assembly/arithmetic.txt',
             basic_math: 'snippets/assembly/basic-math.txt',
+            division: 'snippets/assembly/division.txt',
             increment_decrement: 'snippets/assembly/increment-decrement.txt',
             bitwise: 'snippets/assembly/bitwise.txt',
             shifts: 'snippets/assembly/shifts.txt',
