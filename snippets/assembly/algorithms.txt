@@ -1,0 +1,55 @@
+section .data
+    numbers dq 1, 3, 5, 7, 9, 11, 13, 15
+    target dq 7
+    array_size equ 8
+
+section .text
+    global _start
+
+_start:
+    mov rdi, numbers
+    mov rsi, 0
+    mov rdx, array_size - 1
+    mov rcx, [target]
+    call binary_search
+    
+    mov rdi, rax
+    mov rax, 60
+    syscall
+
+binary_search:
+    push rbp
+    mov rbp, rsp
+    
+search_loop:
+    cmp rsi, rdx
+    jg not_found
+    
+    mov r8, rsi
+    add r8, rdx
+    shr r8, 1
+    
+    mov r9, [rdi + r8 * 8]
+    cmp r9, rcx
+    je found
+    jl search_right
+    
+    mov rdx, r8
+    dec rdx
+    jmp search_loop
+    
+search_right:
+    mov rsi, r8
+    inc rsi
+    jmp search_loop
+    
+found:
+    mov rax, r8
+    jmp search_done
+    
+not_found:
+    mov rax, -1
+    
+search_done:
+    pop rbp
+    ret
