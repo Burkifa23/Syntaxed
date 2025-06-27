@@ -1,0 +1,45 @@
+section .data
+    array dq 64, 34, 25, 12, 22, 11, 90
+    array_size equ 7
+
+section .text
+    global _start
+
+_start:
+    mov rdi, array
+    mov rsi, array_size
+    call bubble_sort
+    
+    mov rax, 60
+    mov rdi, 0
+    syscall
+
+bubble_sort:
+    push rbp
+    mov rbp, rsp
+    
+    mov rcx, rsi
+    dec rcx
+    
+outer_loop:
+    mov rdx, 0
+    
+inner_loop:
+    mov rax, [rdi + rdx * 8]
+    cmp rax, [rdi + rdx * 8 + 8]
+    jle no_swap
+    
+    mov rbx, [rdi + rdx * 8 + 8]
+    mov [rdi + rdx * 8], rbx
+    mov [rdi + rdx * 8 + 8], rax
+    
+no_swap:
+    inc rdx
+    cmp rdx, rcx
+    jl inner_loop
+    
+    dec rcx
+    jnz outer_loop
+    
+    pop rbp
+    ret
