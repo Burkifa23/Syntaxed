@@ -55,6 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
             linking: 'snippets/assembly/linking.txt',
             dynamic_linking: 'snippets/assembly/dynamic-linking.txt',
             optimization: 'snippets/assembly/optimization.txt',
+            cache_optimization: 'snippets/assembly/cache-optimization.txt',
             inline_assembly: 'snippets/assembly/inline-assembly.txt',
             conditional_assembly: 'snippets/assembly/conditional-assembly.txt',
             string_operations: 'snippets/assembly/string-operations.txt',

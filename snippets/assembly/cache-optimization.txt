@@ -1,0 +1,51 @@
+section .data
+    large_array times 1024 dq 0
+    array_size equ 1024
+
+section .text
+    global _start
+
+_start:
+    ; Cache-friendly sequential access
+    call sequential_access
+    
+    ; Cache-unfriendly random access
+    call strided_access
+    
+    mov rax, 60
+    mov rdi, 0
+    syscall
+
+sequential_access:
+    push rbp
+    mov rbp, rsp
+    
+    mov rsi, large_array
+    mov rcx, array_size
+    xor rax, rax
+    
+seq_loop:
+    add rax, [rsi] ; Sequential memory access
+    add rsi, 8 ; Move to next element
+    dec rcx
+    jnz seq_loop
+    
+    pop rbp
+    ret
+
+strided_access:
+    push rbp
+    mov rbp, rsp
+    
+    mov rsi, large_array
+    mov rcx, array_size / 8 ; Every 8th element
+    xor rax, rax
+    
+stride_loop:
+    add rax, [rsi] ; Strided access (cache-unfriendly)
+    add rsi, 64 ; Skip 8 elements (64 bytes)
+    dec rcx
+    jnz stride_loop
+    
+    pop rbp
+    ret
