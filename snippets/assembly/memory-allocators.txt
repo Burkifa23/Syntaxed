@@ -1,0 +1,122 @@
+section .data
+    HEAP_SIZE equ 4096
+    BLOCK_SIZE equ 64
+    NUM_BLOCKS equ HEAP_SIZE / BLOCK_SIZE
+    
+section .bss
+    heap_start resb HEAP_SIZE
+    free_list resq NUM_BLOCKS ; Free block list
+    
+section .data
+    heap_initialized dq 0
+
+section .text
+    global _start
+
+_start:
+    ; Initialize allocator
+    call init_allocator
+    
+    ; Allocate some memory
+    mov rdi, 128 ; Size to allocate
+    call malloc
+    
+    mov rbx, rax ; Save allocated pointer
+    
+    ; Free the memory
+    mov rdi, rbx
+    call free
+    
+    mov rax, 60
+    mov rdi, 0
+    syscall
+
+init_allocator:
+    push rbp
+    mov rbp, rsp
+    push rbx
+    push rcx
+    
+    ; Check if already initialized
+    cmp qword [heap_initialized], 1
+    je init_done
+    
+    ; Initialize free list
+    mov rbx, heap_start
+    mov rcx, 0
+    
+init_loop:
+    cmp rcx, NUM_BLOCKS
+    jge init_complete
+    
+    ; Set up free block
+    mov [free_list + rcx * 8], rbx
+    add rbx, BLOCK_SIZE
+    inc rcx
+    jmp init_loop
+    
+init_complete:
+    mov qword [heap_initialized], 1
+    
+init_done:
+    pop rcx
+    pop rbx
+    pop rbp
+    ret
+
+malloc:
+    ; Simple malloc implementation
+    push rbp
+    mov rbp, rsp
+    push rbx
+    push rcx
+    
+    ; Find free block (simplified - just use first available)
+    mov rcx, 0
+    
+malloc_loop:
+    cmp rcx, NUM_BLOCKS
+    jge malloc_fail
+    
+    cmp qword [free_list + rcx * 8], 0
+    je malloc_next
+    
+    ; Found free block
+    mov rax, [free_list + rcx * 8]
+    mov qword [free_list + rcx * 8], 0 ; Mark as used
+    jmp malloc_done
+    
+malloc_next:
+    inc rcx
+    jmp malloc_loop
+    
+malloc_fail:
+    xor rax, rax ; Return NULL
+    
+malloc_done:
+    pop rcx
+    pop rbx
+    pop rbp
+    ret
+
+free:
+    ; Simple free implementation
+    push rbp
+    mov rbp, rsp
+    push rbx
+    push rcx
+    
+    ; Find which block this address belongs to
+    mov rax, rdi
+    sub rax, heap_start
+    xor rdx, rdx
+    mov rbx, BLOCK_SIZE
+    div rbx ; rax = block index
+    
+    ; Mark block as free
+    mov [free_list + rax * 8], rdi
+    
+    pop rcx
+    pop rbx
+    pop rbp
+    ret
