@@ -1,0 +1,33 @@
+section .data
+    ; Virtual memory demonstration
+    heap_ptr dq 0
+    stack_info dq 0
+    code_addr dq _start
+
+section .text
+    global _start
+
+_start:
+    ; Get current stack pointer
+    mov [stack_info], rsp
+    
+    ; Allocate heap memory using brk
+    mov rax, 12 ; sys_brk
+    mov rdi, 0 ; Get current break
+    syscall
+    mov [heap_ptr], rax
+    
+    ; Show memory layout addresses
+    mov rax, 1 ; sys_write
+    mov rdi, 1
+    mov rsi, memory_layout_msg
+    mov rdx, memory_layout_len
+    syscall
+    
+    mov rax, 60
+    mov rdi, 0
+    syscall
+
+section .rodata
+    memory_layout_msg db 'Memory layout demonstration', 0xA, 0
+    memory_layout_len equ $ - memory_layout_msg - 1

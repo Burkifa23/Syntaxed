@@ -41,6 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
             linux_syscall: 'snippets/assembly/linux-syscall.txt',
             signal_handling: 'snippets/assembly/signal-handling.txt',
             file_operations: 'snippets/assembly/file-operations.txt',
+            memory_models: 'snippets/assembly/memory-models.txt',
             memory_management: 'snippets/assembly/memory-management.txt',
             process_control: 'snippets/assembly/process-control.txt',
             macros: 'snippets/assembly/macros.txt',
