@@ -85,6 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
             coroutines: 'snippets/assembly/coroutines.txt',
             state_machinces: 'snippets/assembly/state-machines.txt',
             context_switching: 'snippets/assembly/context-switching.txt',
+            atomic_operations: 'snippets/assembly/atomic-operations.txt',
         },
         bash: {
             start: 'snippets/bash/hello.txt'

@@ -1,0 +1,66 @@
+section .data
+    shared_counter dq 0
+    lock_variable dq 0
+
+section .text
+    global _start
+
+_start:
+    ; Test atomic operations
+    call test_atomic_increment
+    call test_compare_and_swap
+    call test_spinlock
+    
+    mov rax, 60
+    mov rdi, 0
+    syscall
+
+test_atomic_increment:
+    push rbp
+    mov rbp, rsp
+    
+    ; Atomic increment
+    lock inc qword [shared_counter]
+    
+    ; Atomic add
+    mov rax, 5
+    lock add [shared_counter], rax
+    
+    ; Atomic exchange
+    mov rax, 100
+    lock xchg [shared_counter], rax
+    
+    pop rbp
+    ret
+
+test_compare_and_swap:
+    push rbp
+    mov rbp, rsp
+    
+    ; Compare and swap
+    mov rax, 100 ; Expected value
+    mov rbx, 200 ; New value
+    lock cmpxchg [shared_counter], rbx
+    
+    pop rbp
+    ret
+
+test_spinlock:
+    push rbp
+    mov rbp, rsp
+    
+    ; Acquire spinlock
+acquire_lock:
+    mov rax, 1
+    lock xchg [lock_variable], rax
+    test rax, rax
+    jnz acquire_lock ; Spin if lock was taken
+    
+    ; Critical section
+    inc qword [shared_counter]
+    
+    ; Release lock
+    mov qword [lock_variable], 0
+    
+    pop rbp
+    ret
