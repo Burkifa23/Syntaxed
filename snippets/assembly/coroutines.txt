@@ -1,0 +1,70 @@
+section .bss
+    coroutine1_stack resb 4096
+    coroutine2_stack resb 4096
+    main_context resq 16
+    coro1_context resq 16
+    coro2_context resq 16
+
+section .text
+    global _start
+
+_start:
+    ; Initialize coroutines
+    call init_coroutines
+    
+    ; Switch to coroutine 1
+    call switch_to_coro1
+    
+    ; Switch to coroutine 2
+    call switch_to_coro2
+    
+    mov rax, 60
+    mov rdi, 0
+    syscall
+
+init_coroutines:
+    ; Set up coroutine stacks and contexts
+    ; This is a simplified version
+    mov rax, coroutine1_stack + 4096
+    mov [coro1_context], rax ; Stack pointer
+    
+    mov rax, coroutine2_stack + 4096
+    mov [coro2_context], rax ; Stack pointer
+    
+    ret
+
+switch_to_coro1:
+    ; Save current context
+    mov [main_context], rsp
+    
+    ; Switch to coroutine 1 stack
+    mov rsp, [coro1_context]
+    
+    call coroutine1_func
+    
+    ; Restore main context
+    mov rsp, [main_context]
+    ret
+
+switch_to_coro2:
+    ; Save current context
+    mov [main_context], rsp
+    
+    ; Switch to coroutine 2 stack
+    mov rsp, [coro2_context]
+    
+    call coroutine2_func
+    
+    ; Restore main context
+    mov rsp, [main_context]
+    ret
+
+coroutine1_func:
+    ; Coroutine 1 logic
+    mov rax, 100
+    ret
+
+coroutine2_func:
+    ; Coroutine 2 logic
+    mov rax, 200
+    ret

@@ -80,6 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
             calling_assembly_in_c: 'snippets/assembly/assembly-with-c2.txt',
             build_system_makefile: 'snippets/assembly/build-system1.txt',
             build_system_assembly: 'snippets/assembly/build-system2.txt',
+            coroutines: 'snippets/assembly/coroutines.txt',
         },
         bash: {
             start: 'snippets/bash/hello.txt'
