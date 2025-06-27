@@ -1,0 +1,54 @@
+section .data
+    align 32
+    vector_a dd 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0
+    vector_b dd 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0
+    vector_result dd 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
+
+section .text
+    global _start
+
+_start:
+    ; AVX vectorized operations
+    call vector_multiply_avx
+    call vector_add_sse
+    
+    mov rax, 60
+    mov rdi, 0
+    syscall
+
+vector_multiply_avx:
+    push rbp
+    mov rbp, rsp
+    
+    ; Load 8 floats at once (AVX)
+    vmovups ymm0, [vector_a]
+    vmovups ymm1, [vector_b]
+    
+    ; Multiply vectors
+    vmulps ymm2, ymm0, ymm1
+    
+    ; Store result
+    vmovups [vector_result], ymm2
+    
+    ; Clear AVX state
+    vzeroupper
+    
+    pop rbp
+    ret
+
+vector_add_sse:
+    push rbp
+    mov rbp, rsp
+    
+    ; Load 4 floats at once (SSE)
+    movups xmm0, [vector_a]
+    movups xmm1, [vector_b]
+    
+    ; Add vectors
+    addps xmm0, xmm1
+    
+    ; Store result
+    movups [vector_result], xmm0
+    
+    pop rbp
+    ret
