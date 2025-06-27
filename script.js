@@ -40,6 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
             process_control: 'snippets/assembly/process-control.txt',
             macros: 'snippets/assembly/macros.txt',
             sections: 'snippets/assembly/sections.txt',
+            linking: 'snippets/assembly/linking.txt',
         },
         bash: {
             start: 'snippets/bash/hello.txt'
