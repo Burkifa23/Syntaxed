@@ -36,6 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
             local_variables: 'snippets/assembly/local-variables.txt',
             linux_syscall: 'snippets/assembly/linux-syscall.txt',
             file_operations: 'snippets/assembly/file-operations.txt',
+            memory_management: 'snippets/assembly/memory-management.txt',
         },
         bash: {
             start: 'snippets/bash/hello.txt'
