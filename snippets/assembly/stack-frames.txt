@@ -1,0 +1,57 @@
+section .text
+    global _start
+
+_start:
+    mov rdi, 10
+    mov rsi, 20
+    call complex_function
+    
+    mov rdi, rax
+    mov rax, 60
+    syscall
+
+complex_function:
+    ; Standard function prologue
+    push rbp ; Save old frame pointer
+    mov rbp, rsp ; Set new frame pointer
+    
+    ; Allocate local variables (16 bytes)
+    sub rsp, 16
+    
+    ; Save callee-saved registers
+    push rbx
+    push r12
+    push r13
+    
+    ; Local variables at [rbp-8] and [rbp-16]
+    mov [rbp - 8], rdi  ; local_var1 = param1
+    mov [rbp - 16], rsi ; local_var2 = param2
+    
+    ; Do some computation
+    mov rax, [rbp - 8]
+    add rax, [rbp - 16]
+    mov rbx, rax
+    
+    ; Nested function call
+    mov rdi, rbx
+    call nested_function
+    add rax, rbx
+    
+    ; Function epilogue
+    pop r13 ; Restore callee-saved registers
+    pop r12
+    pop rbx
+    
+    add rsp, 16 ; Deallocate local variables
+    pop rbp ; Restore old frame pointer
+    ret
+
+nested_function:
+    push rbp
+    mov rbp, rsp
+    
+    mov rax, rdi
+    shl rax, 1 ; Double the input
+    
+    pop rbp
+    ret
