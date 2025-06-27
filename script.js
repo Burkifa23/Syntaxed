@@ -54,6 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
             algorithms: 'snippets/assembly/algorithms.txt',
             interfacing: 'snippets/assembly/interfacing.txt',
             error_handling: 'snippets/assembly/error-handling.txt',
+            command_line_arguments: 'snippets/assembly/command-line-args.txt',
         },
         bash: {
             start: 'snippets/bash/hello.txt'

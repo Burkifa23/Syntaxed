@@ -1,0 +1,96 @@
+section .data
+    usage_msg db 'Usage: program <arg1> <arg2>', 0xA, 0
+    usage_len equ $ - usage_msg - 1
+    arg_msg db 'Argument: ', 0
+    arg_msg_len equ $ - arg_msg - 1
+    newline db 0xA, 0
+
+section .text
+    global _start
+
+_start:
+    ; argc is at [rsp], argv is at [rsp + 8]
+    mov rax, [rsp] ; argc
+    cmp rax, 3 ; Need at least 3 args (program name + 2 args)
+    jl show_usage
+    
+    mov rbx, 1 ; Start with argument 1 (skip program name)
+    
+print_args:
+    cmp rbx, rax
+    jge done
+    
+    ; Print "Argument: "
+    push rax
+    push rbx
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, arg_msg
+    mov rdx, arg_msg_len
+    syscall
+    pop rbx
+    pop rax
+    
+    ; Get argument string
+    mov rcx, [rsp + 8] ; argv
+    mov rdi, [rcx + rbx * 8] ; argv[rbx]
+    
+    ; Calculate string length
+    push rax
+    push rbx
+    call strlen
+    mov rdx, rax
+    pop rbx
+    pop rax
+    
+    ; Print argument
+    push rax
+    push rbx
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, [rsp + 16 + 8] ; Restore argv[rbx]
+    mov rcx, [rsp + 16 + 8]
+    mov rsi, [rcx + rbx * 8]
+    syscall
+    
+    ; Print newline
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, newline
+    mov rdx, 1
+    syscall
+    pop rbx
+    pop rax
+    
+    inc rbx
+    jmp print_args
+
+strlen:
+    push rbx
+    mov rbx, rdi
+    xor rax, rax
+strlen_loop:
+    cmp byte [rbx], 0
+    je strlen_done
+    inc rax
+    inc rbx
+    jmp strlen_loop
+strlen_done:
+    pop rbx
+    ret
+
+show_usage:
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, usage_msg
+    mov rdx, usage_len
+    syscall
+    mov rdi, 1
+    jmp exit
+
+done:
+    mov rdi, 0
+
+exit:
+    mov rax, 60
+    syscall
