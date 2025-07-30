@@ -192,6 +192,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let currentLanguage = 'assembly';
     let currentTopic = 'start';
+    let currentLayout = 'vertical';
     let codeSnippet = '';
     let monacoEditor;
 
@@ -307,8 +308,45 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
     }
     
+    // Layout Management
+    function setLayout(layout) {
+        currentLayout = layout;
+        const mainContent = document.getElementById('main-content');
+        const verticalBtn = document.getElementById('vertical-layout-btn');
+        const horizontalBtn = document.getElementById('horizontal-layout-btn');
+
+        // Update classes
+        mainContent.className = `main-content ${layout}`;
+
+        // Update button states
+        verticalBtn.classList.toggle('active', layout === 'vertical');
+        horizontalBtn.classList.toggle('active', layout === 'horizontal');
+
+        // Trigger Monaco resize
+        if (monacoEditor) {
+            setTimeout(() => monacoEditor.layout(), 100);
+        }
+
+        // Save preference
+        try {
+            localStorage.setItem('syntaxed-layout', layout);
+        } catch (e) {
+            console.log('Could not save layout preference');
+        }
+    }
+
+    function loadLayoutPreference() {
+        try {
+            const savedLayout = localStorage.getItem('syntaxed-layout');
+            if (savedLayout && (savedLayout === 'vertical' || savedLayout === 'horizontal')) {
+                setLayout(savedLayout);
+            }
+        } catch (e) {
+            console.log('Could not load layout preference');
+        }
+    }
+    
     // Optimized timing and state management
-    // Move normalizeForComparison outside the class to make it globally available
     function normalizeForComparison(str) {
         return str
             .replace(/\r\n/g, '\n')        // Normalize line endings (CRLF to LF)
@@ -424,49 +462,49 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         complete() {
-    this.stop();
-    
-    // Calculate final stats
-    const timeElapsed = (performance.now() - this.startTime) / 1000;
-    const userInput = monacoEditor?.getValue() || '';
-    this.finalWPM = this.calculateWPM(userInput, timeElapsed);
-    this.finalAccuracy = this.calculateAccuracy(userInput, codeSnippet);
-    
-    // Update stats FIRST
-    updateStats(
-        currentLanguage,
-        currentTopic,
-        this.finalWPM,
-        this.finalAccuracy,
-        this.errors
-    );
-    
-    // Then REPLACE (not append) the entire results
-    resultsDiv.innerHTML = `
-        <div class="metrics">
-            <div class="metric">
-                <span class="metric-label">Final Time:</span>
-                <span class="metric-value">${timeElapsed.toFixed(1)}s</span>
-            </div>
-            <div class="metric">
-                <span class="metric-label">Final WPM:</span>
-                <span class="metric-value">${this.finalWPM}</span>
-            </div>
-            <div class="metric">
-                <span class="metric-label">Final Accuracy:</span>
-                <span class="metric-value">${this.finalAccuracy}%</span>
-            </div>
-            <div class="metric">
-                <span class="metric-label">Errors:</span>
-                <span class="metric-value error-count">${this.errors}</span>
-            </div>
-        </div>
-        <div class="completion-message">
-            <p>🎉 Test Completed!</p>
-            ${displayPersonalBest()}
-        </div>
-    `;
-}
+            this.stop();
+            
+            // Calculate final stats
+            const timeElapsed = (performance.now() - this.startTime) / 1000;
+            const userInput = monacoEditor?.getValue() || '';
+            this.finalWPM = this.calculateWPM(userInput, timeElapsed);
+            this.finalAccuracy = this.calculateAccuracy(userInput, codeSnippet);
+            
+            // Update stats FIRST
+            updateStats(
+                currentLanguage,
+                currentTopic,
+                this.finalWPM,
+                this.finalAccuracy,
+                this.errors
+            );
+            
+            // Then REPLACE (not append) the entire results
+            resultsDiv.innerHTML = `
+                <div class="metrics">
+                    <div class="metric">
+                        <span class="metric-label">Final Time:</span>
+                        <span class="metric-value">${timeElapsed.toFixed(1)}s</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Final WPM:</span>
+                        <span class="metric-value">${this.finalWPM}</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Final Accuracy:</span>
+                        <span class="metric-value">${this.finalAccuracy}%</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Errors:</span>
+                        <span class="metric-value error-count">${this.errors}</span>
+                    </div>
+                </div>
+                <div class="completion-message">
+                    <p>🎉 Test Completed!</p>
+                    ${displayPersonalBest()}
+                </div>
+            `;
+        }
 
         // Debounced content change handler
         handleContentChange = this.debounce(() => {
@@ -530,6 +568,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const typingTest = new TypingTest();
     populateLanguageSelect();
     populateTopics();
+    loadLayoutPreference();
     
     // Helper function to check if Monaco is ready
     function isMonacoReady() {
@@ -543,9 +582,6 @@ document.addEventListener("DOMContentLoaded", () => {
             console.error("Snippet not found for:", currentLanguage, currentTopic);
             snippetDiv.textContent = `No snippet available for ${currentLanguage}/${currentTopic}`;
             codeSnippet = '';
-            // if (isMonacoReady()) {
-            //    monacoEditor.setValue('');
-            //}
             return;
         }
 
@@ -660,13 +696,14 @@ document.addEventListener("DOMContentLoaded", () => {
             scrollBeyondLastLine: false,
             wordWrap: 'on',
             minimap: { enabled: false },
+            fontSize: 14,
+            lineHeight: 1.5,
             padding: {
                 top: 15,
                 bottom: 15
             }
         });
 
-        
         loadSnippet();
 
         // Use the debounced handler for content changes
@@ -675,6 +712,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
+    // Event listeners
     document.addEventListener("keydown", (e) => {
         if (e.altKey) {
             if (e.key.toLowerCase() === "q") {
@@ -688,9 +726,28 @@ document.addEventListener("DOMContentLoaded", () => {
                 goToNormalMode();
             } else if (e.key.toLowerCase() === "s") {
                 showStatsModal();
+            } else if (e.key.toLowerCase() === "v") {
+                setLayout('vertical');
+                e.preventDefault();
+            } else if (e.key.toLowerCase() === "h") {
+                setLayout('horizontal');
+                e.preventDefault();
             }
         }
     });
+
+    // Layout buttons
+    if (document.getElementById('vertical-layout-btn')) {
+        document.getElementById('vertical-layout-btn').addEventListener('click', () => {
+            setLayout('vertical');
+        });
+    }
+
+    if (document.getElementById('horizontal-layout-btn')) {
+        document.getElementById('horizontal-layout-btn').addEventListener('click', () => {
+            setLayout('horizontal');
+        });
+    }
 
     if (languageSelect) {
         languageSelect.addEventListener("change", (event) => {
@@ -730,10 +787,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (lightModeButton) {
         lightModeButton.addEventListener('click', goToNormalMode);
     }
-    
 
     if (document.getElementById('stats-button')) {
-    document.getElementById('stats-button').addEventListener('click', showStatsModal);
+        document.getElementById('stats-button').addEventListener('click', showStatsModal);
     }
     
     function showStatsModal() {
@@ -845,4 +901,11 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
+
+    // Handle window resize
+    window.addEventListener('resize', () => {
+        if (monacoEditor) {
+            monacoEditor.layout();
+        }
+    });
 });
