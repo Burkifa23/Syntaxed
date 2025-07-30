@@ -115,7 +115,8 @@ body.dark-mode .layout-controls button.active {
     flex: 1;
     display: flex;
     gap: 20px;
-    min-height: 400px;
+    min-height: 500px; /* Increased minimum height for better proportions */
+    height: calc(100vh - 400px); /* Dynamic height based on viewport */
 }
 
 /* Vertical Layout (Default) */
@@ -125,8 +126,9 @@ body.dark-mode .layout-controls button.active {
 
 .main-content.vertical .snippet-section,
 .main-content.vertical .editor-section {
-    flex: 1;
-    min-height: 300px;
+    flex: 1 1 50%; /* Equal flex basis for both sections */
+    min-height: 350px; /* Same minimum height */
+    max-height: 50vh; /* Limit maximum height to prevent overflow */
 }
 
 /* Horizontal Layout */
@@ -136,8 +138,9 @@ body.dark-mode .layout-controls button.active {
 
 .main-content.horizontal .snippet-section,
 .main-content.horizontal .editor-section {
-    flex: 1;
+    flex: 1 1 50%; /* Equal flex basis for both sections */
     min-width: 0; /* Allow flex items to shrink */
+    min-height: 400px; /* Same minimum height for horizontal layout */
 }
 
 /* Snippet Section */
@@ -203,7 +206,7 @@ body.dark-mode .editor-header {
     border: 1px solid #dee2e6;
     border-top: none;
     border-radius: 0 0 5px 5px;
-    min-height: 200px;
+    min-height: 0; /* Allow Monaco to fill available space */
 }
 
 body.dark-mode #monaco-editor-container {
@@ -542,8 +545,21 @@ footer {
         padding: 10px;
     }
 
+    .main-content {
+        height: auto; /* Remove fixed height on mobile */
+        min-height: 600px; /* Increase minimum height for mobile */
+    }
+
     .main-content.horizontal {
         flex-direction: column;
+    }
+
+    .main-content.vertical .snippet-section,
+    .main-content.vertical .editor-section,
+    .main-content.horizontal .snippet-section,
+    .main-content.horizontal .editor-section {
+        min-height: 250px; /* Smaller minimum height for mobile */
+        max-height: none; /* Remove max-height constraint on mobile */
     }
 
     .language-topic-selectors {
