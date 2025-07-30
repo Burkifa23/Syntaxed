@@ -47,6 +47,8 @@
   - `Alt + B`: Enable dark mode
   - `Alt + W`: Enable light mode
   - `Alt + S`: View statistics
+  - `Alt + V`: Vertical layout
+  - `Alt + H`: Horizontal layout
 - **Icon-only mode** for ultra-small screens (under 360px)
 - **Automatic test detection** - starts on first keystroke
 - **Completion celebration** with personal best comparison
