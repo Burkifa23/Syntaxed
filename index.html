@@ -4,46 +4,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Syntaxed - Professional code typing trainer supporting 25+ programming languages. Improve your coding speed and accuracy with real-time metrics, personal statistics, and Monaco Editor integration.">
-    <meta name="keywords" content="code typing, programming practice, typing trainer, coding speed, Monaco Editor, JavaScript, Python, C++, programming languages, developer tools">
+    <meta name="description"
+        content="Syntaxed - Professional code typing trainer supporting 25+ programming languages. Improve your coding speed and accuracy with real-time metrics, personal statistics, and Monaco Editor integration.">
+    <meta name="keywords"
+        content="code typing, programming practice, typing trainer, coding speed, Monaco Editor, JavaScript, Python, C++, programming languages, developer tools">
     <meta name="author" content="Burkifa23, Programmer-233">
     <meta name="robots" content="index, follow">
-    
+
     <!-- Open Graph / Social Media Meta Tags -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="Syntaxed - Professional Code Typing Trainer">
-    <meta property="og:description" content="Master your coding speed with our professional typing trainer. Practice with 25+ programming languages, track your progress, and improve your development efficiency.">
+    <meta property="og:description"
+        content="Master your coding speed with our professional typing trainer. Practice with 25+ programming languages, track your progress, and improve your development efficiency.">
     <meta property="og:image" content="syntaxed-preview.png">
     <meta property="og:url" content="https://burkifa23.github.io/Syntaxed/">
     <meta property="og:site_name" content="Syntaxed">
-    
+
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Syntaxed - Professional Code Typing Trainer">
-    <meta name="twitter:description" content="Master your coding speed with our professional typing trainer. Practice with 25+ programming languages and track your progress.">
+    <meta name="twitter:description"
+        content="Master your coding speed with our professional typing trainer. Practice with 25+ programming languages and track your progress.">
     <meta name="twitter:image" content="syntaxed-preview.png">
     <meta name="twitter:creator" content="@burkifa23">
-    
+
     <!-- Performance & Technical -->
     <meta name="theme-color" content="#4a76a8">
     <meta name="color-scheme" content="light dark">
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
-    
+
     <!-- Favicon and Icons -->
     <link rel="icon" href="Syntaxed_Logo.png" type="image/png">
     <link rel="apple-touch-icon" href="Syntaxed_Logo.png">
     <link rel="shortcut icon" href="Syntaxed_Logo.png">
-    
+
     <!-- Page Info -->
     <title>Syntaxed - Professional Code Typing Trainer | 25+ Programming Languages</title>
-    
+
     <!-- Stylesheets -->
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" data-name="vs/editor/editor.main" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.52.2/min/vs/editor/editor.main.min.css">
-    
+    <link rel="stylesheet" data-name="vs/editor/editor.main"
+        href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.52.2/min/vs/editor/editor.main.min.css">
+
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json">
     {
@@ -77,120 +82,118 @@
 </head>
 
 <body>
-    <img src="full_Logo.png" alt="Syntaxed Logo" class="logo">
+    <div class="content-wrapper">
+        <img src="full_Logo.png" alt="Syntaxed Logo" class="logo">
 
-    
-    <div class="language-topic-selectors" role="region" aria-label="Code snippet selection">
-        <div class="selector-group">
-            <label for="language-select" id="language-label">Programming Language:</label>
-            <select id="language-select" 
-                    aria-labelledby="language-label"
-                    aria-describedby="language-help">
-                
-            </select>
-            <div id="language-help" class="sr-only">
-                Choose the programming language for your typing practice
+        <div class="language-topic-selectors" role="region" aria-label="Code snippet selection">
+            <div class="selector-group">
+                <label for="language-select" id="language-label">Programming Language:</label>
+                <select id="language-select" aria-labelledby="language-label" aria-describedby="language-help">
+
+                </select>
+                <div id="language-help" class="sr-only">
+                    Choose the programming language for your typing practice
+                </div>
+            </div>
+
+            <div class="selector-group">
+                <label for="topic-select" id="topic-label">Topic:</label>
+                <select id="topic-select" aria-labelledby="topic-label" aria-describedby="topic-help">
+
+                </select>
+                <div id="topic-help" class="sr-only">
+                    Choose the coding topic to practice
+                </div>
             </div>
         </div>
 
-        <div class="selector-group">
-            <label for="topic-select" id="topic-label">Topic:</label>
-            <select id="topic-select" 
-                    aria-labelledby="topic-label"
-                    aria-describedby="topic-help">
-                
-            </select>
-            <div id="topic-help" class="sr-only">
-                Choose the coding topic to practice
+        <!-- Layout Control Buttons -->
+        <div class="layout-controls">
+            <button id="vertical-layout-btn" class="active">
+                📱 Vertical Layout
+            </button>
+            <button id="horizontal-layout-btn">
+                💻 Horizontal Layout
+            </button>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="main-content vertical" id="main-content">
+            <div class="snippet-section">
+                <div class="snippet-header">
+                    📖 Code to Type
+                </div>
+                <div id="snippet" role="region" aria-label="Code to type" aria-live="polite" tabindex="0"></div>
+            </div>
+
+            <div class="editor-section">
+                <div class="editor-header">
+                    ⌨️ Your Code
+                </div>
+                <div id="monaco-editor-container" role="textbox" aria-label="Type the code here"
+                    aria-describedby="typing-instructions"></div>
             </div>
         </div>
+
+        <div id="typing-instructions" class="sr-only">
+            Type the code shown above. Your progress will be tracked in real-time.
+        </div>
+
+        <div class="control-buttons" role="toolbar" aria-label="Test controls">
+            <button id="reset-button" type="button" aria-describedby="reset-help" title="Reset Test (Alt+R)">
+                <span class="button-icon" aria-hidden="true">↺</span>
+                <span class="button-text">Reset</span>
+            </button>
+            <div id="reset-help" class="sr-only">Reset the current typing test</div>
+
+            <button id="stop-button" type="button" aria-describedby="stop-help" title="Stop Test (Alt+Q)">
+                <span class="button-icon" aria-hidden="true">■</span>
+                <span class="button-text">Stop</span>
+            </button>
+            <div id="stop-help" class="sr-only">Stop the current typing test</div>
+
+            <button id="dark-mode-button" type="button" aria-describedby="dark-help" title="Dark Mode (Alt+B)">
+                <span class="button-icon" aria-hidden="true">🌙</span>
+                <span class="button-text">Dark</span>
+            </button>
+            <div id="dark-help" class="sr-only">Switch to dark theme</div>
+
+            <button id="light-mode-button" type="button" aria-describedby="light-help" title="Light Mode (Alt+W)">
+                <span class="button-icon" aria-hidden="true">☀️</span>
+                <span class="button-text">Light</span>
+            </button>
+            <div id="light-help" class="sr-only">Switch to light theme</div>
+
+            <button id="stats-button" type="button" aria-describedby="stats-help" title="View Stats (Alt+S)">
+                <span class="button-icon" aria-hidden="true">📊</span>
+                <span class="button-text">Stats</span>
+            </button>
+            <div id="stats-help" class="sr-only">View your typing statistics</div>
+        </div>
+
+        <div id="results" role="region" aria-label="Typing test results" aria-live="polite"></div>
     </div>
 
-    <div id="snippet" 
-        role="region" 
-        aria-label="Code to type"
-        aria-live="polite"
-        tabindex="0"></div>
-
-    <div id="monaco-editor-container" 
-        role="textbox" 
-        aria-label="Type the code here"
-        aria-describedby="typing-instructions"></div>
-
-    <div id="typing-instructions" class="sr-only">
-        Type the code shown above. Your progress will be tracked in real-time.
-    </div>
-
-    <div class="control-buttons" role="toolbar" aria-label="Test controls">
-        <button id="reset-button" 
-                type="button"
-                aria-describedby="reset-help"
-                title="Reset Test (Alt+R)">
-            <span class="button-icon" aria-hidden="true">↺</span>
-            <span class="button-text">Reset</span>
-        </button>
-        <div id="reset-help" class="sr-only">Reset the current typing test</div>
-        
-        <button id="stop-button" 
-                type="button"
-                aria-describedby="stop-help"
-                title="Stop Test (Alt+Q)">
-            <span class="button-icon" aria-hidden="true">■</span>
-            <span class="button-text">Stop</span>
-        </button>
-        <div id="stop-help" class="sr-only">Stop the current typing test</div>
-        
-        <button id="dark-mode-button" 
-                type="button"
-                aria-describedby="dark-help"
-                title="Dark Mode (Alt+B)">
-            <span class="button-icon" aria-hidden="true">🌙</span>
-            <span class="button-text">Dark</span>
-        </button>
-        <div id="dark-help" class="sr-only">Switch to dark theme</div>
-        
-        <button id="light-mode-button" 
-                type="button"
-                aria-describedby="light-help"
-                title="Light Mode (Alt+W)">
-            <span class="button-icon" aria-hidden="true">☀️</span>
-            <span class="button-text">Light</span>
-        </button>
-        <div id="light-help" class="sr-only">Switch to light theme</div>
-        
-        <button id="stats-button" 
-                type="button"
-                aria-describedby="stats-help"
-                title="View Stats (Alt+S)">
-            <span class="button-icon" aria-hidden="true">📊</span>
-            <span class="button-text">Stats</span>
-        </button>
-        <div id="stats-help" class="sr-only">View your typing statistics</div>
-    </div>
-
-    <div id="results" 
-        role="region" 
-        aria-label="Typing test results"
-        aria-live="polite"></div>
+    <footer>
+        <p>Built with ❤️ by
+            <a href="https://github.com/burkifa23" target="_blank" rel="noopener noreferrer">
+                Burkifa23
+            </a> &
+            <a href="https://github.com/programmer-233" target="_blank" rel="noopener noreferrer">
+                Programmer-233
+            </a>
+            <br><strong>Syntaxed v.0.3</strong> - Professional Code Typing Trainer
+        </p>
+    </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.52.2/min/vs/loader.min.js"></script>
     <script>
-        require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.52.2/min/vs'}});
+        require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.52.2/min/vs' } });
         require(['vs/editor/editor.main'], function () {
             // Monaco Editor is loaded
         });
     </script>
     <script src="script.js"></script>
-    <footer>
-        <p>Built with ❤️ by 
-            <a href="https://github.com/burkifa23" target="_blank" rel="noopener noreferrer">
-                Burkifa23
-            </a> & 
-            <a href="https://github.com/programmer-233" target="_blank" rel="noopener noreferrer">
-                Programmer-233
-            </a>
-             <br><strong>Syntaxed v.0.3</strong> - Professional Code Typing Trainer
-        </p>
-    </footer>
 </body>
+
 </html>
