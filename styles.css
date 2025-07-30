@@ -1,14 +1,18 @@
 body {
     font-family: Arial, sans-serif;
     padding: 20px;
-    background-color: #f4f4f4; /* Light background */
-    color: #333; /* Dark text */
-    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+    background-color: #f4f4f4;
+    color: #333;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 body.dark-mode {
-    background-color: #333; /* Dark background */
-    color: #f4f4f4; /* Light text */
+    background-color: #333;
+    color: #f4f4f4;
 }
 
 .logo {
@@ -16,50 +20,203 @@ body.dark-mode {
     width: 100%;
     height: auto;
     margin-bottom: 20px;
+    align-self: center;
+}
+
+.content-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Language and Topic Selectors */
+.language-topic-selectors {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+
+.selector-group {
+    display: flex;
+    flex-direction: column;
+    min-width: 200px;
+}
+
+.selector-group label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.selector-group select {
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    color: #333;
+}
+
+.selector-group select option {
+    color: #333;
+}
+
+body.dark-mode .selector-group select {
+    background-color: #444;
+    color: #fff;
+    border-color: #666;
+}
+
+body.dark-mode .selector-group select option {
+    color: #fff;
+}
+
+/* Layout Controls */
+.layout-controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.layout-controls button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    background-color: #6c757d;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.layout-controls button.active {
+    background-color: #4a76a8;
+}
+
+.layout-controls button:hover {
+    background-color: #5a6268;
+}
+
+.layout-controls button.active:hover {
+    background-color: #3a5f8a;
+}
+
+body.dark-mode .layout-controls button {
+    background-color: #5a6268;
+}
+
+body.dark-mode .layout-controls button.active {
+    background-color: #5a86b8;
+}
+
+/* Main Content Area */
+.main-content {
+    flex: 1;
+    display: flex;
+    gap: 20px;
+    min-height: 400px;
+}
+
+/* Vertical Layout (Default) */
+.main-content.vertical {
+    flex-direction: column;
+}
+
+.main-content.vertical .snippet-section,
+.main-content.vertical .editor-section {
+    flex: 1;
+    min-height: 300px;
+}
+
+/* Horizontal Layout */
+.main-content.horizontal {
+    flex-direction: row;
+}
+
+.main-content.horizontal .snippet-section,
+.main-content.horizontal .editor-section {
+    flex: 1;
+    min-width: 0; /* Allow flex items to shrink */
+}
+
+/* Snippet Section */
+.snippet-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.snippet-header {
+    background-color: #e9ecef;
+    padding: 10px 15px;
+    border-radius: 5px 5px 0 0;
+    font-weight: bold;
+    border-bottom: 2px solid #4a76a8;
+}
+
+body.dark-mode .snippet-header {
+    background-color: #495057;
+    color: #f8f9fa;
 }
 
 #snippet {
+    flex: 1;
     white-space: pre-wrap;
-    margin-bottom: 20px;
-    background-color: #ddd; /* Light snippet background */
-    padding: 10px;
-    border-radius: 5px;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 0 0 5px 5px;
+    border: 1px solid #dee2e6;
+    border-top: none;
+    overflow-y: auto;
+    font-family: 'Consolas', 'Monaco', 'Lucida Console', monospace;
+    font-size: 14px;
+    line-height: 1.5;
 }
 
 body.dark-mode #snippet {
-    background-color: #555; /* Dark snippet background */
-    color: #eee;
+    background-color: #2d3748;
+    border-color: #4a5568;
+    color: #e2e8f0;
 }
 
-#results {
-    margin-top: 20px;
+/* Editor Section */
+.editor-section {
+    display: flex;
+    flex-direction: column;
 }
 
-.highlight {
-    color: green;
-}
-
-.error {
-    background-color: rgba(255, 0, 0, 0.2);
-    color: red;
-}
-
-footer{
-    text-align: center;
-    margin-top: 20px;
-    color: #4a76a8;
+.editor-header {
+    background-color: #e9ecef;
+    padding: 10px 15px;
+    border-radius: 5px 5px 0 0;
     font-weight: bold;
-    font-size: 16px;
-    font-family: Arial, sans-serif;
+    border-bottom: 2px solid #28a745;
 }
 
-/* Enhanced responsive control buttons */
+body.dark-mode .editor-header {
+    background-color: #495057;
+    color: #f8f9fa;
+}
+
+#monaco-editor-container {
+    flex: 1;
+    border: 1px solid #dee2e6;
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+    min-height: 200px;
+}
+
+body.dark-mode #monaco-editor-container {
+    border-color: #4a5568;
+}
+
+/* Control Buttons */
 .control-buttons {
     display: flex;
     gap: 10px;
-    margin-bottom: 15px;
-    flex-wrap: wrap; /* Allow wrapping on smaller screens */
-    justify-content: center; /* Center buttons on mobile */
+    margin: 20px 0;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .control-buttons button {
@@ -73,9 +230,9 @@ footer{
     align-items: center;
     gap: 5px;
     transition: background-color 0.2s;
-    flex: 0 1 auto; /* Don't grow, shrink if needed */
-    min-width: 80px; /* Minimum button width */
-    justify-content: center; /* Center content in button */
+    flex: 0 1 auto;
+    min-width: 80px;
+    justify-content: center;
 }
 
 .control-buttons button:hover {
@@ -91,6 +248,10 @@ footer{
     font-size: 1.2em;
 }
 
+.button-text {
+    margin-left: 5px;
+}
+
 body.dark-mode .control-buttons button {
     background-color: #5a86b8;
 }
@@ -99,88 +260,11 @@ body.dark-mode .control-buttons button:hover {
     background-color: #4a76a8;
 }
 
-/* Mobile-first responsive design */
-@media (max-width: 768px) {
-    .control-buttons {
-        gap: 8px;
-        justify-content: center;
-    }
-    
-    .control-buttons button {
-        padding: 10px 12px; /* Slightly more padding for touch */
-        min-width: 70px;
-        font-size: 0.9em;
-    }
-    
-    .button-icon {
-        font-size: 1.1em;
-    }
+/* Results Section */
+#results {
+    margin-top: 20px;
 }
 
-@media (max-width: 480px) {
-    .control-buttons {
-        gap: 6px;
-        flex-direction: column; /* Stack vertically on very small screens */
-        align-items: center;
-    }
-    
-    .control-buttons button {
-        width: 100%;
-        max-width: 200px; /* Limit width but make full-width feel */
-        padding: 12px 16px; /* More touch-friendly padding */
-        justify-content: center;
-    }
-}
-
-/* For very small screens, consider icon-only buttons */
-@media (max-width: 360px) {
-    .control-buttons button {
-        padding: 10px;
-        min-width: 45px;
-    }
-    
-    /* Hide text, show only icons on tiny screens */
-    .control-buttons button .button-text {
-        display: none;
-    }
-    
-    .button-icon {
-        font-size: 1.3em;
-    }
-}
-
-/* Tablet landscape - horizontal layout works well */
-@media (min-width: 769px) and (max-width: 1024px) {
-    .control-buttons {
-        justify-content: center;
-        gap: 12px;
-    }
-    
-    .control-buttons button {
-        min-width: 90px;
-    }
-}
-
-/* Large screens - can space out more */
-@media (min-width: 1025px) {
-    .control-buttons {
-        justify-content: flex-start; /* Left align on large screens */
-        gap: 15px;
-    }
-}
-
-#monaco-editor-container {
-    width: 100%;
-    height: 200px;
-    border: 1px solid #ccc;
-    margin-bottom: 15px;
-}
-
-body.dark-mode #monaco-editor-container {
-    border-color: #777;
-}
-
-/* Styling for the metrics display */
 .metrics {
     display: flex;
     flex-wrap: wrap;
@@ -252,35 +336,7 @@ body.dark-mode .completion-message {
     to { opacity: 1; }
 }
 
-@media (max-width: 768px) {
-    .metrics {
-        flex-direction: column;
-        gap: 10px;
-    }
-    
-    .metric {
-        min-width: auto;
-    }
-}
-
-/* Stats button */
-#stats-button {
-    background-color: #4a76a8;
-}
-
-#stats-button:hover {
-    background-color: #3a5f8a;
-}
-
-body.dark-mode #stats-button {
-    background-color: #4a76a8;
-}
-
-body.dark-mode #stats-button:hover {
-    background-color: #3a5f8a;
-}
-
-/* Personal best display */
+/* Personal Best */
 .personal-best {
     margin-top: 15px;
     padding: 10px;
@@ -336,7 +392,7 @@ body.dark-mode .best-value {
     color: #e2e8f0;
 }
 
-/* Stats modal */
+/* Stats Modal */
 .stats-modal {
     position: fixed;
     top: 0;
@@ -470,18 +526,105 @@ body.dark-mode .reset-stats:hover {
     background-color: #9b2c2c;
 }
 
-@media (max-width: 600px) {
+/* Footer */
+footer {
+    text-align: center;
+    margin-top: 20px;
+    color: #4a76a8;
+    font-weight: bold;
+    font-size: 16px;
+    font-family: Arial, sans-serif;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    .main-content.horizontal {
+        flex-direction: column;
+    }
+
+    .language-topic-selectors {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .selector-group {
+        width: 100%;
+    }
+
+    .control-buttons {
+        gap: 8px;
+    }
+
+    .control-buttons button {
+        padding: 10px 12px;
+        min-width: 70px;
+        font-size: 0.9em;
+    }
+
+    .metrics {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .metric {
+        min-width: auto;
+    }
+
+    .best-stats {
+        flex-direction: column;
+    }
+
+    .best-stat {
+        min-width: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .control-buttons {
+        gap: 6px;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .control-buttons button {
+        width: 100%;
+        max-width: 200px;
+        padding: 12px 16px;
+        justify-content: center;
+    }
+
+    .layout-controls {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .layout-controls button {
+        width: 100%;
+        max-width: 200px;
+    }
+
     .stats-modal-content {
         width: 95%;
         padding: 15px;
     }
-    
-    .best-stats {
-        flex-direction: column;
+}
+
+@media (max-width: 360px) {
+    .control-buttons button {
+        padding: 10px;
+        min-width: 45px;
     }
-    
-    .best-stat {
-        min-width: auto;
+
+    .control-buttons button .button-text {
+        display: none;
+    }
+
+    .button-icon {
+        font-size: 1.3em;
     }
 }
 
@@ -515,7 +658,7 @@ select:focus,
     .control-buttons button {
         border-color: currentColor;
     }
-    
+
     #snippet {
         border: 2px solid currentColor;
     }
@@ -541,62 +684,4 @@ select:focus,
     position: absolute;
     right: -20px;
     font-size: 0.8em;
-}
-
-/* Improved selector layout */
-.language-topic-selectors {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    margin-bottom: 20px;
-}
-
-.selector-group {
-    display: flex;
-    flex-direction: column;
-    min-width: 200px;
-}
-
-.selector-group label {
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
-.selector-group select {
-    padding: 8px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    background-color: #fff;
-    color: #333; /* ADD THIS LINE - dark text for light mode */
-}
-
-.selector-group select option {
-    color: #333; /* ADD THIS LINE - ensure option text is dark */
-}
-
-body.dark-mode .selector-group select {
-    background-color: #444;
-    color: #fff;
-    border-color: #666;
-}
-
-/* ADD THIS - ensure dark mode options are light */
-body.dark-mode .selector-group select option {
-    color: #fff;
-}
-
-/* Button text for better readability */
-.button-text {
-    margin-left: 5px;
-}
-
-@media (max-width: 600px) {
-    .language-topic-selectors {
-        flex-direction: column;
-        gap: 10px;
-    }
-    
-    .selector-group {
-        width: 100%;
-    }
 }
