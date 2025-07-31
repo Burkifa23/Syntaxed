@@ -1,0 +1,5 @@
+#!/bin/bash
+#!/usr/bin/env bash
+#!/bin/sh
+echo "Current shell: $0"
+echo "Bash version: $BASH_VERSION"

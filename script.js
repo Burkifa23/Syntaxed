@@ -93,7 +93,8 @@ document.addEventListener("DOMContentLoaded", () => {
             performance_benchmark: 'snippets/assembly/performance-benchmark.txt',
         },
         bash: {
-            start: 'snippets/bash/hello.txt'
+            start: 'snippets/bash/hello.txt',
+            shebang_variations: 'snippets/bash/shebang.txt'
         },
         c: {
             start: 'snippets/c/hello.txt'
