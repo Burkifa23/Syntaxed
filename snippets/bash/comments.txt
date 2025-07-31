@@ -10,5 +10,5 @@ disabling code sections
 # Documentation comment
 # Purpose: Demonstrate comment usage
 # Author: You
-# Date: $(Today)
+# Date: $(date)
 echo "Comments demonstrated"

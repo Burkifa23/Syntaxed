@@ -1,0 +1,13 @@
+#!/bin/bash
+# Variable assignment (no spaces around =)
+name="Syntaxed"
+age=2
+readonly PI=3.14159
+# Variable usage
+echo "Name: $name"
+echo "Age: ${age} years"
+echo "Pi: $PI"
+# Environment variables
+echo "User: $USER"
+echo "Home: $HOME"
+echo "Path: $PATH"
