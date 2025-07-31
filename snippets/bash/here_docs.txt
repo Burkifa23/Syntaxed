@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# Basic here document
+cat << EOF
+This is a here document.
+Variables work: $USER
+Current directory: $(pwd)
+EOF
+
+# Here document with no variable expansion
+cat << 'LITERAL'
+This text is literal: $USER
+No expansion: $(pwd)
+LITERAL
+
+# Here document to variable
+config=$(cat << CONFIG
+server=localhost
+port=8080
+timeout=30
+CONFIG
+)
+
+echo "$config"
+
+# Here document with indentation
+if true; then
+    cat <<- INDENTED
+    	This text can be indented
+    	Tabs are stripped from beginning
+    INDENTED
+fi
