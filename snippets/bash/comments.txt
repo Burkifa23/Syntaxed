@@ -1,0 +1,14 @@
+#!/bin/bash
+# Single line comment
+echo "Active code"  # Inline comment
+: '
+Multi-line comment block
+This is useful for documenting
+complex logic or temporarily
+disabling code sections
+'
+# Documentation comment
+# Purpose: Demonstrate comment usage
+# Author: You
+# Date: $(Today)
+echo "Comments demonstrated"
