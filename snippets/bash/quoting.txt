@@ -1,0 +1,17 @@
+#!/bin/bash
+
+text="Hello World"
+
+# Single quotes - literal
+echo 'Text: $text'  # Outputs: Text: $text
+
+# Double quotes - variable expansion
+echo "Text: $text"  # Outputs: Text: Hello World
+
+# No quotes - word splitting
+echo Without quotes: $text
+
+# Escape characters
+echo "Price: \$10.99"
+echo "Newline: \n"
+echo $'Actual newline:\nSecond line'

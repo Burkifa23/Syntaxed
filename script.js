@@ -97,6 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
             shebang_variations: 'snippets/bash/shebang.txt',
             comments: 'snippets/bash/comments.txt',
             variables: 'snippets/bash/variables.txt',
+            quoting_rules: 'snippets/bash/quoting.txt',
         },
         c: {
             start: 'snippets/c/hello.txt'
