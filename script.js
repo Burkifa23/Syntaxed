@@ -98,6 +98,7 @@ document.addEventListener("DOMContentLoaded", () => {
             comments: 'snippets/bash/comments.txt',
             variables: 'snippets/bash/variables.txt',
             quoting_rules: 'snippets/bash/quoting.txt',
+            command_substitution: 'snippets/bash/command-substitution.txt',
         },
         c: {
             start: 'snippets/c/hello.txt'

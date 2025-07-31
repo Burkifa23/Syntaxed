@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Modern syntax
+current_date=$(date)
+file_count=$(ls -1 | wc -l)
+hostname=$(hostname)
+
+echo "Date: $current_date"
+echo "Files in directory: $file_count"
+echo "Hostname: $hostname"
+
+# Nested command substitution
+echo "Files modified today: $(find . -name "*.txt" -newermt $(date +%Y-%m-%d))"
+
+# Backtick syntax (legacy)
+old_style=`date`
+echo "Old style: $old_style"
