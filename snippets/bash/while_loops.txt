@@ -1,0 +1,47 @@
+#!/bin/bash
+
+# Basic while loop
+counter=1
+while [[ $counter -le 5 ]]; do
+    echo "Counter: $counter"
+    ((counter++))
+done
+
+# While reading file
+while read -r line; do
+    echo "Line: $line"
+done < input.txt
+
+# While with user input
+while true; do
+    read -p "Enter 'quit' to exit: " input
+    if [[ $input == "quit" ]]; then
+        break
+    fi
+    echo "You entered: $input"
+done
+
+# While with condition check
+pid=$(pgrep some_process)
+while [[ -n $pid ]]; do
+    echo "Process $pid is still running..."
+    sleep 2
+    pid=$(pgrep some_process)
+done
+
+# While reading from pipe
+ps aux | while read user pid cpu mem vsz rss tty stat start time command; do
+    if [[ $cpu > 50 ]]; then
+        echo "High CPU process: $pid $command"
+    fi
+done
+
+# Infinite loop with break
+counter=0
+while true; do
+    ((counter++))
+    if [[ $counter -gt 10 ]]; then
+        break
+    fi
+    echo "Iteration: $counter"
+done

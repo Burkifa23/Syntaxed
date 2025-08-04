@@ -117,6 +117,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if_statements: 'snippets/bash/if_statements.txt',
             case_statements: 'snippets/bash/case_statements.txt',
             for_loops: 'snippets/bash/for_loops.txt',
+            while_loops: 'snippets/bash/while_loops.txt',
             
         },
         c: {
