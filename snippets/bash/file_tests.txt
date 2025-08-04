@@ -1,0 +1,92 @@
+#!/bin/bash
+
+filename="/etc/passwd"
+directory="/tmp"
+symlink="/usr/bin/python"
+
+echo "=== Basic File Tests ==="
+
+# Existence tests
+if [[ -e $filename ]]; then
+    echo "$filename exists"
+fi
+
+if [[ -f $filename ]]; then
+    echo "$filename is a regular file"
+fi
+
+if [[ -d $directory ]]; then
+    echo "$directory is a directory"
+fi
+
+if [[ -L $symlink ]]; then
+    echo "$symlink is a symbolic link"
+fi
+
+# Permission tests
+if [[ -r $filename ]]; then
+    echo "$filename is readable"
+fi
+
+if [[ -w $directory ]]; then
+    echo "$directory is writable"
+fi
+
+if [[ -x /usr/bin/ls ]]; then
+    echo "/usr/bin/ls is executable"
+fi
+
+# Advanced tests
+if [[ -s $filename ]]; then
+    echo "$filename is not empty"
+fi
+
+if [[ -O $filename ]]; then
+    echo "You own $filename"
+fi
+
+if [[ -G $filename ]]; then
+    echo "$filename belongs to your group"
+fi
+
+# File type tests
+echo -e "\n=== File Type Tests ==="
+for item in /dev/null /dev/tty /tmp .; do
+    if [[ -c $item ]]; then
+        echo "$item is a character device"
+    elif [[ -b $item ]]; then
+        echo "$item is a block device"
+    elif [[ -p $item ]]; then
+        echo "$item is a named pipe"
+    elif [[ -S $item ]]; then
+        echo "$item is a socket"
+    elif [[ -d $item ]]; then
+        echo "$item is a directory"
+    elif [[ -f $item ]]; then
+        echo "$item is a regular file"
+    fi
+done
+
+# File comparison
+echo -e "\n=== File Comparison ==="
+file1="/etc/passwd"
+file2="/etc/group"
+
+if [[ $file1 -nt $file2 ]]; then
+    echo "$file1 is newer than $file2"
+elif [[ $file1 -ot $file2 ]]; then
+    echo "$file1 is older than $file2"
+elif [[ $file1 -ef $file2 ]]; then
+    echo "$file1 and $file2 are the same file"
+fi
+
+# Complex conditions
+echo -e "\n=== Complex Conditions ==="
+config_file="config.txt"
+
+if [[ -f $config_file && -r $config_file && -s $config_file ]]; then
+    echo "$config_file exists, is readable, and not empty"
+else
+    echo "Creating or fixing $config_file"
+    touch "$config_file"
+fi
