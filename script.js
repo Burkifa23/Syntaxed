@@ -100,6 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
             quoting_rules: 'snippets/bash/quoting.txt',
             command_substitution: 'snippets/bash/command_substitution.txt',
             here_documents: 'snippets/bash/here_docs.txt',
+            exit_codes: 'snippets/bash/exit_codes.txt',
         },
         c: {
             start: 'snippets/c/hello.txt'
