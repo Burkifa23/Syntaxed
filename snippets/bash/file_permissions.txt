@@ -1,0 +1,148 @@
+#!/bin/bash
+
+echo "=== File Permission Basics ==="
+
+# Create test file
+test_file="permission_test.txt"
+echo "Test content" > "$test_file"
+
+# Display current permissions
+ls -l "$test_file"
+
+echo -e "\n=== Numeric Permissions ==="
+
+# Set specific numeric permissions
+chmod 644 "$test_file"  # rw-r--r--
+echo "Set 644 (rw-r--r--):"
+ls -l "$test_file"
+
+chmod 755 "$test_file"  # rwxr-xr-x
+echo "Set 755 (rwxr-xr-x):"
+ls -l "$test_file"
+
+chmod 600 "$test_file"  # rw-------
+echo "Set 600 (rw-------):"
+ls -l "$test_file"
+
+echo -e "\n=== Symbolic Permissions ==="
+
+# Add permissions
+chmod u+x "$test_file"  # Add execute for user
+echo "Added execute for user:"
+ls -l "$test_file"
+
+chmod g+w "$test_file"  # Add write for group
+echo "Added write for group:"
+ls -l "$test_file"
+
+chmod o+r "$test_file"  # Add read for others
+echo "Added read for others:"
+ls -l "$test_file"
+
+# Remove permissions
+chmod g-w "$test_file"  # Remove write from group
+echo "Removed write from group:"
+ls -l "$test_file"
+
+# Set exact permissions
+chmod u=rw,g=r,o= "$test_file"  # User: rw, Group: r, Others: none
+echo "Set exact permissions (u=rw,g=r,o=):"
+ls -l "$test_file"
+
+echo -e "\n=== Special Permissions ==="
+
+# Create directory for special permissions
+test_dir="permission_test_dir"
+mkdir "$test_dir"
+
+# Set sticky bit (typically on directories)
+chmod +t "$test_dir"
+echo "Set sticky bit on directory:"
+ls -ld "$test_dir"
+
+# Set setuid bit (on executable files)
+cp /bin/echo test_echo
+chmod u+s test_echo
+echo "Set setuid bit:"
+ls -l test_echo
+
+# Set setgid bit
+chmod g+s "$test_dir"
+echo "Set setgid bit on directory:"
+ls -ld "$test_dir"
+
+echo -e "\n=== Permission Checking ==="
+
+check_permissions() {
+    local file=$1
+    
+    echo "Checking permissions for: $file"
+    
+    if [[ -r $file ]]; then
+        echo "  ✓ Readable"
+    else
+        echo "  ✗ Not readable"
+    fi
+    
+    if [[ -w $file ]]; then
+        echo "  ✓ Writable"
+    else
+        echo "  ✗ Not writable"
+    fi
+    
+    if [[ -x $file ]]; then
+        echo "  ✓ Executable"
+    else
+        echo "  ✗ Not executable"
+    fi
+    
+    # Get numeric permissions
+    local perms=$(stat -c "%a" "$file" 2>/dev/null)
+    if [[ -n $perms ]]; then
+        echo "  Numeric: $perms"
+    fi
+}
+
+check_permissions "$test_file"
+check_permissions "$test_dir"
+
+echo -e "\n=== Bulk Permission Changes ==="
+
+# Create multiple test files
+for i in {1..3}; do
+    echo "Content $i" > "test$i.txt"
+done
+
+# Change permissions for multiple files
+chmod 644 test*.txt
+echo "Set 644 for all test files:"
+ls -l test*.txt
+
+# Recursive permission change
+mkdir -p nested/deep/structure
+echo "content" > nested/deep/structure/file.txt
+chmod -R 755 nested/
+echo "Recursively set 755:"
+find nested -ls
+
+echo -e "\n=== Advanced Permission Scenarios ==="
+
+# Check if file is writable by group
+if [[ $(stat -c "%A" "$test_file") =~ ^.....w ]]; then
+    echo "File is writable by group"
+else
+    echo "File is not writable by group"
+fi
+
+# Find files with specific permissions
+echo "Files with 644 permissions:"
+find . -perm 644 -type f 2>/dev/null
+
+# Find directories with write permission for others
+echo "Directories writable by others:"
+find . -perm -o+w -type d 2>/dev/null
+
+echo -e "\n=== Cleanup ==="
+rm -f "$test_file" test*.txt test_echo
+rm -rf "$test_dir" nested/
+echo "Cleaned up permission test files"

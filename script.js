@@ -130,6 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
             function_libraries: 'snippets/bash/function_libraries.txt',
             file_tests: 'snippets/bash/file_tests.txt',
             directory_operations: 'snippets/bash/directory_operations.txt',
+            file_permissions: 'snippets/bash/file_permissions.txt',
             
         },
         c: {
