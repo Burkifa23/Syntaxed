@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# Array declaration
+fruits=("apple" "banana" "cherry" "date")
+numbers=(1 2 3 4 5)
+
+# Array access
+echo "First fruit: ${fruits[0]}"
+echo "All fruits: ${fruits[@]}"
+echo "All fruits (quoted): ${fruits[*]}"
+echo "Array length: ${#fruits[@]}"
+
+# Array indices
+echo "Indices: ${!fruits[@]}"
+
+# Array slicing
+echo "Slice (1,2): ${fruits[@]:1:2}"
+
+# Adding elements
+fruits+=("elderberry")
+fruits[10]="fig"
+
+# Iterating arrays
+for fruit in "${fruits[@]}"; do
+    echo "Fruit: $fruit"
+done
+
+# Array from command output
+files=($(ls *.txt 2>/dev/null))
+echo "Text files: ${files[@]}"

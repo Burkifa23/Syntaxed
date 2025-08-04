@@ -103,6 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
             exit_codes: 'snippets/bash/exit_codes.txt',
             strings: 'snippets/bash/strings.txt',
             numeric_operations: 'snippets/bash/numbers.txt',
+            arrays: 'snippets/bash/arrays.txt',
         },
         c: {
             start: 'snippets/c/hello.txt'
