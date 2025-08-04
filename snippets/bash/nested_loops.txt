@@ -1,0 +1,52 @@
+#!/bin/bash
+
+# Multiplication table
+echo "Multiplication Table:"
+for i in {1..5}; do
+    for j in {1..5}; do
+        result=$((i * j))
+        printf "%2d " $result
+    done
+    echo  # New line
+done
+
+# File processing in directories
+for dir in */; do
+    if [[ -d $dir ]]; then
+        echo "Processing directory: $dir"
+        for file in "$dir"*.txt; do
+            if [[ -f $file ]]; then
+                echo "  Found file: $file"
+                lines=$(wc -l < "$file")
+                echo "    Lines: $lines"
+            fi
+        done
+    fi
+done
+
+# Grid processing
+declare -a grid=(
+    "1 2 3"
+    "4 5 6"
+    "7 8 9"
+)
+
+for row in "${grid[@]}"; do
+    read -a columns <<< "$row"
+    for col in "${columns[@]}"; do
+        printf "%s " "$col"
+    done
+    echo
+done
+
+# Matrix operations
+rows=3
+cols=3
+echo "Matrix:"
+for ((i=0; i<rows; i++)); do
+    for ((j=0; j<cols; j++)); do
+        value=$((i * cols + j + 1))
+        printf "%2d " $value
+    done
+    echo
+done

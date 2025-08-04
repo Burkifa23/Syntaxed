@@ -120,6 +120,7 @@ document.addEventListener("DOMContentLoaded", () => {
             while_loops: 'snippets/bash/while_loops.txt',
             until_loops: 'snippets/bash/until_loops.txt',
             loop_control: 'snippets/bash/break_continue.txt',
+            nested_loops: 'snippets/bash/nested_loops.txt',
             
         },
         c: {
