@@ -1,0 +1,34 @@
+#!/bin/bash
+
+# Basic pipes
+ls -la | grep "\.txt$" | wc -l
+
+# Multi-stage pipeline
+cat /var/log/access.log | \
+    grep "404" | \
+    awk '{print $1}' | \
+    sort | \
+    uniq -c | \
+    sort -nr | \
+    head -10
+
+# Pipeline with error handling
+if ! command1 | command2 | command3; then
+    echo "Pipeline failed"
+fi
+
+# Named pipes (FIFOs)
+mkfifo mypipe
+echo "Hello" > mypipe &
+read message < mypipe
+echo "Received: $message"
+rm mypipe
+
+# Process substitution
+diff <(ls dir1) <(ls dir2)
+command1 <(command2) <(command3)
+
+# Pipeline exit status
+set -o pipefail  # Fail if any command in pipeline fails
+command1 | command2 | command3
+echo "Pipeline exit status: $?"

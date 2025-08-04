@@ -111,6 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
             variable_scope: 'snippets/bash/local_global.txt',
             parameter_expansion: 'snippets/bash/parameter_expansion.txt',
             input_output_redirection: 'snippets/bash/redirections.txt',
+            pipes_and_pipelines: 'snippets/bash/pipes.txt',
         },
         c: {
             start: 'snippets/c/hello.txt'
