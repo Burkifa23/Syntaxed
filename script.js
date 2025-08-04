@@ -102,6 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
             here_documents: 'snippets/bash/here_docs.txt',
             exit_codes: 'snippets/bash/exit_codes.txt',
             strings: 'snippets/bash/strings.txt',
+            numeric_operations: 'snippets/bash/numbers.txt',
         },
         c: {
             start: 'snippets/c/hello.txt'
