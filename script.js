@@ -115,6 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
             tee: 'snippets/bash/tee.txt',
             process_substitution: 'snippets/bash/process_substitution.txt',
             if_statements: 'snippets/bash/if_statements.txt',
+            case_statements: 'snippets/bash/case_statements.txt',
             
         },
         c: {

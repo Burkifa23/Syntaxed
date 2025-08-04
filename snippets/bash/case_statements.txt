@@ -1,0 +1,64 @@
+#!/bin/bash
+
+# Basic case statement
+action="start"
+case $action in
+    start)
+        echo "Starting service..."
+        ;;
+    stop)
+        echo "Stopping service..."
+        ;;
+    restart)
+        echo "Restarting service..."
+        ;;
+    *)
+        echo "Unknown action: $action"
+        ;;
+esac
+
+# Case with patterns
+filename="document.pdf"
+case $filename in
+    *.txt)
+        echo "Text file"
+        ;;
+    *.pdf|*.doc|*.docx)
+        echo "Document file"
+        ;;
+    *.jpg|*.png|*.gif)
+        echo "Image file"
+        ;;
+    [0-9]*)
+        echo "Starts with number"
+        ;;
+    *)
+        echo "Unknown file type"
+        ;;
+esac
+
+# Case for menu system
+echo "Select an option:"
+echo "1) Create file"
+echo "2) Delete file"
+echo "3) List files"
+read -p "Choice: " choice
+
+case $choice in
+    1|create)
+        echo "Creating file..."
+        ;;
+    2|delete)
+        echo "Deleting file..."
+        ;;
+    3|list)
+        echo "Listing files..."
+        ;;
+    q|quit|exit)
+        echo "Goodbye!"
+        exit 0
+        ;;
+    *)
+        echo "Invalid option"
+        ;;
+esac
