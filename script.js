@@ -118,6 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
             case_statements: 'snippets/bash/case_statements.txt',
             for_loops: 'snippets/bash/for_loops.txt',
             while_loops: 'snippets/bash/while_loops.txt',
+            until_loops: 'snippets/bash/until_loops.txt',
             
         },
         c: {

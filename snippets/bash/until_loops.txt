@@ -1,0 +1,40 @@
+#!/bin/bash
+
+# Basic until loop
+counter=1
+until [[ $counter -gt 5 ]]; do
+    echo "Counter: $counter"
+    ((counter++))
+done
+
+# Until file exists
+until [[ -f "/tmp/ready.flag" ]]; do
+    echo "Waiting for ready flag..."
+    sleep 1
+done
+echo "Ready flag found!"
+
+# Until service is running
+until systemctl is-active --quiet httpd; do
+    echo "Waiting for httpd to start..."
+    sleep 2
+done
+echo "httpd is now running"
+
+# Until network is available
+until ping -c 1 google.com &> /dev/null; do
+    echo "Waiting for network connection..."
+    sleep 5
+done
+echo "Network is available"
+
+# Until user input is valid
+until false; do
+    read -p "Enter a number between 1-10: " num
+    if [[ $num =~ ^[1-9]$|^10$ ]]; then
+        echo "Valid number: $num"
+        break
+    else
+        echo "Invalid input. Try again."
+    fi
+done
