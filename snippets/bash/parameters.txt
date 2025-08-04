@@ -1,0 +1,54 @@
+#!/bin/bash
+
+# Function parameter handling
+show_params() {
+    echo "Function name: $0"
+    echo "First parameter: $1"
+    echo "Second parameter: $2"
+    echo "All parameters: $@"
+    echo "All parameters (quoted): $*"
+    echo "Parameter count: $#"
+    echo "Last exit status: $?"
+}
+
+# Default parameters
+greet_with_default() {
+    local name=${1:-"World"}
+    local greeting=${2:-"Hello"}
+    echo "$greeting, $name!"
+}
+
+# Variable number of arguments
+sum_numbers() {
+    local total=0
+    for num in "$@"; do
+        total=$((total + num))
+    done
+    echo "Sum: $total"
+}
+
+# Parameter validation
+divide() {
+    if [[ $# -ne 2 ]]; then
+        echo "Error: Expected 2 parameters" >&2
+        return 1
+    fi
+    
+    local dividend=$1
+    local divisor=$2
+    
+    if [[ $divisor -eq 0 ]]; then
+        echo "Error: Division by zero" >&2
+        return 1
+    fi
+    
+    echo "Result: $((dividend / divisor))"
+}
+
+# Using functions
+show_params "arg1" "arg2" "arg3"
+greet_with_default
+greet_with_default "Alice" "Hi"
+sum_numbers 1 2 3 4 5
+divide 10 2
+divide 10 0  # Error case

@@ -123,6 +123,7 @@ document.addEventListener("DOMContentLoaded", () => {
             nested_loops: 'snippets/bash/nested_loops.txt',
             selected_menus: 'snippets/bash/selected_menus.txt',
             function_basics: 'snippets/bash/function.txt',
+            function_parameters: 'snippets/bash/parameters.txt',
             
         },
         c: {
