@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# Basic tee usage
+echo "This goes to both file and stdout" | tee output.txt
+
+# Append with tee
+echo "This appends" | tee -a output.txt
+
+# Multiple outputs
+ls -la | tee file1.txt file2.txt file3.txt
+
+# Tee in pipeline
+cat large_file.txt | \
+    grep "pattern" | \
+    tee intermediate.txt | \
+    sort | \
+    tee sorted.txt | \
+    uniq > final.txt
+
+# Tee with error stream
+command_with_errors 2>&1 | tee error_log.txt
+
+# Silent tee (no stdout)
+echo "Only to file" | tee file.txt > /dev/null
+
+# Tee with process substitution
+echo "Testing" | tee >(cat > file1) >(cat > file2)

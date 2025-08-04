@@ -112,6 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
             parameter_expansion: 'snippets/bash/parameter_expansion.txt',
             input_output_redirection: 'snippets/bash/redirections.txt',
             pipes_and_pipelines: 'snippets/bash/pipes.txt',
+            tee: 'snippets/bash/tee.txt',
         },
         c: {
             start: 'snippets/c/hello.txt'
