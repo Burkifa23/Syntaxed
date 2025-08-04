@@ -1,0 +1,147 @@
+#!/bin/bash
+
+echo "=== Basic Find Operations ==="
+
+# Find by name
+find . -name "*.txt" -type f
+echo "Found .txt files"
+
+# Find case-insensitive
+find . -iname "*.TXT" -type f
+echo "Found .txt files (case-insensitive)"
+
+# Find directories
+find . -name "test*" -type d
+echo "Found directories starting with 'test'"
+
+# Find by multiple criteria
+find . \( -name "*.sh" -o -name "*.bash" \) -type f
+echo "Found shell script files"
+
+echo -e "\n=== Find by Size ==="
+
+# Create test files of different sizes
+mkdir -p find_test
+echo "small" > find_test/small.txt
+dd if=/dev/zero of=find_test/medium.dat bs=1024 count=10 2>/dev/null
+dd if=/dev/zero of=find_test/large.dat bs=1024 count=100 2>/dev/null
+
+# Find by size
+find find_test -size +5k -type f
+echo "Files larger than 5KB"
+
+find find_test -size -1k -type f
+echo "Files smaller than 1KB"
+
+find find_test -size 10k -type f
+echo "Files exactly 10KB"
+
+echo -e "\n=== Find by Time ==="
+
+# Create files with different timestamps
+touch -d "2 days ago" find_test/old.txt
+touch find_test/new.txt
+
+# Find by modification time
+find find_test -mtime -1 -type f
+echo "Files modified in last 24 hours"
+
+find find_test -mtime +1 -type f
+echo "Files modified more than 24 hours ago"
+
+# Find by access time
+find find_test -atime -7 -type f
+echo "Files accessed in last 7 days"
+
+# Find files modified in last 10 minutes
+find find_test -mmin -10 -type f
+echo "Files modified in last 10 minutes"
+
+echo -e "\n=== Find by Permissions ==="
+
+# Create files with different permissions
+chmod 644 find_test/small.txt
+chmod 755 find_test/medium.dat
+chmod 600 find_test/large.dat
+
+# Find by exact permissions
+find find_test -perm 644 -type f
+echo "Files with 644 permissions"
+
+# Find files readable by others
+find find_test -perm -o+r -type f
+echo "Files readable by others"
+
+# Find files with any write permission for group or others
+find find_test -perm /go+w -type f
+echo "Files writable by group or others"
+
+echo -e "\n=== Find with Actions ==="
+
+# Execute command on found files
+find find_test -name "*.txt" -exec ls -l {} \;
+echo "Executed ls -l on .txt files"
+
+# Execute command with confirmation
+echo "Would execute rm on .dat files:"
+find find_test -name "*.dat" -ok rm {} \;
+
+# Execute command on multiple files at once
+find find_test -name "*.txt" -exec grep -l "small" {} +
+echo "Searched for 'small' in .txt files"
+
+echo -e "\n=== Advanced Find ==="
+
+# Complex criteria
+find find_test \( -name "*.txt" -o -name "*.dat" \) -size +1c -mtime -7
+echo "Text or data files, non-empty, modified in last week"
+
+# Exclude directories
+find find_test -name ".*" -prune -o -type f -print
+echo "Files excluding hidden directories"
+
+# Find and sort by size
+find find_test -type f -exec ls -l {} + | sort -k5 -n
+echo "Files sorted by size"
+
+# Find with custom printf
+find find_test -type f -printf "%s %p\n" | sort -n
+echo "Files with sizes, sorted"
+
+echo -e "\n=== Alternative Finding Tools ==="
+
+# Using locate (if available)
+if command -v locate &> /dev/null; then
+    echo "Using locate:"
+    locate -b "bash" | head -5
+fi
+
+# Using which for executables
+echo "Finding executables:"
+which bash python3 2>/dev/null || echo "Not all found"
+
+# Using whereis for broader search
+echo "Using whereis:"
+whereis bash
+
+# Using type for command lookup
+echo "Using type:"
+type -a ls
+
+echo -e "\n=== Performance Considerations ==="
+
+# Faster find with specific path
+time find /usr -name "*.conf" -type f | head -5
+echo "Searched /usr for .conf files"
+
+# Using -quit for first match
+find /etc -name "passwd" -type f -quit
+echo "Found first passwd file"
+
+# Limiting depth
+find /usr -maxdepth 2 -name "bin" -type d
+echo "Found bin directories within 2 levels"
+
+echo -e "\n=== Cleanup ==="
+rm -rf find_test
+echo "Cleaned up find test directory"
