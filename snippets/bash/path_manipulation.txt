@@ -1,0 +1,286 @@
+#!/bin/bash
+
+echo "=== Path Component Extraction ==="
+
+# Sample paths
+full_path="/home/user/documents/project/script.sh"
+relative_path="docs/readme.txt"
+current_path="./file.txt"
+parent_path="../config.conf"
+
+echo "Full path: $full_path"
+
+# Extract directory (dirname)
+dir=$(dirname "$full_path")
+echo "Directory: $dir"
+
+# Extract filename (basename)
+filename=$(basename "$full_path")
+echo "Filename: $filename"
+
+# Extract filename without extension
+name_only=$(basename "$full_path" .sh)
+echo "Name without extension: $name_only"
+
+# Extract extension
+extension="${full_path##*.}"
+echo "Extension: $extension"
+
+# Extract path without extension
+path_no_ext="${full_path%.*}"
+echo "Path without extension: $path_no_ext"
+
+echo -e "\n=== Using Parameter Expansion ==="
+
+path="/var/log/apache2/access.log"
+echo "Path: $path"
+
+# Directory extraction
+echo "Directory: ${path%/*}"
+
+# Filename extraction
+echo "Filename: ${path##*/}"
+
+# Remove extension
+echo "Without extension: ${path%.*}"
+
+# Extract extension
+echo "Extension: ${path##*.}"
+
+# Multiple extensions
+complex_path="/backup/data.tar.gz"
+echo "Complex path: $complex_path"
+echo "Remove last extension: ${complex_path%.*}"
+echo "Remove all extensions: ${complex_path%%.*}"
+echo "Get all extensions: ${complex_path#*.}"
+
+echo -e "\n=== Path Normalization ==="
+
+# Function to normalize paths
+normalize_path() {
+    local path="$1"
+    
+    # Convert to absolute path
+    if [[ $path != /* ]]; then
+        path="$(pwd)/$path"
+    fi
+    
+    # Resolve . and .. components
+    path=$(cd "$(dirname "$path")" && pwd)/$(basename "$path")
+    
+    echo "$path"
+}
+
+echo "Normalizing paths:"
+echo "  ./file.txt -> $(normalize_path "./file.txt")"
+echo "  ../config -> $(normalize_path "../config")"
+
+# Real path resolution (if available)
+if command -v realpath &> /dev/null; then
+    echo "Using realpath:"
+    touch test_file.txt
+    ln -sf test_file.txt test_link.txt
+    echo "  Symlink: $(realpath test_link.txt)"
+    rm -f test_file.txt test_link.txt
+fi
+
+echo -e "\n=== Path Construction ==="
+
+# Build paths safely
+base_dir="/home/user"
+project="myproject"
+filename="script.sh"
+
+# Simple concatenation (unsafe)
+unsafe_path="$base_dir/$project/$filename"
+echo "Unsafe construction: $unsafe_path"
+
+# Safe path construction
+safe_path="${base_dir%/}/${project}/${filename}"
+echo "Safe construction: $safe_path"
+
+# Using printf for path construction
+printf_path=$(printf "%s/%s/%s" "$base_dir" "$project" "$filename")
+echo "Printf construction: $printf_path"
+
+echo -e "\n=== Path Validation ==="
+
+validate_path() {
+    local path="$1"
+    local errors=()
+    
+    # Check for empty path
+    if [[ -z $path ]]; then
+        errors+=("Path is empty")
+    fi
+    
+    # Check for dangerous characters
+    if [[ $path =~ [[:cntrl:]] ]]; then
+        errors+=("Contains control characters")
+    fi
+    
+    # Check for null bytes
+    if [[ $path =~ \0' ]]; then
+        errors+=("Contains null bytes")
+    fi
+    
+    # Check for excessively long path
+    if [[ ${#path} -gt 4096 ]]; then
+        errors+=("Path too long (>${#path} characters)")
+    fi
+    
+    # Check for parent directory traversal
+    if [[ $path =~ \.\./.*\.\. ]]; then
+        errors+=("Potential directory traversal")
+    fi
+    
+    if [[ ${#errors[@]} -eq 0 ]]; then
+        echo "Path '$path' is valid"
+        return 0
+    else
+        echo "Path '$path' validation errors:"
+        printf '  - %s\n' "${errors[@]}"
+        return 1
+    fi
+}
+
+echo "Path validation examples:"
+validate_path "/home/user/file.txt"
+validate_path ""
+validate_path "../../../etc/passwd"
+
+echo -e "\n=== Path Utilities ==="
+
+# Join paths function
+join_paths() {
+    local result="$1"
+    shift
+    
+    for part in "$@"; do
+        if [[ $part =~ ^/ ]]; then
+            # Absolute path, replace result
+            result="$part"
+        else
+            # Relative path, append
+            result="${result%/}/$part"
+        fi
+    done
+    
+    echo "$result"
+}
+
+echo "Joining paths:"
+echo "  $(join_paths "/home" "user" "documents" "file.txt")"
+echo "  $(join_paths "/home/user" "../other" "file.txt")"
+echo "  $(join_paths "relative" "/absolute/path" "file.txt")"
+
+# Relative path calculation
+relative_path() {
+    local from="$1"
+    local to="$2"
+    
+    # Simple implementation using realpath if available
+    if command -v realpath &> /dev/null; then
+        realpath --relative-to="$from" "$to"
+    else
+        echo "realpath not available for relative path calculation"
+    fi
+}
+
+echo -e "\nRelative paths:"
+if command -v realpath &> /dev/null; then
+    echo "  From /home/user to /home/user/docs: $(relative_path "/home/user" "/home/user/docs")"
+    echo "  From /home/user/docs to /home/other: $(relative_path "/home/user/docs" "/home/other")"
+fi
+
+echo -e "\n=== Path Pattern Matching ==="
+
+# Check if path matches pattern
+path_matches() {
+    local path="$1"
+    local pattern="$2"
+    
+    case "$path" in
+        $pattern) return 0 ;;
+        *) return 1 ;;
+    esac
+}
+
+test_paths=(
+    "/home/user/documents/file.txt"
+    "/var/log/system.log"
+    "/etc/config.conf"
+    "/tmp/temp_file"
+)
+
+echo "Pattern matching examples:"
+for path in "${test_paths[@]}"; do
+    if path_matches "$path" "/home/*"; then
+        echo "  $path matches /home/*"
+    fi
+    
+    if path_matches "$path" "*.log"; then
+        echo "  $path matches *.log"
+    fi
+    
+    if path_matches "$path" "/etc/*"; then
+        echo "  $path matches /etc/*"
+    fi
+done
+
+echo -e "\n=== Path Security ==="
+
+# Sanitize path for security
+sanitize_path() {
+    local path="$1"
+    
+    # Remove null bytes
+    path="${path//\0'/}"
+    
+    # Remove control characters
+    path=$(echo "$path" | tr -d '[:cntrl:]')
+    
+    # Normalize multiple slashes
+    path="${path//\/\//\/}"
+    
+    # Remove trailing slashes (except root)
+    if [[ $path != "/" ]]; then
+        path="${path%/}"
+    fi
+    
+    echo "$path"
+}
+
+echo "Path sanitization:"
+echo "  Input: '/path//to///file/'"
+echo "  Output: '$(sanitize_path '/path//to///file/')'"
+
+# Check if path is within allowed directory
+is_within_directory() {
+    local path="$1"
+    local allowed_dir="$2"
+    
+    # Convert to absolute paths
+    if command -v realpath &> /dev/null; then
+        path=$(realpath -m "$path")
+        allowed_dir=$(realpath -m "$allowed_dir")
+        
+        case "$path" in
+            "$allowed_dir"/*) return 0 ;;
+            "$allowed_dir") return 0 ;;
+            *) return 1 ;;
+        esac
+    else
+        echo "realpath not available for security check"
+        return 1
+    fi
+}
+
+echo -e "\nPath security check:"
+if command -v realpath &> /dev/null; then
+    if is_within_directory "/home/user/documents/file.txt" "/home/user"; then
+        echo "  Path is within allowed directory"
+    else
+        echo "  Path is outside allowed directory"
+    fi
+fi

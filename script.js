@@ -133,6 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
             file_permissions: 'snippets/bash/file_permissions.txt',
             file_finding: 'snippets/bash/file_finding.txt',
             glob_patterns: 'snippets/bash/glob_patterns.txt',
+            path_manipulation: 'snippets/bash/path_manipulation.txt',
             
         },
         c: {
