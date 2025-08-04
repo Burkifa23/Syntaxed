@@ -1,0 +1,37 @@
+#!/bin/bash
+
+filename="document.txt.backup"
+path="/home/user/documents/file.txt"
+
+# Basic expansion
+echo "Filename: ${filename}"
+
+# Default values
+echo "Default: ${undefined_var:-default_value}"
+echo "Assign default: ${new_var:=assigned_value}"
+
+# Length
+echo "Length: ${#filename}"
+
+# Pattern removal
+echo "Remove .backup: ${filename%.backup}"
+echo "Remove shortest .* : ${filename%.*}"
+echo "Remove longest .* : ${filename%%.*}"
+echo "Remove from start: ${filename#*.}"
+echo "Remove longest from start: ${filename##*.}"
+
+# Path manipulation
+echo "Directory: ${path%/*}"
+echo "Basename: ${path##*/}"
+echo "Extension: ${path##*.}"
+
+# Case modification
+text="Hello World"
+echo "Upper: ${text^^}"
+echo "Lower: ${text,,}"
+echo "Title: ${text^}"
+
+# Array expansion
+array=(a b c)
+echo "All elements: ${array[*]}"
+echo "All elements quoted: ${array[@]}"
