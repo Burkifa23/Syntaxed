@@ -127,6 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return_values: 'snippets/bash/return_values.txt',
             local_varibles: 'snippets/bash/local_variables.txt',
             recursive_functions: 'snippets/bash/recursive_functions.txt',
+            function_libraries: 'snippets/bash/function_libraries.txt',
             
         },
         c: {

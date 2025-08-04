@@ -1,0 +1,154 @@
+#!/bin/bash
+
+# Library file: utils.sh
+# String utilities
+string_utils() {
+    # Trim whitespace
+    trim() {
+        local str="$1"
+        str="${str#"${str%%[![:space:]]*}"}"  # Remove leading whitespace
+        str="${str%"${str##*[![:space:]]}"}"  # Remove trailing whitespace
+        echo "$str"
+    }
+    
+    # Check if string is empty
+    is_empty() {
+        [[ -z $(trim "$1") ]]
+    }
+    
+    # Convert to uppercase
+    to_upper() {
+        echo "${1^^}"
+    }
+    
+    # Convert to lowercase
+    to_lower() {
+        echo "${1,,}"
+    }
+    
+    # Check if string contains substring
+    contains() {
+        [[ "$1" == *"$2"* ]]
+    }
+}
+
+# Math utilities
+math_utils() {
+    # Check if number is prime
+    is_prime() {
+        local n=$1
+        if [[ $n -lt 2 ]]; then
+            return 1
+        fi
+        for ((i=2; i*i<=n; i++)); do
+            if [[ $((n % i)) -eq 0 ]]; then
+                return 1
+            fi
+        done
+        return 0
+    }
+    
+    # Calculate average
+    average() {
+        local sum=0
+        local count=$#
+        for num in "$@"; do
+            sum=$((sum + num))
+        done
+        echo $((sum / count))
+    }
+    
+    # Find maximum
+    max() {
+        local maximum=$1
+        shift
+        for num in "$@"; do
+            if [[ $num -gt $maximum ]]; then
+                maximum=$num
+            fi
+        done
+        echo $maximum
+    }
+    
+    # Find minimum
+    min() {
+        local minimum=$1
+        shift
+        for num in "$@"; do
+            if [[ $num -lt $minimum ]]; then
+                minimum=$num
+            fi
+        done
+        echo $minimum
+    }
+}
+
+# File utilities
+file_utils() {
+    # Backup file with timestamp
+    backup_file() {
+        local file=$1
+        if [[ -f $file ]]; then
+            local backup="${file}.$(date +%Y%m%d_%H%M%S).bak"
+            cp "$file" "$backup"
+            echo "Backup created: $backup"
+        else
+            echo "File not found: $file" >&2
+            return 1
+        fi
+    }
+    
+    # Get file extension
+    get_extension() {
+        local file=$1
+        echo "${file##*.}"
+    }
+    
+    # Get file without extension
+    get_basename() {
+        local file=$1
+        echo "${file%.*}"
+    }
+    
+    # Check if file is older than N days
+    is_older_than() {
+        local file=$1
+        local days=$2
+        [[ $(find "$file" -mtime +$days 2>/dev/null) ]]
+    }
+}
+
+# Load library functions
+string_utils
+math_utils
+file_utils
+
+# Example usage
+echo "=== String Utils ==="
+text="  Hello World  "
+echo "Original: '$text'"
+echo "Trimmed: '$(trim "$text")'"
+echo "Upper: $(to_upper "$text")"
+echo "Lower: $(to_lower "$text")"
+
+if contains "$text" "World"; then
+    echo "Contains 'World'"
+fi
+
+echo -e "\n=== Math Utils ==="
+numbers=(3 7 12 5 9 15 4)
+echo "Numbers: ${numbers[@]}"
+echo "Average: $(average "${numbers[@]}")"
+echo "Max: $(max "${numbers[@]}")"
+echo "Min: $(min "${numbers[@]}")"
+
+if is_prime 17; then
+    echo "17 is prime"
+fi
+
+echo -e "\n=== File Utils ==="
+touch test_file.txt
+echo "Extension: $(get_extension "test_file.txt")"
+echo "Basename: $(get_basename "test_file.txt")"
+backup_file "test_file.txt"
+rm -f test_file.txt test_file.txt.*.bak
