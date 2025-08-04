@@ -1,0 +1,58 @@
+#!/bin/bash
+
+# Basic select menu
+echo "Choose your favorite programming language:"
+select lang in "Bash" "Python" "JavaScript" "Go" "Quit"; do
+    case $lang in
+        "Bash")
+            echo "Great choice! Bash is powerful for automation."
+            break
+            ;;
+        "Python")
+            echo "Python is excellent for data science and web development."
+            break
+            ;;
+        "JavaScript")
+            echo "JavaScript runs the web!"
+            break
+            ;;
+        "Go")
+            echo "Go is fast and efficient for system programming."
+            break
+            ;;
+        "Quit")
+            echo "Goodbye!"
+            break
+            ;;
+        *)
+            echo "Invalid option. Please try again."
+            ;;
+    esac
+done
+
+# Menu with functions
+show_date() {
+    echo "Current date: $(date)"
+}
+
+show_users() {
+    echo "Logged in users:"
+    who
+}
+
+show_disk() {
+    echo "Disk usage:"
+    df -h
+}
+
+echo "System Information Menu:"
+select option in "Date" "Users" "Disk Usage" "Exit"; do
+    case $option in
+        "Date") show_date ;;
+        "Users") show_users ;;
+        "Disk Usage") show_disk ;;
+        "Exit") break ;;
+        *) echo "Invalid option" ;;
+    esac
+    echo  # Blank line for readability
+done
