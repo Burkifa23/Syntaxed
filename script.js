@@ -122,6 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
             loop_control: 'snippets/bash/break_continue.txt',
             nested_loops: 'snippets/bash/nested_loops.txt',
             selected_menus: 'snippets/bash/selected_menus.txt',
+            function_basics: 'snippets/bash/function.txt',
             
         },
         c: {

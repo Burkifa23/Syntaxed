@@ -1,0 +1,42 @@
+#!/bin/bash
+
+# Function definition syntax 1
+function greet() {
+    echo "Hello, $1!"
+}
+
+# Function definition syntax 2
+say_goodbye() {
+    echo "Goodbye, $1!"
+}
+
+# Function with multiple parameters
+calculate_area() {
+    local length=$1
+    local width=$2
+    local area=$((length * width))
+    echo "Area: $area"
+}
+
+# Function with return value
+is_even() {
+    local number=$1
+    if [[ $((number % 2)) -eq 0 ]]; then
+        return 0  # True
+    else
+        return 1  # False
+    fi
+}
+
+# Using functions
+greet "World"
+say_goodbye "Friend"
+calculate_area 5 3
+
+if is_even 42; then
+    echo "42 is even"
+fi
+
+if ! is_even 43; then
+    echo "43 is odd"
+fi
