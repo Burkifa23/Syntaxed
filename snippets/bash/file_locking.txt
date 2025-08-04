@@ -1,0 +1,290 @@
+#!/bin/bash
+
+echo "=== Basic File Locking with flock ==="
+
+# Create a test file
+test_file="locktest.txt"
+echo "Initial content" > "$test_file"
+
+# Function to demonstrate exclusive locking
+exclusive_lock_demo() {
+    echo "Attempting exclusive lock..."
+    
+    # Use flock with file descriptor
+    exec 200> /tmp/exclusive.lock
+    if flock -n 200; then
+        echo "Acquired exclusive lock"
+        echo "Performing exclusive operation..."
+        sleep 3
+        echo "Exclusive operation completed"
+        flock -u 200
+        echo "Released exclusive lock"
+    else
+        echo "Failed to acquire exclusive lock"
+    fi
+    exec 200>&-
+}
+
+# Function to demonstrate shared locking
+shared_lock_demo() {
+    echo "Attempting shared lock..."
+    
+    exec 201> /tmp/shared.lock
+    if flock -s -n 201; then
+        echo "Acquired shared lock"
+        echo "Reading file content..."
+        cat "$test_file"
+        sleep 2
+        echo "Shared operation completed"
+        flock -u 201
+        echo "Released shared lock"
+    else
+        echo "Failed to acquire shared lock"
+    fi
+    exec 201>&-
+}
+
+# Demonstrate the locking
+exclusive_lock_demo &
+shared_lock_demo &
+wait
+
+echo -e "\n=== File-based Locking ==="
+
+# Function using file-based locking
+file_based_lock() {
+    local lock_file="$1"
+    local timeout="$2"
+    local operation="$3"
+    
+    local count=0
+    
+    # Try to acquire lock
+    while ! (set -C; echo $ > "$lock_file") 2>/dev/null; do
+        if [[ $count -ge $timeout ]]; then
+            echo "Timeout waiting for lock: $lock_file"
+            return 1
+        fi
+        echo "Waiting for lock... ($count/$timeout)"
+        sleep 1
+        ((count++))
+    done
+    
+    echo "Acquired lock: $lock_file"
+    
+    # Set trap to cleanup lock on exit
+    trap "rm -f '$lock_file'" EXIT INT TERM
+    
+    # Perform operation
+    eval "$operation"
+    
+    # Release lock
+    rm -f "$lock_file"
+    trap - EXIT INT TERM
+    
+    echo "Released lock: $lock_file"
+}
+
+# Demonstrate file-based locking
+echo "File-based locking demo:"
+file_based_lock "/tmp/demo.lock" 5 "echo 'Critical section executed'; sleep 2"
+
+echo -e "\n=== Advanced Locking Patterns ==="
+
+# Reader-writer lock simulation
+rw_lock_dir="/tmp/rw_locks"
+mkdir -p "$rw_lock_dir"
+
+# Reader lock function
+acquire_read_lock() {
+    local lock_id="reader_$"
+    touch "$rw_lock_dir/$lock_id"
+    
+    # Wait for no writers
+    while ls "$rw_lock_dir"/writer_* >/dev/null 2>&1; do
+        echo "Waiting for writers to finish..."
+        sleep 0.1
+    done
+    
+    echo "Read lock acquired: $lock_id"
+    echo "$lock_id"
+}
+
+# Writer lock function
+acquire_write_lock() {
+    local lock_id="writer_$"
+    touch "$rw_lock_dir/$lock_id"
+    
+    # Wait for no other writers or readers
+    while ls "$rw_lock_dir"/reader_* "$rw_lock_dir"/writer_* >/dev/null 2>&1 | grep -v "$lock_id" >/dev/null; do
+        echo "Waiting for other operations to finish..."
+        sleep 0.1
+    done
+    
+    echo "Write lock acquired: $lock_id"
+    echo "$lock_id"
+}
+
+# Release lock function
+release_lock() {
+    local lock_id="$1"
+    rm -f "$rw_lock_dir/$lock_id"
+    echo "Released lock: $lock_id"
+}
+
+# Reader function
+reader_task() {
+    local reader_id=$(acquire_read_lock)
+    echo "Reader $reader_id: Reading data..."
+    cat "$test_file"
+    sleep 2
+    echo "Reader $reader_id: Finished reading"
+    release_lock "$reader_id"
+}
+
+# Writer function
+writer_task() {
+    local writer_id=$(acquire_write_lock)
+    echo "Writer $writer_id: Writing data..."
+    echo "Updated by writer $writer_id at $(date)" >> "$test_file"
+    sleep 1
+    echo "Writer $writer_id: Finished writing"
+    release_lock "$writer_id"
+}
+
+# Demonstrate reader-writer locks
+echo "Reader-writer lock demo:"
+reader_task &
+reader_task &
+writer_task &
+reader_task &
+wait
+
+echo -e "\n=== Database-style Locking ==="
+
+# Implement a simple database-style row locking system
+db_locks_dir="/tmp/db_locks"
+mkdir -p "$db_locks_dir"
+
+# Lock a specific record
+lock_record() {
+    local table="$1"
+    local record_id="$2"
+    local lock_type="$3"  # exclusive or shared
+    local process_id=$
+    
+    local lock_file="$db_locks_dir/${table}_${record_id}_${lock_type}_${process_id}"
+    
+    # Check for conflicting locks
+    if [[ $lock_type == "exclusive" ]]; then
+        # Exclusive lock conflicts with any other lock
+        if ls "$db_locks_dir/${table}_${record_id}_"* >/dev/null 2>&1; then
+            echo "Cannot acquire exclusive lock: conflicting locks exist"
+            return 1
+        fi
+    else
+        # Shared lock conflicts only with exclusive locks
+        if ls "$db_locks_dir/${table}_${record_id}_exclusive_"* >/dev/null 2>&1; then
+            echo "Cannot acquire shared lock: exclusive lock exists"
+            return 1
+        fi
+    fi
+    
+    # Acquire lock
+    touch "$lock_file"
+    echo "Acquired $lock_type lock on ${table}:${record_id}"
+    echo "$lock_file"
+}
+
+# Release record lock
+unlock_record() {
+    local lock_file="$1"
+    rm -f "$lock_file"
+    echo "Released lock: $(basename "$lock_file")"
+}
+
+# Database operation simulation
+db_operation() {
+    local operation="$1"
+    local table="$2"
+    local record_id="$3"
+    local lock_type="$4"
+    
+    echo "Starting $operation on ${table}:${record_id}"
+    
+    local lock_file
+    if lock_file=$(lock_record "$table" "$record_id" "$lock_type"); then
+        echo "Performing $operation..."
+        sleep 2
+        echo "$operation completed on ${table}:${record_id}"
+        unlock_record "$lock_file"
+    else
+        echo "$operation failed: could not acquire lock"
+    fi
+}
+
+# Demonstrate database-style locking
+echo "Database-style locking demo:"
+db_operation "SELECT" "users" "123" "shared" &
+db_operation "SELECT" "users" "123" "shared" &
+db_operation "UPDATE" "users" "123" "exclusive" &
+db_operation "SELECT" "users" "456" "shared" &
+wait
+
+echo -e "\n=== Lock Debugging and Monitoring ==="
+
+# Function to show current locks
+show_locks() {
+    echo "Current locks:"
+    if ls /tmp/*.lock >/dev/null 2>&1; then
+        for lock in /tmp/*.lock; do
+            if [[ -f $lock ]]; then
+                local pid=$(cat "$lock" 2>/dev/null)
+                local age=$(($(date +%s) - $(stat -c%Y "$lock" 2>/dev/null || echo 0)))
+                echo "  $(basename "$lock"): PID $pid, Age ${age}s"
+            fi
+        done
+    else
+        echo "  No locks found"
+    fi
+    
+    if [[ -d $rw_lock_dir ]] && ls "$rw_lock_dir"/* >/dev/null 2>&1; then
+        echo "RW locks:"
+        for lock in "$rw_lock_dir"/*; do
+            echo "  $(basename "$lock")"
+        done
+    fi
+    
+    if [[ -d $db_locks_dir ]] && ls "$db_locks_dir"/* >/dev/null 2>&1; then
+        echo "DB locks:"
+        for lock in "$db_locks_dir"/*; do
+            echo "  $(basename "$lock")"
+        done
+    fi
+}
+
+show_locks
+
+# Clean up stale locks
+cleanup_stale_locks() {
+    echo "Cleaning up stale locks..."
+    
+    # Remove locks from dead processes
+    for lock in /tmp/*.lock; do
+        if [[ -f $lock ]]; then
+            local pid=$(cat "$lock" 2>/dev/null)
+            if [[ -n $pid ]] && ! kill -0 "$pid" 2>/dev/null; then
+                echo "Removing stale lock: $(basename "$lock") (PID $pid is dead)"
+                rm -f "$lock"
+            fi
+        fi
+    done
+    
+    # Clean up test lock directories
+    rm -rf "$rw_lock_dir" "$db_locks_dir"
+}
+
+echo -e "\n=== Cleanup ==="
+cleanup_stale_locks
+rm -f "$test_file"
+echo "

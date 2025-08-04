@@ -135,6 +135,7 @@ document.addEventListener("DOMContentLoaded", () => {
             glob_patterns: 'snippets/bash/glob_patterns.txt',
             path_manipulation: 'snippets/bash/path_manipulation.txt',
             temporary_files: 'snippets/bash/temporary_files.txt',
+            file_locking: 'snippets/bash/file_locking.txt',
             
         },
         c: {
