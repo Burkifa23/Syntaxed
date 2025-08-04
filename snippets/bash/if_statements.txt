@@ -1,0 +1,52 @@
+#!/bin/bash
+
+# Basic if statement
+if [[ $USER == "root" ]]; then
+    echo "Running as root"
+fi
+
+# If-else
+if [[ -f "/etc/passwd" ]]; then
+    echo "Password file exists"
+else
+    echo "Password file not found"
+fi
+
+# If-elif-else
+score=85
+if [[ $score -ge 90 ]]; then
+    echo "Grade: A"
+elif [[ $score -ge 80 ]]; then
+    echo "Grade: B"
+elif [[ $score -ge 70 ]]; then
+    echo "Grade: C"
+else
+    echo "Grade: F"
+fi
+
+# String comparisons
+name="Alice"
+if [[ $name == "Alice" ]]; then
+    echo "Hello Alice!"
+elif [[ $name =~ ^[A-Z] ]]; then
+    echo "Name starts with capital letter"
+fi
+
+# Numeric comparisons
+num=42
+if [[ $num -eq 42 ]]; then
+    echo "The answer!"
+elif [[ $num -gt 50 ]]; then
+    echo "Greater than 50"
+elif [[ $num -lt 10 ]]; then
+    echo "Less than 10"
+fi
+
+# Logical operators
+if [[ $num -gt 0 && $num -lt 100 ]]; then
+    echo "Number is between 0 and 100"
+fi
+
+if [[ $name == "admin" || $name == "root" ]]; then
+    echo "Administrative user"
+fi

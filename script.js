@@ -114,6 +114,7 @@ document.addEventListener("DOMContentLoaded", () => {
             pipes_and_pipelines: 'snippets/bash/pipes.txt',
             tee: 'snippets/bash/tee.txt',
             process_substitution: 'snippets/bash/process_substitution.txt',
+            if_statements: 'snippets/bash/if_statements.txt',
             
         },
         c: {
