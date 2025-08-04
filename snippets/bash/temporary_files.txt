@@ -1,0 +1,209 @@
+#!/bin/bash
+
+echo "=== Basic Temporary File Creation ==="
+
+# Create temporary file
+temp_file=$(mktemp)
+echo "Created temporary file: $temp_file"
+echo "Hello World" > "$temp_file"
+cat "$temp_file"
+
+# Create temporary file with specific suffix
+temp_script=$(mktemp --suffix=.sh)
+echo "Created temporary script: $temp_script"
+echo '#!/bin/bash' > "$temp_script"
+echo 'echo "Temporary script executed"' >> "$temp_script"
+chmod +x "$temp_script"
+"$temp_script"
+
+# Create temporary file with custom template
+temp_log=$(mktemp /tmp/myapp.XXXXXX.log)
+echo "Created temporary log: $temp_log"
+echo "$(date): Application started" > "$temp_log"
+
+echo -e "\n=== Temporary Directories ==="
+
+# Create temporary directory
+temp_dir=$(mktemp -d)
+echo "Created temporary directory: $temp_dir"
+
+# Create structure in temp directory
+mkdir -p "$temp_dir"/{data,logs,config}
+echo "test data" > "$temp_dir/data/sample.txt"
+echo "log entry" > "$temp_dir/logs/app.log"
+echo "config=value" > "$temp_dir/config/settings.conf"
+
+echo "Temporary directory contents:"
+find "$temp_dir" -type f -exec echo "  {}" \;
+
+echo -e "\n=== Secure Temporary Files ==="
+
+# Create temporary file with specific permissions
+secure_temp=$(mktemp)
+chmod 600 "$secure_temp"  # Owner read/write only
+echo "Secure data" > "$secure_temp"
+ls -l "$secure_temp"
+
+# Create temporary file in secure directory
+if [[ -w /dev/shm ]]; then
+    shm_temp=$(mktemp -p /dev/shm)
+    echo "Created temp file in shared memory: $shm_temp"
+    echo "Fast access data" > "$shm_temp"
+fi
+
+echo -e "\n=== Cleanup Strategies ==="
+
+# Manual cleanup function
+cleanup_temps() {
+    echo "Cleaning up temporary files..."
+    
+    # Clean up specific files
+    [[ -f $temp_file ]] && rm -f "$temp_file"
+    [[ -f $temp_script ]] && rm -f "$temp_script"
+    [[ -f $temp_log ]] && rm -f "$temp_log"
+    [[ -f $secure_temp ]] && rm -f "$secure_temp"
+    [[ -f $shm_temp ]] && rm -f "$shm_temp"
+    
+    # Clean up directories
+    [[ -d $temp_dir ]] && rm -rf "$temp_dir"
+    
+    echo "Cleanup completed"
+}
+
+# Trap for automatic cleanup
+temp_for_trap=$(mktemp)
+trap 'rm -f "$temp_for_trap"' EXIT
+
+echo "Created temp file with trap cleanup: $temp_for_trap"
+echo "This file will be cleaned up automatically on exit"
+
+echo -e "\n=== Advanced Temporary File Patterns ==="
+
+# Temporary file with process ID
+pid_temp="/tmp/myapp_$.tmp"
+echo "PID-based temp file: $pid_temp"
+echo "Process-specific data" > "$pid_temp"
+
+# Temporary file with timestamp
+timestamp_temp="/tmp/backup_$(date +%Y%m%d_%H%M%S).tmp"
+echo "Timestamp temp file: $timestamp_temp"
+echo "Timestamped data" > "$timestamp_temp"
+
+# Atomic temporary file operations
+atomic_temp_write() {
+    local target_file="$1"
+    local content="$2"
+    local temp_file
+    
+    temp_file=$(mktemp "${target_file}.XXXXXX")
+    
+    # Write to temporary file
+    echo "$content" > "$temp_file"
+    
+    # Atomically move to target
+    mv "$temp_file" "$target_file"
+    
+    echo "Atomically wrote to: $target_file"
+}
+
+atomic_temp_write "target.txt" "Important data that must be written atomically"
+cat target.txt
+
+echo -e "\n=== Temporary File Best Practices ==="
+
+# Function demonstrating best practices
+create_work_space() {
+    local work_dir
+    work_dir=$(mktemp -d)
+    
+    # Set restrictive permissions
+    chmod 700 "$work_dir"
+    
+    # Create cleanup function
+    local cleanup_func="cleanup_workspace_$"
+    eval "$cleanup_func() { rm -rf '$work_dir'; }"
+    
+    # Set trap for cleanup
+    trap "$cleanup_func" EXIT INT TERM
+    
+    echo "Created secure workspace: $work_dir"
+    
+    # Do work in temporary space
+    cd "$work_dir"
+    echo "Working in: $(pwd)"
+    
+    # Create some files
+    echo "data" > data.txt
+    echo "config" > config.ini
+    mkdir -p output logs
+    
+    # Simulate work
+    echo "Performing operations..."
+    cp data.txt output/processed_data.txt
+    echo "$(date): Work completed" > logs/work.log
+    
+    # Show results
+    echo "Work completed. Files created:"
+    find . -type f
+    
+    # Cleanup happens automatically via trap
+    echo "Cleanup will happen automatically"
+}
+
+create_work_space
+
+echo -e "\n=== Temporary File Monitoring ==="
+
+# Monitor temporary space usage
+echo "Temporary space usage:"
+df -h /tmp
+
+# Find old temporary files
+echo -e "\nOld temporary files (if any):"
+find /tmp -name "tmp.*" -mtime +1 2>/dev/null | head -5
+
+# Check for common temp file patterns
+echo -e "\nChecking for common patterns:"
+temp_patterns=("*.tmp" "*.temp" "core.*" ".*~")
+for pattern in "${temp_patterns[@]}"; do
+    count=$(find /tmp -name "$pattern" 2>/dev/null | wc -l)
+    echo "  $pattern: $count files"
+done
+
+echo -e "\n=== Error Handling with Temp Files ==="
+
+# Safe temporary file creation with error handling
+safe_mktemp() {
+    local temp_file
+    local max_attempts=5
+    local attempt=1
+    
+    while [[ $attempt -le $max_attempts ]]; do
+        if temp_file=$(mktemp 2>/dev/null); then
+            echo "$temp_file"
+            return 0
+        fi
+        
+        echo "Attempt $attempt failed, retrying..." >&2
+        ((attempt++))
+        sleep 1
+    done
+    
+    echo "Failed to create temporary file after $max_attempts attempts" >&2
+    return 1
+}
+
+if safe_temp=$(safe_mktemp); then
+    echo "Successfully created safe temp file: $safe_temp"
+    echo "test data" > "$safe_temp"
+    # Cleanup
+    rm -f "$safe_temp"
+else
+    echo "Failed to create temporary file"
+fi
+
+# Manual cleanup of demo files
+cleanup_temps
+rm -f "$pid_temp" "$timestamp_temp" target.txt
+
+echo -e "\nTemporary file demonstration completed"

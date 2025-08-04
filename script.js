@@ -134,6 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
             file_finding: 'snippets/bash/file_finding.txt',
             glob_patterns: 'snippets/bash/glob_patterns.txt',
             path_manipulation: 'snippets/bash/path_manipulation.txt',
+            temporary_files: 'snippets/bash/temporary_files.txt',
             
         },
         c: {
