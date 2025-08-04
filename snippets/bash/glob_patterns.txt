@@ -1,0 +1,189 @@
+#!/bin/bash
+
+echo "=== Setting up test files ==="
+
+# Create test directory structure
+mkdir -p glob_test/{docs,images,scripts}
+touch glob_test/docs/{readme.txt,manual.pdf,guide.md}
+touch glob_test/images/{photo1.jpg,photo2.png,icon.gif}
+touch glob_test/scripts/{script1.sh,script2.bash,utility.py}
+touch glob_test/{config.conf,data.json,backup.tar.gz}
+touch glob_test/.hidden{1,2,3}.txt
+
+echo "=== Basic Glob Patterns ==="
+
+# Asterisk (*) - matches any characters
+echo "All files:"
+ls glob_test/*
+
+# Question mark (?) - matches single character
+echo -e "\nFiles with single character extension:"
+ls glob_test/*.? 2>/dev/null || echo "None found"
+
+# Square brackets [] - character classes
+echo -e "\nFiles starting with letters a-m:"
+ls glob_test/[a-m]* 2>/dev/null || echo "None found"
+
+echo -e "\nFiles starting with specific letters:"
+ls glob_test/[dgr]* 2>/dev/null
+
+echo -e "\n=== Advanced Glob Patterns ==="
+
+# Brace expansion {}
+echo "Creating numbered files:"
+touch glob_test/file{1..5}.txt
+ls glob_test/file*.txt
+
+# Complex brace patterns
+echo -e "\nFiles with specific extensions:"
+ls glob_test/*.{txt,pdf,md} 2>/dev/null
+
+# Negation with [!] or [^]
+echo -e "\nFiles NOT starting with 's':"
+ls glob_test/[!s]* 2>/dev/null
+
+echo -e "\n=== Extended Glob Patterns ==="
+
+# Enable extended globbing
+shopt -s extglob
+
+# ?(pattern) - zero or one occurrence
+echo "Files ending with optional 's':"
+ls glob_test/*?(s).txt 2>/dev/null
+
+# *(pattern) - zero or more occurrences
+echo -e "\nFiles with zero or more digits:"
+ls glob_test/*+([0-9])* 2>/dev/null
+
+# +(pattern) - one or more occurrences
+echo -e "\nFiles with one or more letters:"
+ls glob_test/+([a-z])* 2>/dev/null
+
+# @(pattern1|pattern2) - exactly one of the patterns
+echo -e "\nScript files:"
+ls glob_test/@(*.sh|*.bash|*.py) 2>/dev/null
+
+# !(pattern) - not matching pattern
+echo -e "\nNon-text files:"
+ls glob_test/!(*.txt) 2>/dev/null
+
+echo -e "\n=== Glob with Directories ==="
+
+# Recursive globbing (bash 4+)
+shopt -s globstar
+echo "All files recursively:"
+ls glob_test/**/* 2>/dev/null
+
+# Directory-specific patterns
+echo -e "\nFiles in specific directories:"
+ls glob_test/{docs,images}/* 2>/dev/null
+
+echo -e "\n=== Hidden Files ==="
+
+# Include hidden files
+shopt -s dotglob
+echo "Including hidden files:"
+ls glob_test/.* 2>/dev/null | grep -v "^\.$\|^\.\.$"
+
+# Reset dotglob
+shopt -u dotglob
+
+echo -e "\n=== Case Sensitivity ==="
+
+# Create mixed case files
+touch glob_test/{File,FILE,file}.tmp
+
+# Case-insensitive globbing
+shopt -s nocaseglob
+echo "Case-insensitive matching:"
+ls glob_test/file* 2>/dev/null
+
+# Reset case sensitivity
+shopt -u nocaseglob
+
+echo -e "\n=== Glob in Programming ==="
+
+# Using glob patterns in loops
+echo "Processing text files:"
+for file in glob_test/*.txt; do
+    if [[ -f $file ]]; then
+        echo "  Processing: $(basename "$file")"
+    fi
+done
+
+# Using glob patterns in arrays
+text_files=(glob_test/*.txt)
+echo -e "\nText files array:"
+printf '%s\n' "${text_files[@]}"
+
+# Conditional glob patterns
+echo -e "\nConditional processing:"
+if ls glob_test/*.log &>/dev/null; then
+    echo "Log files found"
+else
+    echo "No log files found"
+fi
+
+echo -e "\n=== Glob Safety ==="
+
+# Safely handle empty globs
+shopt -s nullglob
+empty_glob=(glob_test/*.nonexistent)
+echo "Empty glob array length: ${#empty_glob[@]}"
+
+# Process files safely
+for file in glob_test/*.xyz; do
+    # This won't execute if no .xyz files exist
+    echo "Found xyz file: $file"
+done
+
+# Reset nullglob
+shopt -u nullglob
+
+echo -e "\n=== Practical Examples ==="
+
+# Find specific file types
+echo "Image files:"
+for img in glob_test/images/*.{jpg,png,gif}; do
+    [[ -f $img ]] && echo "  $(basename "$img")"
+done
+
+# Backup files with pattern
+echo -e "\nCreating backups:"
+for script in glob_test/scripts/*.{sh,bash}; do
+    if [[ -f $script ]]; then
+        cp "$script" "${script}.backup"
+        echo "  Backed up: $(basename "$script")"
+    fi
+done
+
+# Count files by pattern
+echo -e "\nFile counts:"
+echo "  Text files: $(ls glob_test/*.txt 2>/dev/null | wc -l)"
+echo "  Script files: $(ls glob_test/scripts/*.{sh,bash,py} 2>/dev/null | wc -l)"
+echo "  Image files: $(ls glob_test/images/* 2>/dev/null | wc -l)"
+
+echo -e "\n=== Advanced Use Cases ==="
+
+# Complex pattern matching
+echo "Files with numbers in name:"
+for file in glob_test/**/*[0-9]*; do
+    [[ -f $file ]] && echo "  $(basename "$file")"
+done
+
+# Pattern-based file organization
+echo -e "\nOrganizing by extension:"
+for file in glob_test/*.*; do
+    if [[ -f $file ]]; then
+        ext="${file##*.}"
+        echo "  $ext: $(basename "$file")"
+    fi
+done
+
+echo -e "\n=== Cleanup ==="
+rm -rf glob_test
+echo "Cleaned up glob test directory"
+
+# Reset all glob options
+shopt -u extglob globstar dotglob nocaseglob nullglob
+echo "Reset glob options"
