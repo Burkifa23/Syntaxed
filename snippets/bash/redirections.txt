@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# Output redirection
+echo "This goes to file" > output.txt
+echo "This appends to file" >> output.txt
+
+# Error redirection
+ls nonexistent_file 2> error.log
+ls existing_file nonexistent_file > output.log 2> error.log
+
+# Combine stdout and stderr
+command_that_might_fail > combined.log 2>&1
+# Or with newer syntax:
+command_that_might_fail &> combined.log
+
+# Input redirection
+while read line; do
+    echo "Read: $line"
+done < input.txt
+
+# Null redirection (discard output)
+noisy_command > /dev/null 2>&1
+
+# Here document redirection
+cat > config.txt << CONFIG
+server=localhost
+port=8080
+CONFIG
+
+# File descriptor manipulation
+exec 3> custom.log
+echo "Custom log entry" >&3
+exec 3>&-  # Close file descriptor
