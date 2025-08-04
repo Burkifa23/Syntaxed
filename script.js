@@ -113,6 +113,8 @@ document.addEventListener("DOMContentLoaded", () => {
             input_output_redirection: 'snippets/bash/redirections.txt',
             pipes_and_pipelines: 'snippets/bash/pipes.txt',
             tee: 'snippets/bash/tee.txt',
+            process_substitution: 'snippets/bash/process_substitution.txt',
+            
         },
         c: {
             start: 'snippets/c/hello.txt'

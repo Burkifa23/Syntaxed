@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Compare output of two commands
+diff <(sort file1.txt) <(sort file2.txt)
+
+# Read from multiple sources
+while read -r line1 && read -r line2 <&3; do
+    echo "File1: $line1, File2: $line2"
+done < file1.txt 3< file2.txt
+
+# Complex process substitution
+command_with_output > >(tee stdout.log) 2> >(tee stderr.log >&2)
+
+# Using process substitution for input
+grep "pattern" <(cat file1.txt file2.txt)
+
+# Multiple process substitutions
+paste <(cut -d',' -f1 data.csv) <(cut -d',' -f3 data.csv)
+
+# Process substitution with arrays
+readarray -t files < <(find . -name "*.txt")
+for file in "${files[@]}"; do
+    echo "Processing: $file"
+done
