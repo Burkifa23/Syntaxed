@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# Integer arithmetic
+a=10
+b=3
+
+echo "Addition: $((a + b))"
+echo "Subtraction: $((a - b))"
+echo "Multiplication: $((a * b))"
+echo "Division: $((a / b))"
+echo "Modulo: $((a % b))"
+echo "Power: $((a ** 2))"
+
+# Increment/Decrement
+echo "Pre-increment: $((++a))"
+echo "Post-increment: $((a++))"
+echo "Current a: $a"
+
+# Floating point with bc
+float_result=$(echo "scale=2; 10 / 3" | bc)
+echo "Float division: $float_result"
+
+# Number validation
+number="123"
+if [[ $number =~ ^[0-9]+$ ]]; then
+    echo "$number is a valid integer"
+fi
