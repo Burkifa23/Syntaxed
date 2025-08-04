@@ -1,0 +1,40 @@
+#!/bin/bash
+
+# Basic input
+echo -n "Enter your name: "
+read name
+echo "Hello, $name!"
+
+# Input with prompt
+read -p "Enter your age: " age
+
+# Silent input (passwords)
+read -s -p "Enter password: " password
+echo  # New line after silent input
+
+# Input with timeout
+if read -t 5 -p "Quick! Enter something (5 sec): " quick_input; then
+    echo "You entered: $quick_input"
+else
+    echo "Too slow!"
+fi
+
+# Multiple inputs
+read -p "Enter first and last name: " first last
+echo "First: $first, Last: $last"
+
+# Read into array
+echo "Enter three colors (space-separated):"
+read -a colors
+echo "Colors: ${colors[@]}"
+
+# Input validation
+while true; do
+    read -p "Enter a number (1-10): " num
+    if [[ $num =~ ^[1-9]$|^10$ ]]; then
+        echo "Valid number: $num"
+        break
+    else
+        echo "Invalid input. Try again."
+    fi
+done

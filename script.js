@@ -97,6 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
             shebang_variations: 'snippets/bash/shebang.txt',
             comments: 'snippets/bash/comments.txt',
             Output_commands: 'snippets/bash/echo_printf.txt',
+            user_input: 'snippets/bash/read_input.txt',
             variables: 'snippets/bash/variables.txt',
             quoting_rules: 'snippets/bash/quoting.txt',
             command_substitution: 'snippets/bash/command_substitution.txt',

@@ -18,10 +18,3 @@ printf "Hex: %x, Octal: %o\n" 255 255
 name="Bob"
 score=87.5
 printf "Student: %s scored %.1f%%\n" "$name" "$score"
-
-# Here strings for multi-line
-cat << BANNER
-╔══════════════════════════╗
-║      Welcome Banner      ║
-╚══════════════════════════╝
-BANNER
