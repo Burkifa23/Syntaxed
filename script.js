@@ -129,6 +129,7 @@ document.addEventListener("DOMContentLoaded", () => {
             recursive_functions: 'snippets/bash/recursive_functions.txt',
             function_libraries: 'snippets/bash/function_libraries.txt',
             file_tests: 'snippets/bash/file_tests.txt',
+            directory_operations: 'snippets/bash/directory_operations.txt',
             
         },
         c: {

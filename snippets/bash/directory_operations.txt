@@ -1,0 +1,99 @@
+#!/bin/bash
+
+echo "=== Directory Creation ==="
+
+# Create single directory
+mkdir -p "test_dir/subdir/deep"
+echo "Created nested directories"
+
+# Create multiple directories
+mkdir -p dir{1..3}/{sub1,sub2}
+echo "Created multiple directory structures"
+
+# Set permissions while creating
+mkdir -m 755 "public_dir"
+mkdir -m 700 "private_dir"
+
+echo -e "\n=== Directory Navigation ==="
+
+# Save current directory
+original_dir=$(pwd)
+echo "Current directory: $original_dir"
+
+# Change to directory
+cd test_dir
+echo "Changed to: $(pwd)"
+
+# Go back
+cd "$original_dir"
+echo "Back to: $(pwd)"
+
+# Push and pop directories
+pushd test_dir > /dev/null
+echo "Pushed to: $(pwd)"
+pushd subdir > /dev/null
+echo "Pushed to: $(pwd)"
+popd > /dev/null
+echo "Popped to: $(pwd)"
+popd > /dev/null
+echo "Popped to: $(pwd)"
+
+echo -e "\n=== Directory Listing ==="
+
+# List with details
+ls -la test_dir/
+
+# List only directories
+ls -d */
+
+# List with human-readable sizes
+ls -lh test_dir/
+
+# Recursive listing
+find test_dir -type d -name "*sub*"
+
+echo -e "\n=== Directory Properties ==="
+
+# Check if directory exists and is writable
+check_directory() {
+    local dir=$1
+    
+    if [[ ! -d $dir ]]; then
+        echo "$dir does not exist"
+        return 1
+    fi
+    
+    if [[ ! -w $dir ]]; then
+        echo "$dir is not writable"
+        return 1
+    fi
+    
+    local count=$(find "$dir" -mindepth 1 -maxdepth 1 | wc -l)
+    echo "$dir contains $count items"
+    
+    local size=$(du -sh "$dir" | cut -f1)
+    echo "$dir size: $size"
+}
+
+check_directory "test_dir"
+check_directory "/tmp"
+
+echo -e "\n=== Directory Synchronization ==="
+
+# Create test files
+echo "file1 content" > test_dir/file1.txt
+echo "file2 content" > test_dir/subdir/file2.txt
+
+# Copy directory structure
+cp -r test_dir test_dir_backup
+echo "Backed up directory"
+
+# Sync directories (rsync if available)
+if command -v rsync &> /dev/null; then
+    rsync -av test_dir/ test_dir_sync/
+    echo "Synced with rsync"
+fi
+
+echo -e "\n=== Cleanup ==="
+rm -rf test_dir test_dir_backup test_dir_sync dir* public_dir private_dir
+echo "Cleaned up test directories"
