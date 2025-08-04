@@ -1,0 +1,22 @@
+#!/bin/bash
+
+text="Hello World Programming"
+
+# String length
+echo "Length: ${#text}"
+
+# Substring extraction
+echo "Substring (0,5): ${text:0:5}"
+echo "Substring (6): ${text:6}"
+echo "Last 5 chars: ${text: -5}"
+
+# String replacement
+echo "Replace first: ${text/o/X}"
+echo "Replace all: ${text//o/X}"
+echo "Remove prefix: ${text#Hello }"
+echo "Remove suffix: ${text% Programming}"
+
+# Case conversion
+echo "Uppercase: ${text^^}"
+echo "Lowercase: ${text,,}"
+echo "Title case: ${text^}"
