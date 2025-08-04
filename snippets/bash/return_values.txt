@@ -1,0 +1,67 @@
+#!/bin/bash
+
+# Function returning exit status
+check_file_exists() {
+    if [[ -f "$1" ]]; then
+        return 0  # Success
+    else
+        return 1  # Failure
+    fi
+}
+
+# Function returning computed value via echo
+factorial() {
+    local n=$1
+    if [[ $n -le 1 ]]; then
+        echo 1
+    else
+        local prev=$(factorial $((n - 1)))
+        echo $((n * prev))
+    fi
+}
+
+# Function returning multiple values
+get_file_info() {
+    local file=$1
+    if [[ -f $file ]]; then
+        local size=$(stat -c%s "$file")
+        local lines=$(wc -l < "$file")
+        echo "$size $lines"
+        return 0
+    else
+        echo "0 0"
+        return 1
+    fi
+}
+
+# Function with global variable modification
+counter=0
+increment_counter() {
+    ((counter++))
+    echo "Counter is now: $counter"
+}
+
+# Using return values
+if check_file_exists "/etc/passwd"; then
+    echo "Password file exists"
+fi
+
+result=$(factorial 5)
+echo "Factorial of 5: $result"
+
+if info=$(get_file_info "script.sh"); then
+    read size lines <<< "$info"
+    echo "File size: $size bytes, Lines: $lines"
+fi
+
+increment_counter
+increment_counter
+echo "Final counter: $counter"
+
+# Function returning array-like data
+get_system_info() {
+    echo "$(hostname) $(uptime | awk '{print $3}') $(whoami)"
+}
+
+read host uptime user <<< "$(get_system_info)"
+echo "Host: $host, Uptime: $uptime, User: $user"

@@ -124,6 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
             selected_menus: 'snippets/bash/selected_menus.txt',
             function_basics: 'snippets/bash/function.txt',
             function_parameters: 'snippets/bash/parameters.txt',
+            return_values: 'snippets/bash/return_values.txt',
             
         },
         c: {
