@@ -1,0 +1,83 @@
+#!/bin/bash
+
+# Global variables
+global_var="I am global"
+counter=0
+
+# Function with local variables
+demo_local() {
+    local local_var="I am local"
+    local global_var="Local override"  # Shadows global
+    local -i number=42  # Local integer
+    local -a array=("a" "b" "c")  # Local array
+    local -r readonly_local="Cannot change"  # Local readonly
+    
+    echo "Inside function:"
+    echo "  Local var: $local_var"
+    echo "  Global var (shadowed): $global_var"
+    echo "  Number: $number"
+    echo "  Array: ${array[@]}"
+    echo "  Readonly: $readonly_local"
+    
+    # Modify global counter
+    ((counter++))
+    
+    # Try to modify readonly (will fail)
+    # readonly_local="new value"  # Error
+}
+
+# Function without local variables (bad practice)
+demo_global() {
+    bad_var="This becomes global!"
+    global_var="Modified global"
+}
+
+# Nested function scope
+outer_function() {
+    local outer_var="From outer"
+    
+    inner_function() {
+        local inner_var="From inner"
+        echo "Inner can see: $outer_var"
+        echo "Inner local: $inner_var"
+    }
+    
+    inner_function
+    # echo "$inner_var"  # Error: not accessible
+}
+
+# Function with local parameter processing
+process_files() {
+    local -a files=("$@")  # Copy parameters to local array
+    local file_count=${#files[@]}
+    local processed=0
+    
+    echo "Processing $file_count files..."
+    
+    for file in "${files[@]}"; do
+        if [[ -f $file ]]; then
+            echo "Processing: $file"
+            ((processed++))
+        fi
+    done
+    
+    echo "Processed $processed files"
+}
+
+# Demonstrate scope
+echo "Before functions:"
+echo "  Global var: $global_var"
+echo "  Counter: $counter"
+
+demo_local
+echo "After demo_local:"
+echo "  Global var: $global_var"  # Unchanged
+echo "  Counter: $counter"  # Modified
+
+demo_global
+echo "After demo_global:"
+echo "  Global var: $global_var"  # Modified
+echo "  Bad var: ${bad_var:-'not set'}"  # Now global
+
+outer_function
+process_files *.txt

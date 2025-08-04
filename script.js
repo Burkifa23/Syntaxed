@@ -125,6 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
             function_basics: 'snippets/bash/function.txt',
             function_parameters: 'snippets/bash/parameters.txt',
             return_values: 'snippets/bash/return_values.txt',
+            local_varibles: 'snippets/bash/local_variables.txt',
             
         },
         c: {
