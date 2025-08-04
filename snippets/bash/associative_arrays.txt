@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# Declare associative array
+declare -A config
+declare -A colors
+
+# Assignment
+config["host"]="localhost"
+config["port"]="8080"
+config["timeout"]="30"
+
+colors=([red]="#FF0000" [green]="#00FF00" [blue]="#0000FF")
+
+# Access values
+echo "Host: ${config[host]}"
+echo "Port: ${config[port]}"
+
+# All keys and values
+echo "Config keys: ${!config[@]}"
+echo "Config values: ${config[@]}"
+
+# Iterate associative array
+for key in "${!config[@]}"; do
+    echo "$key = ${config[$key]}"
+done
+
+# Check if key exists
+if [[ -n "${config[host]}" ]]; then
+    echo "Host is configured"
+fi
