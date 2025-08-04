@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# Readonly variables
+readonly APP_NAME="MyApp"
+readonly VERSION="1.0.0"
+readonly -a ALLOWED_USERS=("admin" "user" "guest")
+
+# Readonly functions
+readonly -f critical_function() {
+    echo "This function cannot be redefined"
+}
+
+# Environment constants
+readonly CONFIG_DIR="/etc/myapp"
+readonly LOG_FILE="/var/log/myapp.log"
+
+# Display readonly variables
+echo "App: $APP_NAME v$VERSION"
+echo "Allowed users: ${ALLOWED_USERS[@]}"
+
+# Attempt to modify (will fail)
+# APP_NAME="NewApp"  # Error: readonly variable
+
+# Check if variable is readonly
+if readonly -p | grep -q "APP_NAME"; then
+    echo "APP_NAME is readonly"
+fi

@@ -105,6 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
             numeric_operations: 'snippets/bash/numbers.txt',
             arrays: 'snippets/bash/arrays.txt',
             associative_arrays: 'snippets/bash/associative_arrays.txt',
+            readonly_and_constants: 'snippets/bash/readonly.txt',
         },
         c: {
             start: 'snippets/c/hello.txt'
