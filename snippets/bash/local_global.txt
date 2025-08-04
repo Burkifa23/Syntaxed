@@ -1,0 +1,28 @@
+#!/bin/bash
+
+global_var="I'm global"
+
+function demonstrate_scope() {
+    local local_var="I'm local"
+    local global_var="I'm local override"
+    
+    echo "Inside function:"
+    echo "  Local: $local_var"
+    echo "  Global (overridden): $global_var"
+    
+    # Modify global variable
+    global_counter=$((global_counter + 1))
+}
+
+global_counter=0
+
+echo "Before function:"
+echo "  Global: $global_var"
+echo "  Counter: $global_counter"
+
+demonstrate_scope
+
+echo "After function:"
+echo "  Global: $global_var"  # Unchanged
+echo "  Counter: $global_counter"  # Modified
+# echo "  Local: $local_var"  # Error: not defined
