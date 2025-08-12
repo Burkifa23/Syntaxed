@@ -1,0 +1,19 @@
+#include <stdio.h>
+
+int main(){
+
+    int age = 20, has_license = 1, has_car = 0;
+    
+    if (age >= 18 && has_license) {
+        printf("Can legally drive\n");
+        if (has_car) {
+            printf("Ready to drive!\n");
+        } else {
+            printf("Need a car though...\n");
+        }
+    } else {
+        printf("Cannot drive yet\n");
+    }
+    
+    return 0;
+}

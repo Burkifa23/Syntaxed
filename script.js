@@ -154,6 +154,7 @@ document.addEventListener("DOMContentLoaded", () => {
             tenary_operator: 'snippets/c/tenary-operator.txt',
             basic_switch: 'snippets/c/basic-switch.txt',
             fall_through_switch: 'snippets/c/fall-through-switch.txt',
+            boolean_logic_control_flow: 'snippets/c/boolean-logic-control-flow.txt',
         },
         clojure: {
             start: 'snippets/clojure/hello.txt'
