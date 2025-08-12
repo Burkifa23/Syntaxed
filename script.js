@@ -155,6 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
             basic_switch: 'snippets/c/basic-switch.txt',
             fall_through_switch: 'snippets/c/fall-through-switch.txt',
             boolean_logic_control_flow: 'snippets/c/boolean-logic-control-flow.txt',
+            de_morgan_law: 'snippets/c/demorgan-law.txt',
         },
         clojure: {
             start: 'snippets/clojure/hello.txt'
