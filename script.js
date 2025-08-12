@@ -153,6 +153,7 @@ document.addEventListener("DOMContentLoaded", () => {
             nested_if: 'snippets/c/nested-if.txt',
             tenary_operator: 'snippets/c/tenary-operator.txt',
             basic_switch: 'snippets/c/basic-switch.txt',
+            fall_through_switch: 'snippets/c/fall-through-switch.txt',
         },
         clojure: {
             start: 'snippets/clojure/hello.txt'

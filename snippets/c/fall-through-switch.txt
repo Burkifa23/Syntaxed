@@ -1,0 +1,41 @@
+#include <stdio.h>
+
+int main() {
+    char day_code;
+    printf("Enter day code (M/T/W/R/F/S/U): ");
+    scanf(" %c", &day_code);
+    
+    switch (day_code) {
+        case 'M':
+        case 'm':
+            printf("Monday - Start of work week\n");
+            break;
+        case 'T':
+        case 't':
+            printf("Tuesday - Getting into the groove\n");
+            break;
+        case 'W':
+        case 'w':
+            printf("Wednesday - Hump day\n");
+            break;
+        case 'R':
+        case 'r':
+            printf("Thursday - Almost there\n");
+            break;
+        case 'F':
+        case 'f':
+            printf("Friday - TGIF!\n");
+            break;
+        case 'S':
+        case 's':
+        case 'U':
+        case 'u':
+            printf("Weekend - Time to relax\n");
+            break;
+        default:
+            printf("Invalid day code\n");
+    }
+    
+    return 0;
+
+}
