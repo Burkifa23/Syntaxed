@@ -1,0 +1,10 @@
+#include <stdio.h>
+
+int main() {
+    printf("\n=== OPERATOR PRECEDENCE ===\n");
+    printf("2 + 3 * 4 = %d\n", 2 + 3 * 4);
+    printf("(2 + 3) * 4 = %d\n", (2 + 3) * 4);
+    printf("10 > 5 && 3 < 7 = %d\n", 10 > 5 && 3 < 7);
+    
+    return 0;
+}
