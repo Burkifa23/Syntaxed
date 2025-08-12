@@ -151,6 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
             control_flow: 'snippets/c/control-flow.txt',
             if_else: 'snippets/c/if-else.txt',
             nested_if: 'snippets/c/nested-if.txt',
+            tenary_operator: 'snippets/c/tenary-operator.txt',
         },
         clojure: {
             start: 'snippets/clojure/hello.txt'

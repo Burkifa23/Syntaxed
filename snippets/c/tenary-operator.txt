@@ -1,0 +1,15 @@
+#include <stdio.h>
+
+int main() {
+    int score;
+    printf("Enter your test score (0-100): ");
+    scanf("%d", &score);
+
+    char *status = (score >= 60) ? "Pass" : "Fail";
+    printf("Result using ternary: %s\n", status);
+    
+    int max = (score > 85) ? score : 85;
+    printf("Max of score and 85: %d\n", max);
+    
+    return 0;
+}
