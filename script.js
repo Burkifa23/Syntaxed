@@ -149,6 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
             compound_assignment_operators: 'snippets/c/compound-assignment.txt',
             operators_precendence: 'snippets/c/operator-precedence.txt',
             control_flow: 'snippets/c/control-flow.txt',
+            if_else: 'snippets/c/if-else.txt',
         },
         clojure: {
             start: 'snippets/clojure/hello.txt'

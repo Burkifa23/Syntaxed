@@ -1,0 +1,30 @@
+#include <stdio.h>
+
+int main() {
+    int score;
+    char letter_grade;
+
+    printf("Enter your test score (0-100): ");
+    scanf("%d", &score);
+    
+    if (score >= 90) {
+        letter_grade = 'A';
+        printf("Excellent work!\n");
+    } else if (score >= 80) {
+        letter_grade = 'B';
+        printf("Good job!\n");
+    } else if (score >= 70) {
+        letter_grade = 'C';
+        printf("Satisfactory.\n");
+    } else if (score >= 60) {
+        letter_grade = 'D';
+        printf("Needs improvement.\n");
+    } else {
+        letter_grade = 'F';
+        printf("Failed. Please study more.\n");
+    }
+    
+    printf("Your grade: %c\n\n", letter_grade);
+    return 0;
+
+}
