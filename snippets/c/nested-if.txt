@@ -1,0 +1,27 @@
+#include <stdio.h>
+
+int main() {
+    int score;
+    printf("Enter your test score (0-100): ");
+    scanf("%d", &score);
+
+    if (score >= 0 && score <= 100) {
+        if (score >= 95) {
+            printf("Perfect score range!\n");
+        } else if (score >= 85) {
+            printf("Honor roll!\n");
+        }
+        
+        // Check if passing
+        if (score >= 60) {
+            printf("Status: PASSED\n");
+        } else {
+            printf("Status: FAILED\n");
+        }
+    } else {
+        printf("Invalid score entered!\n");
+    }
+    
+    return 0;
+
+}

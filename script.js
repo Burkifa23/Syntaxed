@@ -150,6 +150,7 @@ document.addEventListener("DOMContentLoaded", () => {
             operators_precendence: 'snippets/c/operator-precedence.txt',
             control_flow: 'snippets/c/control-flow.txt',
             if_else: 'snippets/c/if-else.txt',
+            nested_if: 'snippets/c/nested-if.txt',
         },
         clojure: {
             start: 'snippets/clojure/hello.txt'
