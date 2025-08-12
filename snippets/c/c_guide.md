@@ -55,6 +55,35 @@ double: 8 bytes (15-17 significant digits)
 ---
 
 - **operators-expressions.txt** - Arithmetic, logical, comparison operators, operator precedence
+
+<details>
+<summary>Operators & Expressions Guide</summary>
+
+### OPERATOR PRECEDENCE (highest to lowest):
+ 1. () [] -> .
+ 2. ! ~ ++ -- + - * & (unary)
+ 3. * / %
+ 4. + -
+ 5. << >>
+ 6. < <= > >=
+ 7. == !=
+ 8. & (bitwise AND)
+ 9. ^ (bitwise XOR)
+ 10. | (bitwise OR)
+ 11. && (logical AND)
+ 12. || (logical OR)
+ 13. = += -= *= /= %= (assignment)
+ 
+### COMMON PITFALLS:
+ - Integer division truncates (15/4 = 3, t 3.75)
+ - Modulus with negative numbers can be icky
+ - Assignment vs comparison (= vs ==)
+ - Short-circuit evaluation in logical erators
+ 
+</details>
+
+---
+
 - **control-flow.txt** - if/else, switch statements, conditional logic, boolean expressions
 - **loops.txt** - for, while, do-while loops, break, continue, nested loops
 - **functions-basics.txt** - Function declaration, definition, parameters, return values, scope
