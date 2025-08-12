@@ -1,0 +1,11 @@
+#include <stdio.h>
+
+int main() {
+    int result = 20;
+    printf("Initial result: %d\n", result);
+    result += 5;  printf("After += 5: %d\n", result);
+    result -= 3;  printf("After -= 3: %d\n", result);
+    result *= 2;  printf("After *= 2: %d\n", result);
+    result /= 4;  printf("After /= 4: %d\n", result);
+    result %= 3;  printf("After %%= 3: %d\n", result);
+}

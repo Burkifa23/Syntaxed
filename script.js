@@ -143,6 +143,7 @@ document.addEventListener("DOMContentLoaded", () => {
             variables_datatypes: 'snippets/c/variables-datatypes.txt',
             user_input: 'snippets/c/user-input.txt',
             operators_expressions: 'snippets/c/operators-expressions.txt',
+            compound_assignment_operators: 'snippets/c/compound-assignment.txt',
             operators_precendence: 'snippets/c/operators-precedence.txt',
             control_flow: 'snippets/c/control-flow.txt',
         },
