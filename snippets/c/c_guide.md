@@ -26,6 +26,34 @@ gcc hello-world.c -o hello-world
 ---
 
 - **variables-datatypes.txt** - int, char, float, double, constants, scanf, basic I/O
+<details>
+<summary>Variables & Datatypes Guide</summary>
+
+### FORMAT SPECIFIERS:
+%d or %i - integers
+%c - characters
+%f - floats (use %.nf for n decimal places)
+%lf - doubles (for scanf)
+%s - strings
+%x - hexadecimal
+
+### MEMORY SIZES (typical):
+char: 1 byte (-128 to 127)
+int: 4 bytes (-2,147,483,648 to 2,147,483,647)
+float: 4 bytes (6-7 significant digits)
+double: 8 bytes (15-17 significant digits)
+
+### COMMON PITFALLS:
+- Forgetting & in scanf for non-string types
+- Using %f for double in scanf (should be %lf)
+- Buffer issues with scanf (consider fgets for strings)
+- Constants (cannot be changed after initialization)
+- Space before %c to consume whitespace
+
+</details>
+
+---
+
 - **operators-expressions.txt** - Arithmetic, logical, comparison operators, operator precedence
 - **control-flow.txt** - if/else, switch statements, conditional logic, boolean expressions
 - **loops.txt** - for, while, do-while loops, break, continue, nested loops

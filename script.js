@@ -139,7 +139,8 @@ document.addEventListener("DOMContentLoaded", () => {
             
         },
         c: {
-            start: 'snippets/c/hello.txt'
+            start: 'snippets/c/hello.txt',
+            variables_datatypes: 'snippets/c/variables-datatypes.txt',
         },
         clojure: {
             start: 'snippets/clojure/hello.txt'

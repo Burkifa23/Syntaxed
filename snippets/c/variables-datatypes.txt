@@ -1,0 +1,39 @@
+#include <stdio.h>
+
+int main() {
+    // Basic data types
+    int age = 25;
+    char grade = 'A';
+    float height = 5.9f;
+    double precise_pi = 3.14159265;
+    
+    // Constants
+    const int MAX_STUDENTS = 100;
+    const char NEWLINE = '\n';
+    
+    // Display current values
+    printf("Initial values:\n");
+    printf("Age: %d years\n", age);
+    printf("Grade: %c\n", grade);
+    printf("Height: %.1f feet\n", height);
+    printf("Pi: %.8f\n", precise_pi);
+    printf("Max students: %d\n", MAX_STUDENTS);
+    
+    // Get user input
+    printf("\nEnter your age: ");
+    scanf("%d", &age);
+    
+    printf("Enter your grade: ");
+    scanf(" %c", &grade);
+    
+    printf("Enter your height: ");
+    scanf("%f", &height);
+    
+    // Display updated values
+    printf("\nUpdated values:\n");
+    printf("Age: %d years\n", age);
+    printf("Grade: %c\n", grade);
+    printf("Height: %.1f feet\n", height);
+    
+    return 0;
+}
