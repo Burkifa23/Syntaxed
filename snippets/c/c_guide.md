@@ -85,6 +85,30 @@ double: 8 bytes (15-17 significant digits)
 ---
 
 - **control-flow.txt** - if/else, switch statements, conditional logic, boolean expressions
+
+<details>
+<summary>Control Flow Guide</summary>
+
+### CONTROL FLOW BEST PRACTICES:
+- Always use braces {} even for single statements
+- Don't forget 'break' in switch statements (unless fall-through intended)
+- Use meaningful variable names in conditions
+- Keep conditions simple and readable
+- Consider using switch for multiple discrete values
+- Use if-else for ranges and complex conditions
+
+### COMMON PITFALLS:
+- Assignment (=) vs comparison (==) in conditions
+- Missing break statements in switch
+- Floating-point equality comparisons
+- Unintended fall-through in switch statements
+- Overly complex nested conditions
+
+</details>
+
+---
+
+
 - **loops.txt** - for, while, do-while loops, break, continue, nested loops
 - **functions-basics.txt** - Function declaration, definition, parameters, return values, scope
 - **arrays-strings.txt** - Array declaration, initialization, string basics, character arrays

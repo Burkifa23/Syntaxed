@@ -1,0 +1,155 @@
+#include <stdio.h>
+
+int main() {
+    int score, choice;
+    char letter_grade;
+    
+    // BASIC IF-ELSE STATEMENT
+    printf("=== BASIC IF-ELSE ===\n");
+    printf("Enter your test score (0-100): ");
+    scanf("%d", &score);
+    
+    if (score >= 90) {
+        letter_grade = 'A';
+        printf("Excellent work!\n");
+    } else if (score >= 80) {
+        letter_grade = 'B';
+        printf("Good job!\n");
+    } else if (score >= 70) {
+        letter_grade = 'C';
+        printf("Satisfactory.\n");
+    } else if (score >= 60) {
+        letter_grade = 'D';
+        printf("Needs improvement.\n");
+    } else {
+        letter_grade = 'F';
+        printf("Failed. Please study more.\n");
+    }
+    
+    printf("Your grade: %c\n\n", letter_grade);
+    
+    // NESTED IF STATEMENTS
+    printf("=== NESTED IF STATEMENTS ===\n");
+    if (score >= 0 && score <= 100) {
+        if (score >= 95) {
+            printf("Perfect score range!\n");
+        } else if (score >= 85) {
+            printf("Honor roll!\n");
+        }
+        
+        // Check if passing
+        if (score >= 60) {
+            printf("Status: PASSED\n");
+        } else {
+            printf("Status: FAILED\n");
+        }
+    } else {
+        printf("Invalid score entered!\n");
+    }
+    
+    // TERNARY OPERATOR (conditional operator)
+    printf("\n=== TERNARY OPERATOR ===\n");
+    char *status = (score >= 60) ? "Pass" : "Fail";
+    printf("Result using ternary: %s\n", status);
+    
+    int max = (score > 85) ? score : 85;
+    printf("Max of score and 85: %d\n", max);
+    
+    // SWITCH STATEMENT
+    printf("\n=== SWITCH STATEMENT ===\n");
+    printf("Choose an option:\n");
+    printf("1. Add\n2. Subtract\n3. Multiply\n4. Divide\n");
+    printf("Enter choice (1-4): ");
+    scanf("%d", &choice);
+    
+    int num1 = 10, num2 = 5;
+    float result;
+    
+    switch (choice) {
+        case 1:
+            result = num1 + num2;
+            printf("%d + %d = %.1f\n", num1, num2, result);
+            break;
+        case 2:
+            result = num1 - num2;
+            printf("%d - %d = %.1f\n", num1, num2, result);
+            break;
+        case 3:
+            result = num1 * num2;
+            printf("%d * %d = %.1f\n", num1, num2, result);
+            break;
+        case 4:
+            if (num2 != 0) {
+                result = (float)num1 / num2;
+                printf("%d / %d = %.2f\n", num1, num2, result);
+            } else {
+                printf("Error: Division by zero!\n");
+            }
+            break;
+        default:
+            printf("Invalid choice!\n");
+            break;
+    }
+    
+    // SWITCH WITH MULTIPLE CASES
+    printf("\n=== SWITCH WITH FALL-THROUGH ===\n");
+    char day_code;
+    printf("Enter day code (M/T/W/R/F/S/U): ");
+    scanf(" %c", &day_code);
+    
+    switch (day_code) {
+        case 'M':
+        case 'm':
+            printf("Monday - Start of work week\n");
+            break;
+        case 'T':
+        case 't':
+            printf("Tuesday - Getting into the groove\n");
+            break;
+        case 'W':
+        case 'w':
+            printf("Wednesday - Hump day\n");
+            break;
+        case 'R':
+        case 'r':
+            printf("Thursday - Almost there\n");
+            break;
+        case 'F':
+        case 'f':
+            printf("Friday - TGIF!\n");
+            break;
+        case 'S':
+        case 's':
+        case 'U':
+        case 'u':
+            printf("Weekend - Time to relax\n");
+            break;
+        default:
+            printf("Invalid day code\n");
+    }
+    
+    // BOOLEAN EXPRESSIONS AND LOGIC
+    printf("\n=== BOOLEAN EXPRESSIONS ===\n");
+    int age = 20, has_license = 1, has_car = 0;
+    
+    // Complex boolean expressions
+    if (age >= 18 && has_license) {
+        printf("Can legally drive\n");
+        if (has_car) {
+            printf("Ready to drive!\n");
+        } else {
+            printf("Need a car though...\n");
+        }
+    } else {
+        printf("Cannot drive yet\n");
+    }
+    
+    // De Morgan's laws demonstration
+    int a = 1, b = 0;
+    printf("a = %d, b = %d\n", a, b);
+    printf("!(a && b) = %d\n", !(a && b));
+    printf("(!a || !b) = %d\n", (!a || !b));
+    printf("These should be equal (De Morgan's Law)\n");
+    
+    return 0;
+}
