@@ -3,6 +3,28 @@
 
 ### 1. Fundamentals & Syntax (8 snippets)
 - **hello-world.txt** - Basic program structure, main function, printf, compilation basics
+<details>
+<summary>Hello World Guide</summary>
+
+### COMPILATION BASICS:
+gcc hello-world.c -o hello-world
+./hello-world
+
+### BREAKDOWN:
+- #include <stdio.h>: Includes standard input/output library
+- int main(): Function that returns an integer (exit status)
+- printf(): Function to print formatted output
+- \n: Newline character
+- return 0: Indicates successful program termination
+
+### COMMON PITFALLS:
+- Forgetting semicolons after statements
+- Missing return statement in main
+- Not including necessary header files
+</details>
+
+---
+
 - **variables-datatypes.txt** - int, char, float, double, constants, scanf, basic I/O
 - **operators-expressions.txt** - Arithmetic, logical, comparison operators, operator precedence
 - **control-flow.txt** - if/else, switch statements, conditional logic, boolean expressions
