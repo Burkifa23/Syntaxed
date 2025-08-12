@@ -152,6 +152,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if_else: 'snippets/c/if-else.txt',
             nested_if: 'snippets/c/nested-if.txt',
             tenary_operator: 'snippets/c/tenary-operator.txt',
+            basic_switch: 'snippets/c/basic-switch.txt',
         },
         clojure: {
             start: 'snippets/clojure/hello.txt'
