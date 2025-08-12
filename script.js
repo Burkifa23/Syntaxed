@@ -141,6 +141,7 @@ document.addEventListener("DOMContentLoaded", () => {
         c: {
             start: 'snippets/c/hello.txt',
             variables_datatypes: 'snippets/c/variables-datatypes.txt',
+            user_input: 'snippets/c/user-input.txt',
             operators_expressions: 'snippets/c/operators-expressions.txt',
             control_flow: 'snippets/c/control-flow.txt',
         },
