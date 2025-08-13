@@ -157,6 +157,7 @@ document.addEventListener("DOMContentLoaded", () => {
             de_morgan_law: 'snippets/c/demorgan-law.txt',
             for_loop: 'snippets/c/for.txt',
             while_loop: 'snippets/c/while.txt',
+            do_while_loop: 'snippets/c/do-while.txt',
         },
         clojure: {
             start: 'snippets/clojure/hello.txt'
