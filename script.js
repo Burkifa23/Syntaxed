@@ -161,6 +161,7 @@ document.addEventListener("DOMContentLoaded", () => {
             break_continue: 'snippets/c/break-continue.txt',
             nested_loops: 'snippets/c/nested-loops.txt',
             sum_of_digits: 'snippets/c/sum-digits.txt',
+            prime_number: 'snippets/c/prime-number.txt',
         },
         clojure: {
             start: 'snippets/clojure/hello.txt'
