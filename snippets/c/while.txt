@@ -1,0 +1,28 @@
+#include <stdio.h>
+
+int main() {
+    int n, choice;
+
+    printf("Enter a positive number to calculate factorial: ");
+    scanf("%d", &n);
+    
+    int factorial = 1;
+    int temp = n;
+    while (temp > 0) {
+        factorial *= temp;
+        temp--;
+    }
+    printf("%d! = %d\n\n", n, factorial);
+    
+    // Input validation with while loop
+    printf("Enter a number between 1 and 10: ");
+    scanf("%d", &choice);
+    while (choice < 1 || choice > 10) {
+        printf("Invalid! Please enter 1-10: ");
+        scanf("%d", &choice);
+    }
+    printf("You entered: %d\n\n", choice);
+
+    return 0;
+
+}

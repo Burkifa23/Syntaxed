@@ -156,6 +156,7 @@ document.addEventListener("DOMContentLoaded", () => {
             boolean_logic_control_flow: 'snippets/c/boolean-logic-control-flow.txt',
             de_morgan_law: 'snippets/c/demorgan-law.txt',
             for_loop: 'snippets/c/for.txt',
+            while_loop: 'snippets/c/while.txt',
         },
         clojure: {
             start: 'snippets/clojure/hello.txt'
