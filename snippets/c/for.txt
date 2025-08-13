@@ -1,0 +1,35 @@
+#include <stdio.h>
+
+int main() {
+    int i,j;
+
+    printf("Counting from 1 to 10:\n");
+    for (i = 1; i <= 10; i++) {
+        printf("%d ", i);
+    }
+    printf("\n\n");
+    
+    // Counting backwards
+    printf("Countdown: ");
+    for (i = 5; i >= 1; i--) {
+        printf("%d ", i);
+    }
+    printf("Blast off!\n");
+    
+    // Step by 2
+    printf("Even numbers 2-20: ");
+    for (i = 2; i <= 20; i += 2) {
+        printf("%d ", i);
+    }
+    printf("\n");
+    
+    // Multiple variables in for loop
+    printf("Demonstration of multiple variables:\n");
+    for (i = 0, j = 10; i < 5; i++, j--) {
+        printf("i = %d, j = %d\n", i, j);
+    }
+    printf("\n");
+
+    return 0;
+
+}
