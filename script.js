@@ -160,6 +160,7 @@ document.addEventListener("DOMContentLoaded", () => {
             do_while_loop: 'snippets/c/do-while.txt',
             break_continue: 'snippets/c/break-continue.txt',
             nested_loops: 'snippets/c/nested-loops.txt',
+            sum_of_digits: 'snippets/c/sum-digits.txt',
         },
         clojure: {
             start: 'snippets/clojure/hello.txt'

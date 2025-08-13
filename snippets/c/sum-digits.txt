@@ -1,0 +1,20 @@
+#include <stdio.h>
+
+int main(){
+    int n, sum, temp;
+
+    printf("Enter a number to find sum of digits: ");
+    scanf("%d", &n);
+    sum = 0;
+    temp = n;
+    while (temp > 0) {
+        // Add last digit to sum
+        sum += temp % 10;
+        // Remove last digit
+        temp /= 10;
+    }
+    printf("Sum of digits of %d = %d\n", n, sum);
+
+    return 0;
+
+}
