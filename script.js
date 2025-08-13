@@ -158,6 +158,7 @@ document.addEventListener("DOMContentLoaded", () => {
             for_loop: 'snippets/c/for.txt',
             while_loop: 'snippets/c/while.txt',
             do_while_loop: 'snippets/c/do-while.txt',
+            break_continue: 'snippets/c/break-continue.txt',
         },
         clojure: {
             start: 'snippets/clojure/hello.txt'
