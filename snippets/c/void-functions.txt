@@ -1,0 +1,23 @@
+#include <stdio.h>
+
+void print_greeting(void);
+void print_separator(char c, int length);
+
+
+int main() {
+    print_greeting();
+    print_separator('-', 10);
+    return 0;
+
+}
+
+void print_greeting(void) {
+    printf("Hello, C\n");
+}
+
+void print_separator(char c, int length) {
+    for (int i = 0; i < length; i++) {
+        printf("%c", c);
+    }
+    printf("\n");
+}

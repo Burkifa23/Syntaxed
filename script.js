@@ -163,6 +163,7 @@ document.addEventListener("DOMContentLoaded", () => {
             sum_of_digits: 'snippets/c/sum-digits.txt',
             prime_number: 'snippets/c/prime-number.txt',
             arithmetic_functions: 'snippets/c/arithmetic-functions.txt',
+            void_functions: 'snippets/c/void-functions.txt',
         },
         clojure: {
             start: 'snippets/clojure/hello.txt'
