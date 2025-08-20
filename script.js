@@ -164,6 +164,7 @@ document.addEventListener("DOMContentLoaded", () => {
             prime_number: 'snippets/c/prime-number.txt',
             arithmetic_functions: 'snippets/c/arithmetic-functions.txt',
             void_functions: 'snippets/c/void-functions.txt',
+            recursive_function: 'snippets/c/recursive-function.txt',
         },
         clojure: {
             start: 'snippets/clojure/hello.txt'
