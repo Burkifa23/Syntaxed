@@ -165,6 +165,7 @@ document.addEventListener("DOMContentLoaded", () => {
             arithmetic_functions: 'snippets/c/arithmetic-functions.txt',
             void_functions: 'snippets/c/void-functions.txt',
             recursive_function: 'snippets/c/recursive-function.txt',
+            function_with_pointer: 'snippets/c/pointer-function.txt',
         },
         clojure: {
             start: 'snippets/clojure/hello.txt'

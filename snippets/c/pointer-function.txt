@@ -1,0 +1,21 @@
+#include <stdio.h>
+
+void swap_values(int *a, int *b);
+
+int main() {
+    int num1 = 10, num2 = 20;
+
+    printf("Before swap: num1 = %d, num2 = %d\n", num1, num2);
+    swap_values(&num1, &num2);
+    printf("After swap: num1 = %d, num2 = %d\n", num1, num2);
+    
+    return 0;
+
+
+}
+
+void swap_values(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
