@@ -142,6 +142,39 @@ double: 8 bytes (15-17 significant digits)
 </details>
 
 - **functions-basics** - Function declaration, definition, parameters, return values, scope
+
+<details>
+<summary>Functions</summary>
+
+ ### FUNCTION BEST PRACTICES:
+ - Keep functions small and focused on single task
+ - Use meaningful function and parameter names
+ - Always declare function prototypes
+ - Handle error conditions appropriately
+ - Minimize use of global variables
+ - Document complex functions
+  
+ ### SCOPE RULES:
+ - Local variables: Accessible only within the function
+ - Global variables: Accessible from any function
+ - Function parameters: Local to the function
+ - Static variables: Retain values between function calls
+  
+ ### PARAMETER PASSING:
+ - Pass by value: Function receives copy of variable
+  - Pass by reference: Function receives address of variable (using pointers)
+ 
+ ### COMMON PITFALLS:
+ - Forgetting to declare function prototypes
+ - Confusion between local and global variables
+ - Not handling edge cases in functions
+ - Infinite recursion without proper base case
+ - Modifying parameters thinking it affects original variables
+
+ ---
+ 
+</details>
+  
 - **arrays-strings** - Array declaration, initialization, string basics, character arrays
 - **preprocessor** - #include, #define, macros, conditional compilation, header files
 
