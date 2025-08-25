@@ -167,6 +167,7 @@ document.addEventListener("DOMContentLoaded", () => {
             recursive_function: 'snippets/c/recursive-function.txt',
             function_with_pointer: 'snippets/c/pointer-function.txt',
             find_max: 'snippets/c/find-max.txt',
+            power_function: 'snippets/c/power-function.txt',
         },
         clojure: {
             start: 'snippets/clojure/hello.txt'
