@@ -1,0 +1,46 @@
+#include <stdio.h>
+#include <string.h>
+
+int main(){
+
+    // STRING MANIPULATION
+    
+    char str1[50] = "Hello";
+    char str2[50] = "World";
+    char str3[100];
+    
+    // String length
+    printf("Length of '%s': %lu\n", str1, strlen(str1));
+    
+    // String copy
+    strcpy(str3, str1);
+    printf("After strcpy: str3 = '%s'\n", str3);
+    
+    // String concatenation
+    strcat(str1, " ");
+    strcat(str1, str2);
+    printf("After concatenation: '%s'\n", str1);
+    
+    // String comparison
+    char word1[] = "apple";
+    char word2[] = "banana";
+    char word3[] = "apple";
+    
+    printf("Comparing '%s' and '%s': %d\n", word1, word2, strcmp(word1, word2));
+    printf("Comparing '%s' and '%s': %d\n", word1, word3, strcmp(word1, word3));
+    
+    // CHARACTER ARRAY MANIPULATION    
+    char sentence[] = "The Quick Brown Fox";
+    printf("Original: %s\n", sentence);
+    
+    // Convert to lowercase
+    for (int i = 0; sentence[i] != '\0'; i++) {
+        if (sentence[i] >= 'A' && sentence[i] <= 'Z') {
+            // Convert to lowercase
+            sentence[i] = sentence[i] + 32;
+        }
+    }
+    printf("Lowercase: %s\n", sentence);  
+    
+    return 0;
+}
