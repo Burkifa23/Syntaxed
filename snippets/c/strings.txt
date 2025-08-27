@@ -1,0 +1,43 @@
+#include <stdio.h>
+// For string functions
+#include <string.h>
+
+int main() {
+    
+    // STRING BASICS    
+    // Different ways to declare strings
+    char name1[20] = "Alice";           // Character array
+    char name2[] = "Bob";               // Size automatically determined
+    char name3[20];                     // Uninitialized
+    char message[] = {'H','e','l','l','o','\0'};  // Manual character array
+    
+    // Get string input
+    printf("Enter your name: ");
+    scanf("%19s", name3);  // Limit input to prevent buffer overflow
+    
+    printf("Name1: %s\n", name1);
+    printf("Name2: %s\n", name2);
+    printf("Name3: %s\n", name3);
+    printf("Message: %s\n", message);
+    
+    // STRING INFORMATION
+    print_string_info(name1);
+    print_string_info(name2);
+    print_string_info("Hello, World!");
+    
+    
+    return 0;
+}
+
+void print_string_info(char str[]) {
+    printf("String: '%s'\n", str);
+    printf("  Length: %lu\n", strlen(str));
+    printf("  First character: '%c'\n", str[0]);
+    printf("  Last character: '%c'\n", str[strlen(str) - 1]);
+    printf("  Memory representation: ");
+    for (int i = 0; str[i] != '\0'; i++) {
+        printf("'%c'(%d) ", str[i], str[i]);
+    }
+    printf("'\\0'(0)\n\n");
+}
+
