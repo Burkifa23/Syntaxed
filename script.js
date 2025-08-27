@@ -171,6 +171,14 @@ document.addEventListener("DOMContentLoaded", () => {
             basic_arrays: 'snippets/c/basic-arrays.txt',
             multidimensional_arrays: 'snippets/c/multidimensional-arrays.txt',
             treasure_map_game: 'snippets/c/treasure-map.txt',
+            strings: 'snippets/c/strings.txt',
+            string_manipulation: 'snippets/c/string-manipulation.txt',
+            character_count: 'snippets/c/character-count.txt',
+            password_checker: 'snippets/c/password-checker.txt',
+            array_strings: 'snippets/c/array-strings.txt',
+            reverse_string: 'snippets/c/reverse-string.txt',
+
+
         },
         clojure: {
             start: 'snippets/clojure/hello.txt'
