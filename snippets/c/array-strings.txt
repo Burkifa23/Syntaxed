@@ -1,0 +1,19 @@
+#include <stdio.h>
+
+int main() {
+    
+    // ARRAY OF STRINGS
+    char colors[][10] = {"Red", "Green", "Blue", "Yellow", "Purple"};
+    char *fruits[] = {"Apple", "Banana", "Orange", "Grape"};
+    
+    printf("Colors:\n");
+    for (int i = 0; i < 5; i++) {
+        printf("%d. %s\n", i+1, colors[i]);
+    }
+    
+    printf("\nFruits:\n");
+    for (int i = 0; i < 4; i++) {
+        printf("%d. %s\n", i+1, fruits[i]);
+    }
+    return 0;
+}
