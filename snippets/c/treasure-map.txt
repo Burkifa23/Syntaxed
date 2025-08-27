@@ -1,0 +1,89 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+#define ROWS 5
+#define COLS 5
+
+// Function prototype to print the map
+void print_map(char map[ROWS][COLS]);
+
+// Function prototype to check if a move is valid
+bool is_valid_move(int row, int col);
+
+// Function prototype to check if treasure is found
+bool check_for_treasure(char map[ROWS][COLS], int row, int col);
+
+int main() {
+    // A 2D array representing the game map
+    char treasure_map[ROWS][COLS] = {
+        {'.', '.', 'X', '.', '.'},
+        {'.', 'X', '.', 'T', '.'},
+        {'.', '.', '.', 'X', '.'},
+        {'.', 'X', '.', '.', '.'},
+        {'S', '.', '.', '.', '.'}
+    };
+    
+    int player_row = 4;
+    int player_col = 0;
+    
+    printf("Welcome to Treasure Hunt! Use WASD to move. Find the treasure 'T'!\n");
+    
+    while (true) {
+        // Update the map with the player's position
+        treasure_map[player_row][player_col] = 'P';
+        print_map(treasure_map);
+        
+        // Check for win condition
+        if (check_for_treasure(treasure_map, player_row, player_col)) {
+            printf("\nCongratulations! You found the treasure!\n");
+            break;
+        }
+
+        printf("Enter your move (w, a, s, d): ");
+        char move;
+        scanf(" %c", &move);
+
+        // Reset the player's old position on the map
+        treasure_map[player_row][player_col] = '.';
+
+        int new_row = player_row;
+        int new_col = player_col;
+
+        switch (move) {
+            case 'w': new_row--; break;
+            case 's': new_row++; break;
+            case 'a': new_col--; break;
+            case 'd': new_col++; break;
+            default:
+                printf("Invalid move. Try again.\n");
+                continue;
+        }
+
+        if (is_valid_move(new_row, new_col)) {
+            player_row = new_row;
+            player_col = new_col;
+        } else {
+            printf("Invalid move. You hit a rock or the edge!\n");
+        }
+    }
+
+    return 0;
+}
+
+void print_map(char map[ROWS][COLS]) {
+    printf("\n");
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLS; j++) {
+            printf("%c ", map[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+bool is_valid_move(int row, int col) {
+    return (row >= 0 && row < ROWS && col >= 0 && col < COLS);
+}
+
+bool check_for_treasure(char map[ROWS][COLS], int row, int col) {
+    return map[row][col] == 'T';
+}
