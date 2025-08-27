@@ -169,6 +169,7 @@ document.addEventListener("DOMContentLoaded", () => {
             find_max: 'snippets/c/find-max.txt',
             power_function: 'snippets/c/power-function.txt',
             basic_arrays: 'snippets/c/basic-arrays.txt',
+            multidimensional_arrays: 'snippets/c/multidimensional-arrays.txt',
         },
         clojure: {
             start: 'snippets/clojure/hello.txt'
