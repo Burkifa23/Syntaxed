@@ -1,0 +1,77 @@
+#include <stdio.h>
+
+void print_array(int arr[], int size);
+int find_max(int arr[], int size);
+
+int main() {
+    
+    
+    // Array declaration and initialization
+    int numbers[5] = {10, 20, 30, 40, 50};
+    // Size determined by initializer
+    int grades[] = {85, 92, 78, 96, 88};
+    // Uninitialized array
+    int scores[10];  
+    
+    // Initialize array with zeros
+    // Only first element explicitly set, rest are 0
+    int zeros[5] = {0};  
+    
+    printf("Numbers array: ");
+    print_array(numbers, 5);
+    
+    printf("Grades array: ");
+    print_array(grades, 5);
+
+    // ACCESSING AND MODIFYING ARRAYS
+    printf("First element of numbers: %d\n", numbers[0]);
+    printf("Last element of numbers: %d\n", numbers[4]);
+    
+    // Modify array elements
+    numbers[2] = 35;
+    printf("After changing third element: ");
+    print_array(numbers, 5);
+    
+    // Fill array with user input
+    printf("Enter 3 scores: ");
+    for (int i = 0; i < 3; i++) {
+        scanf("%d", &scores[i]);
+    }
+    printf("Your scores: ");
+    print_array(scores, 3);
+    
+    // ARRAY OPERATIONS
+    
+    int max_grade = find_max(grades, 5);
+    printf("Maximum grade: %d\n", max_grade);
+    
+    // Calculate average
+    int sum = 0;
+    for (int i = 0; i < 5; i++) {
+        sum += grades[i];
+    }
+    float average = (float)sum / 5;
+    printf("Average grade: %.2f\n", average);
+    
+
+    return 0;
+}
+
+void print_array(int arr[], int size) {
+    printf("[");
+    for (int i = 0; i < size; i++) {
+        printf("%d", arr[i]);
+        if (i < size - 1) printf(", ");
+    }
+    printf("]\n");
+}
+
+int find_max(int arr[], int size) {
+    int max = arr[0];
+    for (int i = 1; i < size; i++) {
+        if (arr[i] > max) {
+            max = arr[i];
+        }
+    }
+    return max;
+}

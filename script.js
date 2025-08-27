@@ -168,6 +168,7 @@ document.addEventListener("DOMContentLoaded", () => {
             function_with_pointer: 'snippets/c/pointer-function.txt',
             find_max: 'snippets/c/find-max.txt',
             power_function: 'snippets/c/power-function.txt',
+            basic_arrays: 'snippets/c/basic-arrays.txt',
         },
         clojure: {
             start: 'snippets/clojure/hello.txt'
