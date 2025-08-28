@@ -1,0 +1,299 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+// BASIC STRUCTURE DEFINITION
+struct Point {
+    int x;
+    int y;
+};
+
+// Structure with different data types
+struct Person {
+    char name[50];
+    int age;
+    float height;
+    char gender;
+};
+
+// TYPEDEF FOR CLEANER SYNTAX
+typedef struct {
+    float real;
+    float imaginary;
+} Complex;
+
+typedef struct Rectangle {
+    struct Point top_left;
+    struct Point bottom_right;
+} Rectangle;
+
+// NESTED STRUCTURES
+typedef struct {
+    char street[100];
+    char city[50];
+    char state[20];
+    int zip_code;
+} Address;
+
+typedef struct {
+    char name[50];
+    int id;
+    Address home_address;    // Nested structure
+    Address work_address;    // Nested structure
+} Employee;
+
+// STRUCTURE WITH FUNCTION POINTER
+typedef struct {
+    char name[30];
+    float balance;
+    void (*deposit)(struct BankAccount* account, float amount);
+    void (*withdraw)(struct BankAccount* account, float amount);
+    void (*display)(struct BankAccount* account);
+} BankAccount;
+
+// UNION DEFINITION
+union Data {
+    int integer;
+    float floating;
+    char string[20];
+};
+
+// Union with structure for type tracking
+typedef struct {
+    enum { TYPE_INT, TYPE_FLOAT, TYPE_STRING } type;
+    union {
+        int int_val;
+        float float_val;
+        char string_val[50];
+    } value;
+} TypedData;
+
+// BIT FIELDS
+struct Flags {
+    unsigned int is_active : 1;     // 1 bit
+    unsigned int is_visible : 1;    // 1 bit
+    unsigned int priority : 3;      // 3 bits (0-7)
+    unsigned int reserved : 3;      // 3 bits unused
+};
+
+// Function prototypes for BankAccount
+void deposit_money(BankAccount* account, float amount);
+void withdraw_money(BankAccount* account, float amount);
+void display_account(BankAccount* account);
+BankAccount create_account(const char* name, float initial_balance);
+
+int main() {
+    // BASIC STRUCTURE USAGE
+    printf("=== BASIC STRUCTURES ===\n");
+    
+    struct Point p1 = {10, 20};
+    struct Point p2;
+    p2.x = 30;
+    p2.y = 40;
+    
+    printf("Point 1: (%d, %d)\n", p1.x, p1.y);
+    printf("Point 2: (%d, %d)\n", p2.x, p2.y);
+    
+    // Structure assignment
+    struct Point p3 = p1;  // Copy all members
+    printf("Point 3 (copy of p1): (%d, %d)\n", p3.x, p3.y);
+    
+    // COMPLEX STRUCTURES
+    printf("\n=== COMPLEX STRUCTURES ===\n");
+    
+    struct Person person1;
+    strcpy(person1.name, "Alice Johnson");
+    person1.age = 28;
+    person1.height = 5.6f;
+    person1.gender = 'F';
+    
+    printf("Person: %s, Age: %d, Height: %.1f, Gender: %c\n",
+           person1.name, person1.age, person1.height, person1.gender);
+    
+    // TYPEDEF USAGE
+    printf("\n=== TYPEDEF STRUCTURES ===\n");
+    
+    Complex c1 = {3.0f, 4.0f};
+    Complex c2 = {1.0f, -2.0f};
+    
+    printf("Complex 1: %.1f + %.1fi\n", c1.real, c1.imaginary);
+    printf("Complex 2: %.1f + %.1fi\n", c2.real, c2.imaginary);
+    
+    // Complex addition
+    Complex sum = {c1.real + c2.real, c1.imaginary + c2.imaginary};
+    printf("Sum: %.1f + %.1fi\n", sum.real, sum.imaginary);
+    
+    // NESTED STRUCTURES
+    printf("\n=== NESTED STRUCTURES ===\n");
+    
+    Employee emp = {
+        .name = "John Doe",
+        .id = 12345,
+        .home_address = {
+            .street = "123 Main St",
+            .city = "Anytown",
+            .state = "CA",
+            .zip_code = 12345
+        },
+        .work_address = {
+            .street = "456 Business Ave",
+            .city = "Downtown",
+            .state = "CA", 
+            .zip_code = 54321
+        }
+    };
+    
+    printf("Employee: %s (ID: %d)\n", emp.name, emp.id);
+    printf("Home: %s, %s, %s %d\n", 
+           emp.home_address.street, emp.home_address.city,
+           emp.home_address.state, emp.home_address.zip_code);
+    printf("Work: %s, %s, %s %d\n",
+           emp.work_address.street, emp.work_address.city,
+           emp.work_address.state, emp.work_address.zip_code);
+    
+    // RECTANGLE WITH NESTED POINTS
+    Rectangle rect = {
+        .top_left = {0, 0},
+        .bottom_right = {100, 50}
+    };
+    
+    int width = rect.bottom_right.x - rect.top_left.x;
+    int height = rect.bottom_right.y - rect.top_left.y;
+    printf("\nRectangle: width=%d, height=%d, area=%d\n", width, height, width * height);
+    
+    // STRUCTURE WITH FUNCTION POINTERS
+    printf("\n=== STRUCTURES WITH FUNCTION POINTERS ===\n");
+    
+    BankAccount account = create_account("Sarah Wilson", 1000.0f);
+    account.display(&account);
+    
+    account.deposit(&account, 250.0f);
+    account.display(&account);
+    
+    account.withdraw(&account, 75.0f);
+    account.display(&account);
+    
+    // UNIONS
+    printf("\n=== UNIONS ===\n");
+    
+    union Data data;
+    
+    data.integer = 42;
+    printf("As integer: %d\n", data.integer);
+    
+    data.floating = 3.14159f;
+    printf("As float: %.5f\n", data.floating);
+    printf("Integer value now (garbage): %d\n", data.integer);  // Garbage value
+    
+    strcpy(data.string, "Hello");
+    printf("As string: %s\n", data.string);
+    printf("Float value now (garbage): %.5f\n", data.floating);  // Garbage value
+    
+    printf("Union size: %lu bytes\n", sizeof(union Data));
+    
+    // TAGGED UNIONS
+    printf("\n=== TAGGED UNIONS ===\n");
+    
+    TypedData values[] = {
+        {TYPE_INT, .value.int_val = 100},
+        {TYPE_FLOAT, .value.float_val = 3.14159f},
+        {TYPE_STRING, .value.string_val = "Hello World"}
+    };
+    
+    for (int i = 0; i < 3; i++) {
+        printf("Value %d: ", i + 1);
+        switch (values[i].type) {
+            case TYPE_INT:
+                printf("Integer: %d\n", values[i].value.int_val);
+                break;
+            case TYPE_FLOAT:
+                printf("Float: %.5f\n", values[i].value.float_val);
+                break;
+            case TYPE_STRING:
+                printf("String: %s\n", values[i].value.string_val);
+                break;
+        }
+    }
+    
+    // BIT FIELDS
+    printf("\n=== BIT FIELDS ===\n");
+    
+    struct Flags flag = {0};
+    printf("Initial flags (size: %lu bytes): ", sizeof(struct Flags));
+    printf("active=%u, visible=%u, priority=%u\n", 
+           flag.is_active, flag.is_visible, flag.priority);
+    
+    flag.is_active = 1;
+    flag.is_visible = 0;
+    flag.priority = 5;
+    
+    printf("Modified flags: active=%u, visible=%u, priority=%u\n",
+           flag.is_active, flag.is_visible, flag.priority);
+    
+    // ARRAYS OF STRUCTURES
+    printf("\n=== ARRAYS OF STRUCTURES ===\n");
+    
+    struct Point polygon[] = {
+        {0, 0}, {10, 0}, {10, 10}, {5, 15}, {0, 10}
+    };
+    
+    int num_points = sizeof(polygon) / sizeof(polygon[0]);
+    printf("Polygon vertices (%d points):\n", num_points);
+    for (int i = 0; i < num_points; i++) {
+        printf("  Point %d: (%d, %d)\n", i, polygon[i].x, polygon[i].y);
+    }
+    
+    // STRUCTURE COMPARISON
+    printf("\n=== STRUCTURE OPERATIONS ===\n");
+    
+    struct Point pa = {5, 10};
+    struct Point pb = {5, 10};
+    struct Point pc = {3, 7};
+    
+    // Note: Direct comparison doesn't work for structures
+    // printf("pa == pb: %d\n", pa == pb);  // This won't compile
+    
+    // Must compare member by member or use memcmp
+    int are_equal = (pa.x == pb.x) && (pa.y == pb.y);
+    printf("Points pa and pb are equal: %s\n", are_equal ? "Yes" : "No");
+    
+    are_equal = memcmp(&pa, &pc, sizeof(struct Point)) == 0;
+    printf("Points pa and pc are equal: %s\n", are_equal ? "Yes" : "No");
+    
+    return 0;
+}
+
+// FUNCTION DEFINITIONS FOR BANKACCOUNT
+
+void deposit_money(BankAccount* account, float amount) {
+    if (amount > 0) {
+        account->balance += amount;
+        printf("Deposited $%.2f\n", amount);
+    } else {
+        printf("Invalid deposit amount\n");
+    }
+}
+
+void withdraw_money(BankAccount* account, float amount) {
+    if (amount > 0 && amount <= account->balance) {
+        account->balance -= amount;
+        printf("Withdrew $%.2f\n", amount);
+    } else {
+        printf("Invalid withdrawal amount or insufficient funds\n");
+    }
+}
+
+void display_account(BankAccount* account) {
+    printf("Account: %s, Balance: $%.2f\n", account->name, account->balance);
+}
+
+BankAccount create_account(const char* name, float initial_balance) {
+    BankAccount account;
+    strncpy(account.name, name, sizeof(account.name) - 1);
+    account.name[sizeof(account.name) - 1] = '\0';
+    account.balance = initial_balance;
+    account.deposit = deposit_money;
+    account.withdraw = withdraw_money;
+    account.display = display_account;
+    return account;
+}

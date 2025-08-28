@@ -178,6 +178,7 @@ document.addEventListener("DOMContentLoaded", () => {
             array_strings: 'snippets/c/array-strings.txt',
             reverse_string: 'snippets/c/reverse-string.txt',
             advanced_functions: 'snippets/c/advanced-functions.txt',
+            structures_unions: 'snippets/c/structure-unions.txt',
 
 
         },

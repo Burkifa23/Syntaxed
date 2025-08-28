@@ -213,6 +213,44 @@ double: 8 bytes (15-17 significant digits)
 </details>
 
 - **structures-unions** - struct definition, member access, unions, typedef, nested structures
+
+<details>
+<summary>Structures & Unions</summary>
+
+
+/*
+ * MEMORY LAYOUT:
+ * Structures: Members stored sequentially with possible padding
+ * Unions: All members share same memory location
+ * Bit fields: Pack multiple flags into single bytes
+ * 
+ * STRUCTURE PADDING:
+ * Compiler may add padding bytes for alignment
+ * Use #pragma pack or __attribute__((packed)) to control
+ * sizeof(struct) may be larger than sum of members
+ * 
+ * STRUCTURE VS UNION:
+ * Structure: Each member has its own memory
+ * Union: All members share same memory (size = largest member)
+ * Use unions for memory efficiency when only one value needed at a time
+ * 
+ * BEST PRACTICES:
+ * - Initialize structures to avoid garbage values
+ * - Use typedef for cleaner syntax
+ * - Consider alignment and padding for performance
+ * - Use designated initializers for clarity
+ * - Be careful with unions - track which member is active
+ * 
+ * COMMON PITFALLS:
+ * - Forgetting to initialize structure members
+ * - Assuming structure layout (padding issues)
+ * - Copying structures with pointers (shallow copy)
+ * - Using wrong union member
+ * - Comparing structures directly (use memcmp or compare members)
+ */
+ ---
+</details>
+
 - **file-input-output** - fopen, fread, fwrite, file modes, error handling, text vs binary
 - **dynamic-memory** - malloc, calloc, realloc, free, memory allocation patterns
 - **pointers-introduction** - Pointer basics, address-of operator, dereferencing, pointer arithmetic
