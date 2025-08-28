@@ -389,6 +389,58 @@ double: 8 bytes (15-17 significant digits)
 </details>
 
 - **command-line-args** - argc, argv, processing command line arguments, main function variants
+
+<details>
+<summary>Command Line Arguments</summary>
+
+
+/*
+ * COMMAND LINE ARGUMENT FUNDAMENTALS:
+ * 
+ * int main(int argc, char *argv[])
+ * - argc: Argument count (includes program name)
+ * - argv: Array of argument strings
+ * - argv[0]: Always the program name/path
+ * - argv[1] to argv[argc-1]: Command line arguments
+ * 
+ * MAIN FUNCTION VARIANTS:
+ * 1. int main(void)
+ * 2. int main(int argc, char *argv[])
+ * 3. int main(int argc, char *argv[], char *envp[])
+ * 
+ * ARGUMENT TYPES:
+ * - Flags: --verbose, -v (boolean options)
+ * - Options with values: --file=name, -f name
+ * - Positional arguments: input.txt output.txt
+ * 
+ * PARSING STRATEGIES:
+ * 1. Manual parsing with string comparison
+ * 2. getopt() library (POSIX systems)
+ * 3. Third-party libraries (argparse, etc.)
+ * 
+ * ENVIRONMENT VARIABLES:
+ * - Access via envp parameter or getenv()
+ * - Set with setenv() or putenv()
+ * - Format: NAME=value
+ * 
+ * BEST PRACTICES:
+ * - Always provide --help option
+ * - Use consistent option naming
+ * - Validate argument values
+ * - Provide clear error messages
+ * - Support both short (-v) and long (--verbose) options
+ * - Handle unknown arguments gracefully
+ * 
+ * COMMON PITFALLS:
+ * - Not checking argc before accessing argv[i]
+ * - Forgetting that argv[0] is program name
+ * - Not handling missing option arguments
+ * - Case sensitivity in option names
+ * - Not resetting getopt state for multiple parsing
+ */
+---
+</details>
+
 - **modular-programming** - Multiple files, header files, extern, static, compilation units
 - **bitwise-operations** - Bit manipulation, masks, shifts, practical applications
 

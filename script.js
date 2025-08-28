@@ -182,6 +182,7 @@ document.addEventListener("DOMContentLoaded", () => {
             file_input_output: 'snippets/c/file-input-output.txt',
             dynamic_memory: 'snippets/c/dynamic-memory.txt',
             pointers_introduction: 'snippets/c/pointer-intro.txt',
+            command_line_arguments: 'snippets/c/command-line-args.txt',
 
 
         },
