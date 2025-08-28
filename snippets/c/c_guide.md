@@ -342,6 +342,52 @@ double: 8 bytes (15-17 significant digits)
 </details>
 
 - **pointers-introduction** - Pointer basics, address-of operator, dereferencing, pointer arithmetic
+
+<details>
+<summary>Pointers Introduction</summary>
+
+
+/*
+ * POINTER FUNDAMENTALS:
+ * - Pointer: Variable that stores memory address
+ * - & (address-of): Gets address of a variable
+ * - * (dereference): Gets value at address stored in pointer
+ * - NULL: Special pointer value indicating "no address"
+ * 
+ * POINTER ARITHMETIC:
+ * - ptr++ : Move to next element (adds sizeof(type) bytes)
+ * - ptr-- : Move to previous element
+ * - ptr + n : Move n elements forward
+ * - ptr2 - ptr1 : Number of elements between pointers
+ * 
+ * ARRAYS AND POINTERS:
+ * - Array name is pointer to first element
+ * - arr[i] equivalent to *(arr + i)
+ * - &arr[i] equivalent to (arr + i)
+ * 
+ * MEMORY LAYOUT:
+ * [int a][int b][int c][int d]
+ *    ^     ^     ^     ^
+ *   ptr   ptr+1 ptr+2 ptr+3
+ * 
+ * COMMON PITFALLS:
+ * - Dereferencing NULL pointers (segmentation fault)
+ * - Pointer arithmetic on void pointers
+ * - Dangling pointers (pointing to freed memory)
+ * - Buffer overruns with pointer arithmetic
+ * - Forgetting to initialize pointers
+ * - Confusing * in declaration vs dereferencing
+ * 
+ * BEST PRACTICES:
+ * - Initialize pointers to NULL
+ * - Check for NULL before dereferencing
+ * - Set pointers to NULL after freeing memory
+ * - Use const for read-only data
+ * - Be careful with pointer arithmetic bounds
+ */
+ ---
+</details>
+
 - **command-line-args** - argc, argv, processing command line arguments, main function variants
 - **modular-programming** - Multiple files, header files, extern, static, compilation units
 - **bitwise-operations** - Bit manipulation, masks, shifts, practical applications

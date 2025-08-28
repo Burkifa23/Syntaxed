@@ -181,6 +181,7 @@ document.addEventListener("DOMContentLoaded", () => {
             structures_unions: 'snippets/c/structure-unions.txt',
             file_input_output: 'snippets/c/file-input-output.txt',
             dynamic_memory: 'snippets/c/dynamic-memory.txt',
+            pointers_introduction: 'snippets/c/pointer-intro.txt',
 
 
         },

@@ -1,0 +1,445 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// Function prototypes for pointer demonstrations
+void demonstrate_basic_pointers(void);
+void demonstrate_pointer_arithmetic(void);
+void demonstrate_pointers_and_arrays(void);
+void demonstrate_pointer_to_pointers(void);
+void demonstrate_function_pointers(void);
+void demonstrate_void_pointers(void);
+void swap_integers(int *a, int *b);
+void modify_string(char *str);
+int find_max_index(int arr[], int size);
+
+int main() {
+    printf("=== POINTER FUNDAMENTALS ===\n\n");
+    
+    demonstrate_basic_pointers();
+    demonstrate_pointer_arithmetic();
+    demonstrate_pointers_and_arrays();
+    demonstrate_pointer_to_pointers();
+    demonstrate_function_pointers();
+    demonstrate_void_pointers();
+    
+    return 0;
+}
+
+void demonstrate_basic_pointers(void) {
+    printf("=== BASIC POINTERS ===\n");
+    
+    // Variable declaration and initialization
+    int number = 42;
+    float price = 19.99f;
+    char letter = 'A';
+    
+    // Pointer declarations
+    int *int_ptr;
+    float *float_ptr;
+    char *char_ptr;
+    
+    printf("Original values:\n");
+    printf("number = %d, price = %.2f, letter = '%c'\n", number, price, letter);
+    
+    // ADDRESS-OF OPERATOR (&)
+    printf("\nAddresses (using & operator):\n");
+    printf("&number = %p\n", (void*)&number);
+    printf("&price = %p\n", (void*)&price);
+    printf("&letter = %p\n", (void*)&letter);
+    
+    // Assign addresses to pointers
+    int_ptr = &number;
+    float_ptr = &price;
+    char_ptr = &letter;
+    
+    printf("\nPointer values (addresses they store):\n");
+    printf("int_ptr = %p\n", (void*)int_ptr);
+    printf("float_ptr = %p\n", (void*)float_ptr);
+    printf("char_ptr = %p\n", (void*)char_ptr);
+    
+    // DEREFERENCING OPERATOR (*)
+    printf("\nDereferencing pointers (accessing values):\n");
+    printf("*int_ptr = %d\n", *int_ptr);
+    printf("*float_ptr = %.2f\n", *float_ptr);
+    printf("*char_ptr = '%c'\n", *char_ptr);
+    
+    // MODIFYING VALUES THROUGH POINTERS
+    printf("\nModifying values through pointers:\n");
+    *int_ptr = 100;
+    *float_ptr = 25.50f;
+    *char_ptr = 'Z';
+    
+    printf("After modification:\n");
+    printf("number = %d, price = %.2f, letter = '%c'\n", number, price, letter);
+    
+    // POINTER SIZES
+    printf("\nPointer sizes:\n");
+    printf("sizeof(int*) = %zu bytes\n", sizeof(int*));
+    printf("sizeof(float*) = %zu bytes\n", sizeof(float*));
+    printf("sizeof(char*) = %zu bytes\n", sizeof(char*));
+    printf("sizeof(void*) = %zu bytes\n", sizeof(void*));
+    
+    // NULL POINTERS
+    printf("\nNULL pointers:\n");
+    int *null_ptr = NULL;
+    printf("null_ptr = %p\n", (void*)null_ptr);
+    
+    if (null_ptr == NULL) {
+        printf("null_ptr is NULL - safe to check before dereferencing\n");
+    }
+    
+    // Demonstrate function parameter passing
+    printf("\n=== PASS BY REFERENCE ===\n");
+    int a = 10, b = 20;
+    printf("Before swap: a = %d, b = %d\n", a, b);
+    swap_integers(&a, &b);
+    printf("After swap: a = %d, b = %d\n", a, b);
+    
+    printf("\n");
+}
+
+void demonstrate_pointer_arithmetic(void) {
+    printf("=== POINTER ARITHMETIC ===\n");
+    
+    int numbers[] = {10, 20, 30, 40, 50};
+    int *ptr = numbers;  // Points to first element
+    
+    printf("Array: ");
+    for (int i = 0; i < 5; i++) {
+        printf("%d ", numbers[i]);
+    }
+    printf("\n");
+    
+    printf("\nPointer arithmetic demonstration:\n");
+    printf("ptr points to: %d (address: %p)\n", *ptr, (void*)ptr);
+    
+    // INCREMENT POINTER
+    ptr++;  // Move to next integer
+    printf("After ptr++: %d (address: %p)\n", *ptr, (void*)ptr);
+    
+    ptr += 2;  // Move forward by 2 integers
+    printf("After ptr += 2: %d (address: %p)\n", *ptr, (void*)ptr);
+    
+    // DECREMENT POINTER
+    ptr--;  // Move back by 1 integer
+    printf("After ptr--: %d (address: %p)\n", *ptr, (void*)ptr);
+    
+    ptr -= 1;  // Move back by 1 integer
+    printf("After ptr -= 1: %d (address: %p)\n", *ptr, (void*)ptr);
+    
+    // POINTER DIFFERENCE
+    int *start = numbers;
+    int *end = numbers + 4;  // Points to last element
+    
+    printf("\nPointer difference:\n");
+    printf("end - start = %ld elements\n", end - start);
+    printf("This represents %ld bytes\n", (end - start) * sizeof(int));
+    
+    // ARRAY TRAVERSAL USING POINTERS
+    printf("\nArray traversal using pointer arithmetic:\n");
+    printf("Method 1 - Using pointer increment: ");
+    ptr = numbers;
+    for (int i = 0; i < 5; i++) {
+        printf("%d ", *ptr);
+        ptr++;
+    }
+    printf("\n");
+    
+    printf("Method 2 - Using pointer + offset: ");
+    ptr = numbers;
+    for (int i = 0; i < 5; i++) {
+        printf("%d ", *(ptr + i));
+    }
+    printf("\n");
+    
+    // COMPARING POINTERS
+    printf("\nPointer comparison:\n");
+    int *p1 = &numbers[1];
+    int *p2 = &numbers[3];
+    
+    printf("p1 points to: %d, p2 points to: %d\n", *p1, *p2);
+    if (p1 < p2) {
+        printf("p1 comes before p2 in memory\n");
+    }
+    if (p2 > p1) {
+        printf("p2 comes after p1 in memory\n");
+    }
+    
+    // DIFFERENT DATA TYPE SIZES
+    printf("\nPointer arithmetic with different types:\n");
+    
+    char chars[] = {'A', 'B', 'C', 'D', 'E'};
+    float floats[] = {1.1f, 2.2f, 3.3f, 4.4f, 5.5f};
+    double doubles[] = {1.11, 2.22, 3.33, 4.44, 5.55};
+    
+    char *char_ptr = chars;
+    float *float_ptr = floats;
+    double *double_ptr = doubles;
+    
+    printf("Starting addresses:\n");
+    printf("char_ptr: %p, float_ptr: %p, double_ptr: %p\n", 
+           (void*)char_ptr, (void*)float_ptr, (void*)double_ptr);
+    
+    char_ptr++;
+    float_ptr++;
+    double_ptr++;
+    
+    printf("After increment:\n");
+    printf("char_ptr: %p (+%zu), float_ptr: %p (+%zu), double_ptr: %p (+%zu)\n",
+           (void*)char_ptr, sizeof(char),
+           (void*)float_ptr, sizeof(float),
+           (void*)double_ptr, sizeof(double));
+    
+    printf("\n");
+}
+
+void demonstrate_pointers_and_arrays(void) {
+    printf("=== POINTERS AND ARRAYS ===\n");
+    
+    int arr[] = {1, 2, 3, 4, 5};
+    int size = sizeof(arr) / sizeof(arr[0]);
+    
+    printf("Array elements: ");
+    for (int i = 0; i < size; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+    
+    // ARRAY NAME AS POINTER
+    printf("\nArray name as pointer:\n");
+    printf("arr = %p (array name)\n", (void*)arr);
+    printf("&arr[0] = %p (address of first element)\n", (void*)&arr[0]);
+    printf("These addresses are the same!\n");
+    
+    // EQUIVALENCE BETWEEN ARRAY NOTATION AND POINTER NOTATION
+    printf("\nArray vs Pointer notation equivalence:\n");
+    int *ptr = arr;
+    
+    for (int i = 0; i < size; i++) {
+        printf("arr[%d] = %d, *(arr + %d) = %d, ptr[%d] = %d, *(ptr + %d) = %d\n",
+               i, arr[i], i, *(arr + i), i, ptr[i], i, *(ptr + i));
+    }
+    
+    // STRING MANIPULATION WITH POINTERS
+    printf("\n=== STRING POINTERS ===\n");
+    char message[] = "Hello World";
+    char *str_ptr = message;
+    
+    printf("Original string: %s\n", message);
+    printf("Using pointer: %s\n", str_ptr);
+    
+    // Modify string through pointer
+    modify_string(str_ptr);
+    printf("After modification: %s\n", message);
+    
+    // CHARACTER BY CHARACTER ACCESS
+    printf("Character by character (using pointers):\n");
+    char *ch_ptr = message;
+    int pos = 0;
+    while (*ch_ptr != '\0') {
+        printf("Position %d: '%c' (ASCII: %d)\n", pos, *ch_ptr, *ch_ptr);
+        ch_ptr++;
+        pos++;
+    }
+    
+    // FIND MAXIMUM USING POINTERS
+    printf("\n=== PRACTICAL EXAMPLE ===\n");
+    int numbers[] = {45, 23, 78, 12, 67, 89, 34};
+    int num_size = sizeof(numbers) / sizeof(numbers[0]);
+    
+    int max_idx = find_max_index(numbers, num_size);
+    printf("Array: ");
+    for (int i = 0; i < num_size; i++) {
+        printf("%d ", numbers[i]);
+    }
+    printf("\n");
+    printf("Maximum element: %d at index %d\n", numbers[max_idx], max_idx);
+    
+    printf("\n");
+}
+
+void demonstrate_pointer_to_pointers(void) {
+    printf("=== POINTER TO POINTERS ===\n");
+    
+    int value = 100;
+    int *ptr = &value;
+    int **ptr_to_ptr = &ptr;
+    
+    printf("Value relationships:\n");
+    printf("value = %d\n", value);
+    printf("*ptr = %d\n", *ptr);
+    printf("**ptr_to_ptr = %d\n", **ptr_to_ptr);
+    
+    printf("\nAddress relationships:\n");
+    printf("&value = %p\n", (void*)&value);
+    printf("ptr = %p\n", (void*)ptr);
+    printf("*ptr_to_ptr = %p\n", (void*)*ptr_to_ptr);
+    printf("&ptr = %p\n", (void*)&ptr);
+    printf("ptr_to_ptr = %p\n", (void*)ptr_to_ptr);
+    
+    // MODIFY VALUE THROUGH DOUBLE POINTER
+    printf("\nModifying value through double pointer:\n");
+    **ptr_to_ptr = 200;
+    printf("After **ptr_to_ptr = 200:\n");
+    printf("value = %d, *ptr = %d, **ptr_to_ptr = %d\n", value, *ptr, **ptr_to_ptr);
+    
+    // ARRAY OF POINTERS
+    printf("\n=== ARRAY OF POINTERS ===\n");
+    
+    int a = 10, b = 20, c = 30;
+    int *ptr_array[] = {&a, &b, &c};
+    int array_size = sizeof(ptr_array) / sizeof(ptr_array[0]);
+    
+    printf("Array of pointers:\n");
+    for (int i = 0; i < array_size; i++) {
+        printf("ptr_array[%d] points to value: %d\n", i, *ptr_array[i]);
+    }
+    
+    // POINTER TO ARRAY OF POINTERS
+    int **ptr_to_array = ptr_array;
+    printf("\nUsing pointer to array of pointers:\n");
+    for (int i = 0; i < array_size; i++) {
+        printf("*(ptr_to_array + %d) points to: %d\n", i, **(ptr_to_array + i));
+    }
+    
+    printf("\n");
+}
+
+void demonstrate_function_pointers(void) {
+    printf("=== FUNCTION POINTERS ===\n");
+    
+    // Simple function pointer
+    void (*func_ptr)(int*, int*) = swap_integers;
+    
+    int x = 15, y = 25;
+    printf("Before function call: x = %d, y = %d\n", x, y);
+    
+    // Call function through pointer
+    func_ptr(&x, &y);
+    printf("After function call: x = %d, y = %d\n", x, y);
+    
+    // ARRAY OF FUNCTION POINTERS
+    printf("\nArray of function pointers (calculator):\n");
+    
+    // Define some simple functions
+    int add(int a, int b) { return a + b; }
+    int subtract(int a, int b) { return a - b; }
+    int multiply(int a, int b) { return a * b; }
+    
+    int (*operations[])(int, int) = {add, subtract, multiply};
+    char *op_names[] = {"Addition", "Subtraction", "Multiplication"};
+    
+    int num1 = 12, num2 = 8;
+    printf("Operands: %d and %d\n", num1, num2);
+    
+    for (int i = 0; i < 3; i++) {
+        int result = operations[i](num1, num2);
+        printf("%s: %d\n", op_names[i], result);
+    }
+    
+    printf("\n");
+}
+
+void demonstrate_void_pointers(void) {
+    printf("=== VOID POINTERS ===\n");
+    
+    void *void_ptr;
+    
+    int integer = 42;
+    float floating = 3.14159f;
+    char character = 'X';
+    
+    // VOID POINTER CAN POINT TO ANY TYPE
+    printf("Void pointer versatility:\n");
+    
+    void_ptr = &integer;
+    printf("Pointing to int: %d\n", *(int*)void_ptr);
+    
+    void_ptr = &floating;
+    printf("Pointing to float: %.5f\n", *(float*)void_ptr);
+    
+    void_ptr = &character;
+    printf("Pointing to char: '%c'\n", *(char*)void_ptr);
+    
+    // VOID POINTER WITH ARRAYS
+    printf("\nVoid pointer with different array types:\n");
+    
+    int int_array[] = {1, 2, 3, 4, 5};
+    double double_array[] = {1.1, 2.2, 3.3, 4.4, 5.5};
+    
+    void_ptr = int_array;
+    printf("Int array through void pointer: ");
+    for (int i = 0; i < 5; i++) {
+        printf("%d ", *((int*)void_ptr + i));
+    }
+    printf("\n");
+    
+    void_ptr = double_array;
+    printf("Double array through void pointer: ");
+    for (int i = 0; i < 5; i++) {
+        printf("%.1f ", *((double*)void_ptr + i));
+    }
+    printf("\n");
+    
+    // GENERIC FUNCTION USING VOID POINTERS
+    printf("\nGeneric memory copy simulation:\n");
+    
+    int source[] = {100, 200, 300};
+    int destination[3];
+    
+    printf("Before copy - Source: ");
+    for (int i = 0; i < 3; i++) printf("%d ", source[i]);
+    printf("\n");
+    
+    printf("Before copy - Destination: ");
+    for (int i = 0; i < 3; i++) printf("%d ", destination[i]);
+    printf("\n");
+    
+    // Simulate memcpy using void pointers
+    void *src_ptr = source;
+    void *dest_ptr = destination;
+    
+    for (int i = 0; i < 3; i++) {
+        *((int*)dest_ptr + i) = *((int*)src_ptr + i);
+    }
+    
+    printf("After copy - Destination: ");
+    for (int i = 0; i < 3; i++) printf("%d ", destination[i]);
+    printf("\n");
+    
+    printf("\n");
+}
+
+// UTILITY FUNCTIONS
+
+void swap_integers(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+void modify_string(char *str) {
+    // Convert to uppercase
+    while (*str != '\0') {
+        if (*str >= 'a' && *str <= 'z') {
+            *str = *str - 32;  // Convert to uppercase
+        }
+        str++;
+    }
+}
+
+int find_max_index(int arr[], int size) {
+    if (size <= 0) return -1;
+    
+    int max_index = 0;
+    int *ptr = arr;
+    
+    for (int i = 1; i < size; i++) {
+        if (*(ptr + i) > *(ptr + max_index)) {
+            max_index = i;
+        }
+    }
+    
+    return max_index;
+}
