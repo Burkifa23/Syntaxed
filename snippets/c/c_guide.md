@@ -298,6 +298,49 @@ double: 8 bytes (15-17 significant digits)
 </details>
 
 - **dynamic-memory** - malloc, calloc, realloc, free, memory allocation patterns
+
+<details>
+<summary>Dynamic Memory Management</summary>
+
+
+
+/*
+ * DYNAMIC MEMORY FUNCTIONS:
+ * malloc(size) - Allocates uninitialized memory
+ * calloc(count, size) - Allocates zero-initialized memory
+ * realloc(ptr, new_size) - Resizes existing allocation
+ * free(ptr) - Deallocates memory
+ * 
+ * MEMORY ALLOCATION BEST PRACTICES:
+ * 1. Always check if allocation succeeded (ptr != NULL)
+ * 2. Match every malloc/calloc/realloc with exactly one free
+ * 3. Set pointers to NULL after freeing
+ * 4. Don't use freed memory (use after free)
+ * 5. Don't free the same pointer twice (double free)
+ * 6. Don't free pointers not returned by allocation functions
+ * 
+ * COMMON ALLOCATION PATTERNS:
+ * - RAII: Resource Acquisition Is Initialization
+ * - Error handling with cleanup using goto
+ * - Memory pools for performance
+ * - Reference counting for shared resources
+ * 
+ * DEBUGGING TIPS:
+ * - Use valgrind on Linux to detect memory errors
+ * - Use AddressSanitizer compiler flags
+ * - Initialize pointers to NULL
+ * - Use static analysis tools
+ * 
+ * PERFORMANCE CONSIDERATIONS:
+ * - malloc/free can be expensive - consider memory pools
+ * - Avoid frequent realloc calls - grow exponentially
+ * - calloc may be slower than malloc for large allocations
+ * - Consider alignment requirements for performance
+ */
+
+---
+</details>
+
 - **pointers-introduction** - Pointer basics, address-of operator, dereferencing, pointer arithmetic
 - **command-line-args** - argc, argv, processing command line arguments, main function variants
 - **modular-programming** - Multiple files, header files, extern, static, compilation units

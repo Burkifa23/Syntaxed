@@ -180,6 +180,7 @@ document.addEventListener("DOMContentLoaded", () => {
             advanced_functions: 'snippets/c/advanced-functions.txt',
             structures_unions: 'snippets/c/structure-unions.txt',
             file_input_output: 'snippets/c/file-input-output.txt',
+            dynamic_memory: 'snippets/c/dynamic-memory.txt',
 
 
         },

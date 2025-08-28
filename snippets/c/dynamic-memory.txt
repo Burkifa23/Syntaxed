@@ -1,0 +1,508 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// Structure for demonstration
+typedef struct {
+    int id;
+    char* name;
+    float* grades;
+    int num_grades;
+} Student;
+
+// Function prototypes
+void demonstrate_basic_allocation(void);
+void demonstrate_arrays(void);
+void demonstrate_structures(void);
+void demonstrate_realloc(void);
+void demonstrate_memory_leaks(void);
+void demonstrate_memory_patterns(void);
+Student* create_student(int id, const char* name);
+void add_grade(Student* student, float grade);
+void free_student(Student* student);
+void print_student(const Student* student);
+
+int main() {
+    printf("=== DYNAMIC MEMORY MANAGEMENT ===\n\n");
+    
+    demonstrate_basic_allocation();
+    demonstrate_arrays();
+    demonstrate_structures();
+    demonstrate_realloc();
+    demonstrate_memory_leaks();
+    demonstrate_memory_patterns();
+    
+    return 0;
+}
+
+void demonstrate_basic_allocation(void) {
+    printf("=== BASIC MEMORY ALLOCATION ===\n");
+    
+    // MALLOC - allocates uninitialized memory
+    printf("Using malloc...\n");
+    int* ptr1 = (int*)malloc(sizeof(int));
+    if (ptr1 == NULL) {
+        printf("Memory allocation failed!\n");
+        return;
+    }
+    
+    *ptr1 = 42;
+    printf("Allocated integer: %d\n", *ptr1);
+    free(ptr1);
+    ptr1 = NULL;  // Good practice to set to NULL after free
+    
+    // CALLOC - allocates zero-initialized memory
+    printf("\nUsing calloc...\n");
+    int* ptr2 = (int*)calloc(5, sizeof(int));
+    if (ptr2 == NULL) {
+        printf("Memory allocation failed!\n");
+        return;
+    }
+    
+    printf("Calloc initialized values: ");
+    for (int i = 0; i < 5; i++) {
+        printf("%d ", ptr2[i]);  // Should all be 0
+    }
+    printf("\n");
+    
+    // Assign some values
+    for (int i = 0; i < 5; i++) {
+        ptr2[i] = (i + 1) * 10;
+    }
+    
+    printf("After assignment: ");
+    for (int i = 0; i < 5; i++) {
+        printf("%d ", ptr2[i]);
+    }
+    printf("\n");
+    
+    free(ptr2);
+    ptr2 = NULL;
+    
+    // MALLOC vs CALLOC comparison
+    printf("\nMalloc vs Calloc comparison:\n");
+    int* malloc_array = (int*)malloc(3 * sizeof(int));
+    int* calloc_array = (int*)calloc(3, sizeof(int));
+    
+    if (malloc_array != NULL && calloc_array != NULL) {
+        printf("Malloc (uninitialized): ");
+        for (int i = 0; i < 3; i++) {
+            printf("%d ", malloc_array[i]);  // Garbage values
+        }
+        printf("\n");
+        
+        printf("Calloc (zero-initialized): ");
+        for (int i = 0; i < 3; i++) {
+            printf("%d ", calloc_array[i]);  // All zeros
+        }
+        printf("\n");
+        
+        free(malloc_array);
+        free(calloc_array);
+    }
+    
+    printf("\n");
+}
+
+void demonstrate_arrays(void) {
+    printf("=== DYNAMIC ARRAYS ===\n");
+    
+    int size;
+    printf("Enter array size: ");
+    scanf("%d", &size);
+    
+    // Allocate array based on user input
+    int* dynamic_array = (int*)malloc(size * sizeof(int));
+    if (dynamic_array == NULL) {
+        printf("Failed to allocate memory for array\n");
+        return;
+    }
+    
+    // Initialize array
+    printf("Initializing array with squares...\n");
+    for (int i = 0; i < size; i++) {
+        dynamic_array[i] = i * i;
+    }
+    
+    // Print array
+    printf("Dynamic array contents: ");
+    for (int i = 0; i < size; i++) {
+        printf("%d ", dynamic_array[i]);
+    }
+    printf("\n");
+    
+    // MULTI-DIMENSIONAL DYNAMIC ARRAYS
+    printf("\nCreating 2D dynamic array (3x4)...\n");
+    int rows = 3, cols = 4;
+    
+    // Method 1: Array of pointers
+    int** matrix1 = (int**)malloc(rows * sizeof(int*));
+    if (matrix1 == NULL) {
+        free(dynamic_array);
+        return;
+    }
+    
+    for (int i = 0; i < rows; i++) {
+        matrix1[i] = (int*)malloc(cols * sizeof(int));
+        if (matrix1[i] == NULL) {
+            // Clean up previously allocated rows
+            for (int j = 0; j < i; j++) {
+                free(matrix1[j]);
+            }
+            free(matrix1);
+            free(dynamic_array);
+            return;
+        }
+    }
+    
+    // Initialize 2D array
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            matrix1[i][j] = i * cols + j + 1;
+        }
+    }
+    
+    // Print 2D array
+    printf("2D Array (method 1):\n");
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            printf("%3d ", matrix1[i][j]);
+        }
+        printf("\n");
+    }
+    
+    // Method 2: Single allocation with pointer arithmetic
+    int* matrix2 = (int*)malloc(rows * cols * sizeof(int));
+    if (matrix2 != NULL) {
+        // Initialize
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                matrix2[i * cols + j] = (i + 1) * (j + 1);
+            }
+        }
+        
+        printf("\n2D Array (method 2 - single allocation):\n");
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                printf("%3d ", matrix2[i * cols + j]);
+            }
+            printf("\n");
+        }
+        
+        free(matrix2);
+    }
+    
+    // Clean up method 1
+    for (int i = 0; i < rows; i++) {
+        free(matrix1[i]);
+    }
+    free(matrix1);
+    free(dynamic_array);
+    
+    printf("\n");
+}
+
+void demonstrate_structures(void) {
+    printf("=== DYNAMIC STRUCTURES ===\n");
+    
+    // Create students with dynamic memory
+    Student* student1 = create_student(101, "Alice Johnson");
+    Student* student2 = create_student(102, "Bob Smith");
+    
+    if (student1 == NULL || student2 == NULL) {
+        printf("Failed to create students\n");
+        return;
+    }
+    
+    // Add grades
+    add_grade(student1, 85.5f);
+    add_grade(student1, 92.0f);
+    add_grade(student1, 78.5f);
+    
+    add_grade(student2, 88.0f);
+    add_grade(student2, 91.5f);
+    add_grade(student2, 84.0f);
+    add_grade(student2, 87.5f);
+    
+    // Print students
+    print_student(student1);
+    print_student(student2);
+    
+    // Array of student pointers
+    printf("\nCreating array of students...\n");
+    int num_students = 3;
+    Student** students = (Student**)malloc(num_students * sizeof(Student*));
+    
+    if (students != NULL) {
+        students[0] = student1;
+        students[1] = student2;
+        students[2] = create_student(103, "Charlie Brown");
+        
+        if (students[2] != NULL) {
+            add_grade(students[2], 95.0f);
+            add_grade(students[2], 89.5f);
+            
+            printf("All students:\n");
+            for (int i = 0; i < num_students; i++) {
+                if (students[i] != NULL) {
+                    print_student(students[i]);
+                }
+            }
+            
+            // Clean up
+            for (int i = 0; i < num_students; i++) {
+                if (students[i] != NULL) {
+                    free_student(students[i]);
+                }
+            }
+        }
+        
+        free(students);
+    }
+    
+    printf("\n");
+}
+
+void demonstrate_realloc(void) {
+    printf("=== REALLOC DEMONSTRATION ===\n");
+    
+    // Start with small array
+    int capacity = 2;
+    int* array = (int*)malloc(capacity * sizeof(int));
+    if (array == NULL) {
+        printf("Initial allocation failed\n");
+        return;
+    }
+    
+    array[0] = 10;
+    array[1] = 20;
+    int size = 2;
+    
+    printf("Initial array (capacity %d): ", capacity);
+    for (int i = 0; i < size; i++) {
+        printf("%d ", array[i]);
+    }
+    printf("\n");
+    
+    // Grow array as needed
+    int values_to_add[] = {30, 40, 50, 60, 70};
+    int num_values = sizeof(values_to_add) / sizeof(values_to_add[0]);
+    
+    for (int i = 0; i < num_values; i++) {
+        // Check if we need to grow
+        if (size >= capacity) {
+            capacity *= 2;  // Double the capacity
+            printf("Growing array to capacity %d\n", capacity);
+            
+            int* temp = (int*)realloc(array, capacity * sizeof(int));
+            if (temp == NULL) {
+                printf("Realloc failed!\n");
+                free(array);
+                return;
+            }
+            array = temp;
+        }
+        
+        array[size] = values_to_add[i];
+        size++;
+        
+        printf("Added %d. Array: ", values_to_add[i]);
+        for (int j = 0; j < size; j++) {
+            printf("%d ", array[j]);
+        }
+        printf("(size: %d, capacity: %d)\n", size, capacity);
+    }
+    
+    // Shrink array if too much unused space
+    if (size < capacity / 4 && capacity > 2) {
+        capacity /= 2;
+        printf("\nShrinking array to capacity %d\n", capacity);
+        int* temp = (int*)realloc(array, capacity * sizeof(int));
+        if (temp != NULL) {
+            array = temp;
+        }
+    }
+    
+    printf("Final array: ");
+    for (int i = 0; i < size; i++) {
+        printf("%d ", array[i]);
+    }
+    printf("(size: %d, capacity: %d)\n", size, capacity);
+    
+    free(array);
+    printf("\n");
+}
+
+void demonstrate_memory_leaks(void) {
+    printf("=== MEMORY LEAK EXAMPLES ===\n");
+    
+    printf("WARNING: This section demonstrates common memory leak patterns\n");
+    printf("In real code, always match malloc/calloc/realloc with free!\n\n");
+    
+    // Example 1: Simple memory leak (commented out to avoid actual leak)
+    printf("1. Simple leak example:\n");
+    printf("   int* ptr = malloc(sizeof(int));\n");
+    printf("   // Missing free(ptr); - MEMORY LEAK!\n\n");
+    
+    // Example 2: Correct pattern
+    printf("2. Correct pattern:\n");
+    int* ptr = (int*)malloc(sizeof(int));
+    if (ptr != NULL) {
+        *ptr = 100;
+        printf("   Allocated and used: %d\n", *ptr);
+        free(ptr);
+        ptr = NULL;
+        printf("   Properly freed and nullified\n");
+    }
+    
+    // Example 3: Double free (dangerous - commented out)
+    printf("\n3. Double free example (DANGEROUS - don't do this):\n");
+    printf("   free(ptr);\n");
+    printf("   free(ptr); // UNDEFINED BEHAVIOR!\n");
+    printf("   Solution: Set ptr = NULL after free\n");
+    
+    // Example 4: Using freed memory (commented out)
+    printf("\n4. Use after free example (DANGEROUS):\n");
+    printf("   free(ptr);\n");
+    printf("   *ptr = 50; // UNDEFINED BEHAVIOR!\n");
+    
+    // Example 5: Memory leak in loop
+    printf("\n5. Loop leak example:\n");
+    printf("for (int i = 0; i < 10; i++) {\n");
+    printf("    int* temp = malloc(sizeof(int));\n");
+    printf("    // If we don't free temp, we leak memory each iteration\n");
+    printf("}\n");
+    
+    printf("\n");
+}
+
+void demonstrate_memory_patterns(void) {
+    printf("=== MEMORY ALLOCATION PATTERNS ===\n");
+    
+    // Pattern 1: RAII-like pattern in C
+    printf("1. Resource Acquisition Pattern:\n");
+    {
+        char* buffer = (char*)malloc(100);
+        if (buffer != NULL) {
+            strcpy(buffer, "Hello, Dynamic Memory!");
+            printf("   Buffer content: %s\n", buffer);
+            // Always free in same scope when possible
+            free(buffer);
+            buffer = NULL;
+        }
+    }
+    
+    // Pattern 2: Error handling with cleanup
+    printf("\n2. Error Handling with Cleanup:\n");
+    char* buf1 = NULL;
+    char* buf2 = NULL;
+    int success = 0;
+    
+    buf1 = (char*)malloc(50);
+    if (buf1 == NULL) goto cleanup;
+    
+    buf2 = (char*)malloc(50);
+    if (buf2 == NULL) goto cleanup;
+    
+    strcpy(buf1, "Buffer 1");
+    strcpy(buf2, "Buffer 2");
+    printf("   Success: %s and %s\n", buf1, buf2);
+    success = 1;
+    
+cleanup:
+    if (buf1) { free(buf1); buf1 = NULL; }
+    if (buf2) { free(buf2); buf2 = NULL; }
+    printf("   Cleanup completed. Success: %s\n", success ? "Yes" : "No");
+    
+    // Pattern 3: Memory pool simulation
+    printf("\n3. Memory Pool Pattern (simplified):\n");
+    size_t pool_size = 1024;
+    char* memory_pool = (char*)malloc(pool_size);
+    if (memory_pool != NULL) {
+        printf("   Allocated memory pool of %zu bytes\n", pool_size);
+        
+        // Simulate allocating from pool
+        char* chunk1 = memory_pool;
+        char* chunk2 = memory_pool + 256;
+        char* chunk3 = memory_pool + 512;
+        
+        strcpy(chunk1, "Chunk 1");
+        strcpy(chunk2, "Chunk 2");
+        strcpy(chunk3, "Chunk 3");
+        
+        printf("   Pool chunks: %s, %s, %s\n", chunk1, chunk2, chunk3);
+        
+        // Free entire pool at once
+        free(memory_pool);
+        printf("   Entire pool freed\n");
+    }
+    
+    printf("\n");
+}
+
+// UTILITY FUNCTIONS
+
+Student* create_student(int id, const char* name) {
+    Student* student = (Student*)malloc(sizeof(Student));
+    if (student == NULL) {
+        return NULL;
+    }
+    
+    student->id = id;
+    student->name = (char*)malloc(strlen(name) + 1);
+    if (student->name == NULL) {
+        free(student);
+        return NULL;
+    }
+    strcpy(student->name, name);
+    
+    student->grades = NULL;
+    student->num_grades = 0;
+    
+    return student;
+}
+
+void add_grade(Student* student, float grade) {
+    if (student == NULL) return;
+    
+    float* temp = (float*)realloc(student->grades, 
+                                  (student->num_grades + 1) * sizeof(float));
+    if (temp == NULL) {
+        printf("Failed to add grade\n");
+        return;
+    }
+    
+    student->grades = temp;
+    student->grades[student->num_grades] = grade;
+    student->num_grades++;
+}
+
+void free_student(Student* student) {
+    if (student != NULL) {
+        if (student->name != NULL) {
+            free(student->name);
+        }
+        if (student->grades != NULL) {
+            free(student->grades);
+        }
+        free(student);
+    }
+}
+
+void print_student(const Student* student) {
+    if (student == NULL) return;
+    
+    printf("Student ID: %d, Name: %s\n", student->id, student->name);
+    printf("  Grades (%d): ", student->num_grades);
+    
+    float sum = 0.0f;
+    for (int i = 0; i < student->num_grades; i++) {
+        printf("%.1f ", student->grades[i]);
+        sum += student->grades[i];
+    }
+    
+    if (student->num_grades > 0) {
+        printf("(Average: %.1f)", sum / student->num_grades);
+    }
+    printf("\n");
+}
