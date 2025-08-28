@@ -252,6 +252,51 @@ double: 8 bytes (15-17 significant digits)
 </details>
 
 - **file-input-output** - fopen, fread, fwrite, file modes, error handling, text vs binary
+
+<details>
+<summary>File Input/Output</summary>
+
+/*
+ * FILE MODES REFERENCE:
+ * "r"  - Read only, file must exist
+ * "w"  - Write only, truncates or creates file
+ * "a"  - Append, writes at end of file
+ * "r+" - Read/write, file must exist
+ * "w+" - Read/write, truncates or creates file
+ * "a+" - Read/append, creates if doesn't exist
+ * 
+ * Add 'b' for binary mode: "rb", "wb", "ab", etc.
+ * 
+ * TEXT vs BINARY FILES:
+ * Text files: Human-readable, platform-specific line endings
+ * Binary files: Exact byte representation, no translation
+ * 
+ * FILE POSITIONING:
+ * fseek(file, offset, origin) - Move file pointer
+ * ftell(file) - Get current position
+ * rewind(file) - Go to beginning
+ * 
+ * ORIGINS:
+ * SEEK_SET - Beginning of file
+ * SEEK_CUR - Current position
+ * SEEK_END - End of file
+ * 
+ * ERROR HANDLING:
+ * Always check return values of file operations
+ * Use perror() for system error messages
+ * Check ferror() and feof() for file state
+ * 
+ * COMMON PITFALLS:
+ * - Not checking if fopen() returns NULL
+ * - Forgetting to close files (resource leak)
+ * - Using wrong mode for intended operation
+ * - Buffer overflow with fgets()
+ * - Mixing text and binary operations
+ * - Not handling partial reads/writes
+ */
+ ---
+</details>
+
 - **dynamic-memory** - malloc, calloc, realloc, free, memory allocation patterns
 - **pointers-introduction** - Pointer basics, address-of operator, dereferencing, pointer arithmetic
 - **command-line-args** - argc, argv, processing command line arguments, main function variants

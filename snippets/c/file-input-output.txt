@@ -1,0 +1,313 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <errno.h>
+
+// Structure for binary file operations
+typedef struct {
+    int id;
+    char name[50];
+    float salary;
+    int age;
+} Employee;
+
+// Function prototypes
+void demonstrate_text_files(void);
+void demonstrate_binary_files(void);
+void demonstrate_file_modes(void);
+void demonstrate_error_handling(void);
+void create_sample_text_file(void);
+void create_sample_binary_file(void);
+FILE* safe_fopen(const char* filename, const char* mode);
+
+int main() {
+    printf("=== FILE INPUT/OUTPUT DEMONSTRATION ===\n\n");
+    
+    // Create sample files first
+    create_sample_text_file();
+    create_sample_binary_file();
+    
+    demonstrate_text_files();
+    demonstrate_binary_files();
+    demonstrate_file_modes();
+    demonstrate_error_handling();
+    
+    return 0;
+}
+
+void demonstrate_text_files(void) {
+    printf("=== TEXT FILE OPERATIONS ===\n");
+    
+    FILE* file;
+    char buffer[256];
+    char line[100];
+    int number;
+    
+    // WRITING TEXT FILES
+    printf("Writing to text file...\n");
+    file = fopen("output.txt", "w");
+    if (file == NULL) {
+        perror("Failed to open output.txt for writing");
+        return;
+    }
+    
+    fprintf(file, "Hello, File I/O!\n");
+    fprintf(file, "Numbers: %d, %d, %d\n", 10, 20, 30);
+    fprintf(file, "Float: %.2f\n", 3.14159);
+    fprintf(file, "Character: %c\n", 'A');
+    
+    fclose(file);
+    printf("Text file written successfully.\n");
+    
+    // READING TEXT FILES
+    printf("\nReading from text file...\n");
+    file = fopen("output.txt", "r");
+    if (file == NULL) {
+        perror("Failed to open output.txt for reading");
+        return;
+    }
+    
+    // Method 1: Read character by character
+    printf("Method 1 - Character by character:\n");
+    int ch;
+    int char_count = 0;
+    while ((ch = fgetc(file)) != EOF && char_count < 20) {  // Limit output
+        putchar(ch);
+        char_count++;
+    }
+    printf("...(truncated)\n");
+    
+    // Reset file pointer
+    rewind(file);
+    
+    // Method 2: Read line by line
+    printf("\nMethod 2 - Line by line:\n");
+    while (fgets(line, sizeof(line), file) != NULL) {
+        printf("Read: %s", line);
+    }
+    
+    fclose(file);
+    
+    // FORMATTED INPUT
+    printf("\nReading formatted data...\n");
+    file = fopen("data.txt", "r");
+    if (file != NULL) {
+        int id, age;
+        char name[50];
+        float salary;
+        
+        while (fscanf(file, "%d %49s %f %d", &id, name, &salary, &age) == 4) {
+            printf("ID: %d, Name: %s, Salary: %.2f, Age: %d\n", 
+                   id, name, salary, age);
+        }
+        fclose(file);
+    }
+    
+    printf("\n");
+}
+
+void demonstrate_binary_files(void) {
+    printf("=== BINARY FILE OPERATIONS ===\n");
+    
+    FILE* file;
+    Employee emp;
+    
+    // WRITING BINARY DATA
+    printf("Writing binary data...\n");
+    file = fopen("employees.bin", "wb");
+    if (file == NULL) {
+        perror("Failed to open employees.bin for writing");
+        return;
+    }
+    
+    Employee employees[] = {
+        {1, "John Doe", 50000.0f, 30},
+        {2, "Jane Smith", 60000.0f, 28},
+        {3, "Bob Johnson", 45000.0f, 35}
+    };
+    
+    size_t written = fwrite(employees, sizeof(Employee), 3, file);
+    printf("Written %zu employee records\n", written);
+    fclose(file);
+    
+    // READING BINARY DATA
+    printf("\nReading binary data...\n");
+    file = fopen("employees.bin", "rb");
+    if (file == NULL) {
+        perror("Failed to open employees.bin for reading");
+        return;
+    }
+    
+    printf("Employee records:\n");
+    while (fread(&emp, sizeof(Employee), 1, file) == 1) {
+        printf("ID: %d, Name: %s, Salary: $%.2f, Age: %d\n",
+               emp.id, emp.name, emp.salary, emp.age);
+    }
+    fclose(file);
+    
+    // RANDOM ACCESS
+    printf("\nDemonstrating random access...\n");
+    file = fopen("employees.bin", "rb");
+    if (file != NULL) {
+        // Read second employee (index 1)
+        fseek(file, sizeof(Employee) * 1, SEEK_SET);
+        if (fread(&emp, sizeof(Employee), 1, file) == 1) {
+            printf("Second employee: %s\n", emp.name);
+        }
+        
+        // Get current position
+        long pos = ftell(file);
+        printf("Current file position: %ld bytes\n", pos);
+        
+        // Go to end and get file size
+        fseek(file, 0, SEEK_END);
+        long file_size = ftell(file);
+        printf("File size: %ld bytes\n", file_size);
+        printf("Number of employee records: %ld\n", file_size / sizeof(Employee));
+        
+        fclose(file);
+    }
+    
+    printf("\n");
+}
+
+void demonstrate_file_modes(void) {
+    printf("=== FILE MODES ===\n");
+    
+    FILE* file;
+    char buffer[100];
+    
+    // APPEND MODE
+    printf("Demonstrating append mode...\n");
+    file = fopen("append_test.txt", "w");
+    if (file != NULL) {
+        fprintf(file, "Initial content\n");
+        fclose(file);
+    }
+    
+    file = fopen("append_test.txt", "a");
+    if (file != NULL) {
+        fprintf(file, "Appended line 1\n");
+        fprintf(file, "Appended line 2\n");
+        fclose(file);
+    }
+    
+    // Read back to verify
+    file = fopen("append_test.txt", "r");
+    if (file != NULL) {
+        printf("Contents after append:\n");
+        while (fgets(buffer, sizeof(buffer), file) != NULL) {
+            printf("  %s", buffer);
+        }
+        fclose(file);
+    }
+    
+    // READ/WRITE MODE
+    printf("\nDemonstrating r+ mode (read/write)...\n");
+    file = fopen("readwrite_test.txt", "w+");
+    if (file != NULL) {
+        // Write some data
+        fprintf(file, "Hello World");
+        
+        // Go back to beginning and read
+        rewind(file);
+        if (fgets(buffer, sizeof(buffer), file) != NULL) {
+            printf("Read back: %s\n", buffer);
+        }
+        
+        // Modify part of the file
+        fseek(file, 6, SEEK_SET);  // Position after "Hello "
+        fprintf(file, "File");
+        
+        // Read entire file
+        rewind(file);
+        if (fgets(buffer, sizeof(buffer), file) != NULL) {
+            printf("After modification: %s\n", buffer);
+        }
+        
+        fclose(file);
+    }
+    
+    printf("\n");
+}
+
+void demonstrate_error_handling(void) {
+    printf("=== ERROR HANDLING ===\n");
+    
+    FILE* file;
+    
+    // TRY TO OPEN NON-EXISTENT FILE
+    printf("Attempting to open non-existent file...\n");
+    file = fopen("nonexistent.txt", "r");
+    if (file == NULL) {
+        printf("Error opening file: %s\n", strerror(errno));
+        printf("Error number: %d\n", errno);
+        perror("fopen failed");
+    }
+    
+    // TRY TO WRITE TO READ-ONLY FILE
+    printf("\nTesting write to read-only file...\n");
+    file = fopen("readonly_test.txt", "w");
+    if (file != NULL) {
+        fprintf(file, "Test content\n");
+        fclose(file);
+        
+        // Now try to open in read-only mode and write
+        file = fopen("readonly_test.txt", "r");
+        if (file != NULL) {
+            if (fprintf(file, "This should fail") < 0) {
+                printf("Write failed as expected\n");
+                perror("fprintf to read-only file");
+            }
+            fclose(file);
+        }
+    }
+    
+    // SAFE FILE OPENING FUNCTION
+    printf("\nUsing safe file opening function...\n");
+    file = safe_fopen("test_safe.txt", "w");
+    if (file != NULL) {
+        fprintf(file, "Safely opened file\n");
+        fclose(file);
+        printf("File created and written successfully\n");
+    }
+    
+    file = safe_fopen("/root/protected.txt", "w");  // This should fail
+    if (file != NULL) {
+        fclose(file);
+    }
+    
+    printf("\n");
+}
+
+// UTILITY FUNCTIONS
+
+void create_sample_text_file(void) {
+    FILE* file = fopen("data.txt", "w");
+    if (file != NULL) {
+        fprintf(file, "101 Alice 55000.50 29\n");
+        fprintf(file, "102 Bob 48000.75 31\n");
+        fprintf(file, "103 Charlie 62000.00 27\n");
+        fprintf(file, "104 Diana 51000.25 33\n");
+        fclose(file);
+    }
+}
+
+void create_sample_binary_file(void) {
+    FILE* file = fopen("sample.bin", "wb");
+    if (file != NULL) {
+        int numbers[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        fwrite(numbers, sizeof(int), 10, file);
+        fclose(file);
+    }
+}
+
+FILE* safe_fopen(const char* filename, const char* mode) {
+    FILE* file = fopen(filename, mode);
+    if (file == NULL) {
+        fprintf(stderr, "Error: Cannot open file '%s' in mode '%s'\n", filename, mode);
+        fprintf(stderr, "Reason: %s\n", strerror(errno));
+        return NULL;
+    }
+    return file;
+}
