@@ -1,0 +1,218 @@
+#include <stdio.h>
+#include <stdarg.h>  // For variable arguments
+#include <string.h>
+#include <math.h>
+
+// FUNCTION PROTOTYPES
+int add(int a, int b);
+int multiply(int a, int b);
+int subtract(int a, int b);
+void print_menu(void);
+static int internal_counter = 0;  // File scope static variable
+
+// Static function (only visible in this file)
+static void increment_counter(void) {
+    internal_counter++;
+}
+
+// Recursive functions
+int factorial_recursive(int n);
+int fibonacci_recursive(int n);
+int fibonacci_iterative(int n);
+long power_recursive(int base, int exp);
+
+// Variable argument functions
+int sum_integers(int count, ...);
+void print_formatted(const char* format, ...);
+double average_doubles(int count, ...);
+
+// Function that returns a function pointer
+int (*get_operation(char op))(int, int);
+
+int main() {
+    printf("=== FUNCTION POINTERS ===\n");
+    
+    // Declare function pointers
+    int (*operation)(int, int);
+    int (*math_functions[])(int, int) = {add, subtract, multiply};
+    
+    // Basic function pointer usage
+    operation = add;
+    printf("Using function pointer for addition: %d + %d = %d\n", 
+           5, 3, operation(5, 3));
+    
+    operation = multiply;
+    printf("Using function pointer for multiplication: %d * %d = %d\n", 
+           4, 7, operation(4, 7));
+    
+    // Array of function pointers
+    printf("\nArray of function pointers:\n");
+    char* op_names[] = {"Addition", "Subtraction", "Multiplication"};
+    for (int i = 0; i < 3; i++) {
+        printf("%s: 10, 3 = %d\n", op_names[i], math_functions[i](10, 3));
+    }
+    
+    // Function returning function pointer
+    printf("\nUsing function that returns function pointer:\n");
+    int (*op_func)(int, int) = get_operation('+');
+    printf("Dynamic operation (+): 15 + 25 = %d\n", op_func(15, 25));
+    
+    op_func = get_operation('*');
+    printf("Dynamic operation (*): 6 * 7 = %d\n", op_func(6, 7));
+    
+    // RECURSION EXAMPLES
+    printf("\n=== RECURSION ===\n");
+    
+    int n = 5;
+    printf("Factorial of %d (recursive): %d\n", n, factorial_recursive(n));
+    
+    printf("Fibonacci sequence (recursive): ");
+    for (int i = 0; i < 10; i++) {
+        printf("%d ", fibonacci_recursive(i));
+    }
+    printf("\n");
+    
+    printf("Fibonacci sequence (iterative): ");
+    for (int i = 0; i < 10; i++) {
+        printf("%d ", fibonacci_iterative(i));
+    }
+    printf("\n");
+    
+    printf("Power calculation: 2^8 = %ld\n", power_recursive(2, 8));
+    
+    // VARIABLE ARGUMENTS
+    printf("\n=== VARIABLE ARGUMENTS ===\n");
+    
+    printf("Sum of 3 integers (5, 10, 15): %d\n", sum_integers(3, 5, 10, 15));
+    printf("Sum of 5 integers (1, 2, 3, 4, 5): %d\n", sum_integers(5, 1, 2, 3, 4, 5));
+    
+    printf("Average of 4 doubles: %.2f\n", average_doubles(4, 2.5, 3.7, 1.2, 4.6));
+    
+    // Custom printf-like function
+    print_formatted("Integer: %d, String: %s, Float: %.2f\n", 42, "Hello", 3.14159);
+    
+    // STATIC FUNCTIONS AND VARIABLES
+    printf("\n=== STATIC FUNCTIONS & VARIABLES ===\n");
+    
+    printf("Initial counter: %d\n", get_counter());
+    increment_counter();
+    increment_counter();
+    increment_counter();
+    printf("After 3 increments: %d\n", get_counter());
+    
+    // Demonstrate static local variables
+    printf("Static local variable demo:\n");
+    for (int i = 0; i < 5; i++) {
+        static_demo();
+    }
+    
+    return 0;
+}
+
+// FUNCTION DEFINITIONS
+
+// Basic mathematical operations
+int add(int a, int b) { return a + b; }
+int multiply(int a, int b) { return a * b; }
+int subtract(int a, int b) { return a - b; }
+
+// Function that returns a function pointer
+int (*get_operation(char op))(int, int) {
+    switch(op) {
+        case '+': return add;
+        case '-': return subtract;
+        case '*': return multiply;
+        default: return add;
+    }
+}
+
+// Recursive factorial
+int factorial_recursive(int n) {
+    if (n <= 1) return 1;
+    return n * factorial_recursive(n - 1);
+}
+
+// Recursive fibonacci
+int fibonacci_recursive(int n) {
+    if (n <= 1) return n;
+    return fibonacci_recursive(n-1) + fibonacci_recursive(n-2);
+}
+
+// Iterative fibonacci (more efficient)
+int fibonacci_iterative(int n) {
+    if (n <= 1) return n;
+    int a = 0, b = 1, temp;
+    for (int i = 2; i <= n; i++) {
+        temp = a + b;
+        a = b;
+        b = temp;
+    }
+    return b;
+}
+
+// Recursive power function
+long power_recursive(int base, int exp) {
+    if (exp == 0) return 1;
+    if (exp == 1) return base;
+    if (exp % 2 == 0) {
+        long half = power_recursive(base, exp/2);
+        return half * half;
+    } else {
+        return base * power_recursive(base, exp-1);
+    }
+}
+
+// Variable arguments: sum integers
+int sum_integers(int count, ...) {
+    va_list args;
+    va_start(args, count);
+    
+    int sum = 0;
+    for (int i = 0; i < count; i++) {
+        sum += va_arg(args, int);
+    }
+    
+    va_end(args);
+    return sum;
+}
+
+// Variable arguments: average doubles
+double average_doubles(int count, ...) {
+    va_list args;
+    va_start(args, count);
+    
+    double sum = 0.0;
+    for (int i = 0; i < count; i++) {
+        sum += va_arg(args, double);
+    }
+    
+    va_end(args);
+    return count > 0 ? sum / count : 0.0;
+}
+
+// Simple printf-like function
+void print_formatted(const char* format, ...) {
+    va_list args;
+    va_start(args, format);
+    
+    printf("Custom format: ");
+    vprintf(format, args);
+    
+    va_end(args);
+}
+
+// Static function getter
+int get_counter(void) {
+    return internal_counter;
+}
+
+// Demonstrate static local variables
+void static_demo(void) {
+    static int static_var = 0;  // Initialized only once
+    int auto_var = 0;           // Initialized every call
+    
+    static_var++;
+    auto_var++;
+    
+    printf("Static: %d, Auto: %d\n", static_var, auto_var);
+}

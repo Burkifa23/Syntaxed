@@ -177,6 +177,7 @@ document.addEventListener("DOMContentLoaded", () => {
             password_checker: 'snippets/c/password-checker.txt',
             array_strings: 'snippets/c/array-strings.txt',
             reverse_string: 'snippets/c/reverse-string.txt',
+            advanced_functions: 'snippets/c/advanced-functions.txt',
 
 
         },

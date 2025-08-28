@@ -180,6 +180,38 @@ double: 8 bytes (15-17 significant digits)
 
 ### 2. Intermediate Programming (8 snippets)
 - **advanced-functions** - Function pointers, recursion, variable arguments, static functions
+
+<details>
+<summary>Advanced Functions</summary>
+
+/*
+ * FUNCTION POINTERS:
+ * - Syntax: return_type (*pointer_name)(parameter_types)
+ * - Can be stored in arrays for dispatch tables
+ * - Useful for callbacks and plugin architectures
+ * - Enable dynamic function selection at runtime
+ * 
+ * RECURSION CONSIDERATIONS:
+ * - Always have a base case to prevent infinite recursion
+ * - Be aware of stack overflow with deep recursion
+ * - Iterative solutions often more efficient
+ * - Tail recursion optimization may help
+ * 
+ * VARIABLE ARGUMENTS:
+ * - Use stdarg.h macros: va_start, va_arg, va_end
+ * - First parameter must indicate argument count or format
+ * - Type promotion rules apply (float -> double, etc.)
+ * - No type checking - programmer responsibility
+ * 
+ * STATIC FUNCTIONS/VARIABLES:
+ * - Static functions: internal linkage (file scope only)
+ * - Static variables: persistent between function calls
+ * - Help with encapsulation and data hiding
+ * - Reduce namespace pollution
+ */
+---
+</details>
+
 - **structures-unions** - struct definition, member access, unions, typedef, nested structures
 - **file-input-output** - fopen, fread, fwrite, file modes, error handling, text vs binary
 - **dynamic-memory** - malloc, calloc, realloc, free, memory allocation patterns
