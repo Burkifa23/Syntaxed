@@ -183,6 +183,7 @@ document.addEventListener("DOMContentLoaded", () => {
             dynamic_memory: 'snippets/c/dynamic-memory.txt',
             pointers_introduction: 'snippets/c/pointer-intro.txt',
             command_line_arguments: 'snippets/c/command-line-args.txt',
+            bitwise_operations: 'snippets/c/bitwise-operations.txt',
 
 
         },

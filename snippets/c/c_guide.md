@@ -444,6 +444,74 @@ double: 8 bytes (15-17 significant digits)
 - **modular-programming** - Multiple files, header files, extern, static, compilation units
 - **bitwise-operations** - Bit manipulation, masks, shifts, practical applications
 
+<details>
+<summary>Bitwise Operations</summary>
+
+/*
+ * BITWISE OPERATIONS SUMMARY:
+ * 
+ * BASIC OPERATORS:
+ * & (AND)    - Sets bit if both bits are 1
+ * | (OR)     - Sets bit if either bit is 1  
+ * ^ (XOR)    - Sets bit if bits are different
+ * ~ (NOT)    - Inverts all bits
+ * << (LEFT)  - Shifts bits left (multiply by 2^n)
+ * >> (RIGHT) - Shifts bits right (divide by 2^n)
+ * 
+ * COMMON BIT OPERATIONS:
+ * Set bit n:     value |= (1 << n)
+ * Clear bit n:   value &= ~(1 << n)  
+ * Toggle bit n:  value ^= (1 << n)
+ * Test bit n:    (value >> n) & 1
+ * 
+ * BIT MANIPULATION TRICKS:
+ * - Check power of 2: (n & (n-1)) == 0
+ * - Count set bits: Brian Kernighan's algorithm
+ * - Swap variables: a ^= b; b ^= a; a ^= b;
+ * - Get absolute value: (n ^ (n >> 31)) - (n >> 31)
+ * - Round up to power of 2: use bit manipulation
+ * - Isolate rightmost set bit: n & (-n)
+ * - Turn off rightmost set bit: n & (n-1)
+ * 
+ * APPLICATIONS:
+ * - Flags and permissions systems
+ * - Hash table optimization (power-of-2 sizing)
+ * - Graphics programming (color manipulation)
+ * - Cryptography (simple ciphers)
+ * - Network protocols (headers, checksums)
+ * - Embedded systems (register manipulation)
+ * - Compression algorithms
+ * - Bit fields for memory efficiency
+ * - Fast arithmetic operations
+ * 
+ * PERFORMANCE NOTES:
+ * - Bitwise operations are very fast (single CPU cycles)
+ * - Bit shifts faster than multiply/divide by powers of 2
+ * - Bit masks avoid expensive modulo operations
+ * - Modern compilers optimize many bit operations
+ * 
+ * PORTABILITY CONSIDERATIONS:
+ * - Signed right shifts are implementation-defined
+ * - Bit field layout is implementation-defined
+ * - Use fixed-width types (uint32_t) for consistent behavior
+ * - Be careful with endianness in multi-byte operations
+ * 
+ * COMMON PITFALLS:
+ * - Signed vs unsigned shift behavior
+ * - Operator precedence (use parentheses)
+ * - Shift amounts >= width of type (undefined behavior)
+ * - Assuming bit field memory layout
+ * - Not masking when extracting bit fields
+ * - Integer overflow in bit operations
+ * 
+ * COMPILATION:
+ * gcc -o bitwise bitwise-operations.c
+ * ./bitwise
+ */
+ ---
+</details>
+
+
 ### 3. Pointers & Memory Management (8 snippets)
 - **pointer-fundamentals** - Pointer declarations, null pointers, pointer comparisons, void pointers
 - **arrays-and-pointers** - Array-pointer relationship, pointer arithmetic, multi-dimensional arrays

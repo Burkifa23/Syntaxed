@@ -1,0 +1,503 @@
+#include <stdio.h>
+#include <stdint.h>  // For fixed-width integer types
+#include <limits.h>  // For CHAR_BIT
+#include <string.h>  // For strlen
+
+// Function prototypes
+void print_binary(unsigned int n, int bits);
+void demonstrate_bitwise_operators(void);
+void demonstrate_bit_shifts(void);
+void demonstrate_bit_masks(void);
+void demonstrate_bit_flags(void);
+void demonstrate_practical_applications(void);
+
+// Bit manipulation utility functions
+int count_set_bits(unsigned int n);
+int find_first_set_bit(unsigned int n);
+unsigned int reverse_bits(unsigned int n);
+int is_power_of_two(unsigned int n);
+unsigned int next_power_of_two(unsigned int n);
+
+// Bit flag definitions for demonstration
+#define FLAG_READABLE   0x01  // 0001
+#define FLAG_WRITABLE   0x02  // 0010
+#define FLAG_EXECUTABLE 0x04  // 0100
+#define FLAG_HIDDEN     0x08  // 1000
+
+// Structure with bit fields
+typedef struct {
+    unsigned int read : 1;
+    unsigned int write : 1;
+    unsigned int execute : 1;
+    unsigned int hidden : 1;
+    unsigned int reserved : 4;  // Padding
+} FilePermissions;
+
+int main(void) {
+    printf("=== BITWISE OPERATIONS DEMONSTRATION ===\n\n");
+    
+    demonstrate_bitwise_operators();
+    demonstrate_bit_shifts();
+    demonstrate_bit_masks();
+    demonstrate_bit_flags();
+    demonstrate_practical_applications();
+    
+    return 0;
+}
+
+void demonstrate_bitwise_operators(void) {
+    printf("=== BITWISE OPERATORS ===\n");
+    
+    unsigned int a = 60;   // 0011 1100
+    unsigned int b = 13;   // 0000 1101
+    
+    printf("a = %u = ", a);
+    print_binary(a, 8);
+    
+    printf("b = %u = ", b);
+    print_binary(b, 8);
+    
+    // BITWISE AND (&)
+    unsigned int and_result = a & b;  // 0000 1100 = 12
+    printf("\na & b = %u = ", and_result);
+    print_binary(and_result, 8);
+    
+    // BITWISE OR (|)
+    unsigned int or_result = a | b;   // 0011 1101 = 61
+    printf("a | b = %u = ", or_result);
+    print_binary(or_result, 8);
+    
+    // BITWISE XOR (^)
+    unsigned int xor_result = a ^ b;  // 0011 0001 = 49
+    printf("a ^ b = %u = ", xor_result);
+    print_binary(xor_result, 8);
+    
+    // BITWISE NOT (~)
+    unsigned int not_a = ~a;          // 1100 0011 (in 8-bit representation)
+    printf("~a = %u = ", not_a);
+    print_binary(not_a, 8);
+    
+    // BITWISE PROPERTIES
+    printf("\n=== BITWISE PROPERTIES ===\n");
+    
+    // XOR properties
+    printf("XOR Properties:\n");
+    printf("a ^ 0 = %u (unchanged)\n", a ^ 0);
+    printf("a ^ a = %u (zero)\n", a ^ a);
+    printf("a ^ b ^ b = %u (back to a)\n", a ^ b ^ b);
+    
+    // AND properties
+    printf("\nAND Properties:\n");
+    printf("a & 0 = %u (zero)\n", a & 0);
+    printf("a & ~0 = %u (unchanged)\n", a & ~0);
+    
+    // OR properties  
+    printf("\nOR Properties:\n");
+    printf("a | 0 = %u (unchanged)\n", a | 0);
+    printf("a | ~0 = %u (all ones in range)\n", a | ~0);
+    
+    printf("\n");
+}
+
+void demonstrate_bit_shifts(void) {
+    printf("=== BIT SHIFT OPERATIONS ===\n");
+    
+    unsigned int value = 12;  // 0000 1100
+    
+    printf("Original value = %u = ", value);
+    print_binary(value, 8);
+    
+    // LEFT SHIFTS (<<)
+    printf("\nLeft shifts (multiplication by powers of 2):\n");
+    for (int i = 1; i <= 3; i++) {
+        unsigned int shifted = value << i;
+        printf("%u << %d = %u = ", value, i, shifted);
+        print_binary(shifted, 8);
+        printf(" (multiply by %d)\n", 1 << i);
+    }
+    
+    // RIGHT SHIFTS (>>)
+    printf("\nRight shifts (division by powers of 2):\n");
+    unsigned int large_value = 48;  // 0011 0000
+    printf("Starting with %u = ", large_value);
+    print_binary(large_value, 8);
+    
+    for (int i = 1; i <= 3; i++) {
+        unsigned int shifted = large_value >> i;
+        printf("%u >> %d = %u = ", large_value, i, shifted);
+        print_binary(shifted, 8);
+        printf(" (divide by %d)\n", 1 << i);
+    }
+    
+    // SIGNED vs UNSIGNED RIGHT SHIFTS
+    printf("\n=== SIGNED vs UNSIGNED SHIFTS ===\n");
+    
+    int signed_negative = -8;
+    unsigned int unsigned_val = (unsigned int)signed_negative;
+    
+    printf("Signed -8: ");
+    print_binary(signed_negative, 32);
+    printf("Unsigned equivalent: ");
+    print_binary(unsigned_val, 32);
+    
+    printf("\nRight shift by 2:\n");
+    printf("Signed: %d >> 2 = %d\n", signed_negative, signed_negative >> 2);
+    printf("Unsigned: %u >> 2 = %u\n", unsigned_val, unsigned_val >> 2);
+    
+    // CIRCULAR SHIFTS (ROTATION)
+    printf("\n=== CIRCULAR SHIFTS ===\n");
+    unsigned char byte_val = 0xAB;  // 1010 1011
+    
+    printf("Original byte: 0x%02X = ", byte_val);
+    print_binary(byte_val, 8);
+    
+    // Rotate left by 3 positions
+    int rotate_amount = 3;
+    unsigned char rotated_left = (byte_val << rotate_amount) | (byte_val >> (8 - rotate_amount));
+    printf("Rotate left by %d: 0x%02X = ", rotate_amount, rotated_left);
+    print_binary(rotated_left, 8);
+    
+    // Rotate right by 2 positions
+    rotate_amount = 2;
+    unsigned char rotated_right = (byte_val >> rotate_amount) | (byte_val << (8 - rotate_amount));
+    printf("Rotate right by %d: 0x%02X = ", rotate_amount, rotated_right);
+    print_binary(rotated_right, 8);
+    
+    printf("\n");
+}
+
+void demonstrate_bit_masks(void) {
+    printf("=== BIT MASKS AND MANIPULATION ===\n");
+    
+    unsigned int data = 0x5A;  // 0101 1010
+    
+    printf("Original data: 0x%02X = ", data);
+    print_binary(data, 8);
+    
+    // SET SPECIFIC BITS
+    printf("\nSetting bits:\n");
+    unsigned int mask_set = 0x0F;  // 0000 1111
+    unsigned int set_result = data | mask_set;
+    printf("Set lower 4 bits: 0x%02X | 0x%02X = 0x%02X = ", data, mask_set, set_result);
+    print_binary(set_result, 8);
+    
+    // CLEAR SPECIFIC BITS
+    printf("\nClearing bits:\n");
+    unsigned int mask_clear = 0xF0;  // 1111 0000
+    unsigned int clear_result = data & (~mask_clear);
+    printf("Clear upper 4 bits: 0x%02X & ~0x%02X = 0x%02X = ", data, mask_clear, clear_result);
+    print_binary(clear_result, 8);
+    
+    // TOGGLE SPECIFIC BITS
+    printf("\nToggling bits:\n");
+    unsigned int mask_toggle = 0xAA;  // 1010 1010
+    unsigned int toggle_result = data ^ mask_toggle;
+    printf("Toggle alternating bits: 0x%02X ^ 0x%02X = 0x%02X = ", data, mask_toggle, toggle_result);
+    print_binary(toggle_result, 8);
+    
+    // EXTRACT BIT FIELDS
+    printf("\n=== BIT FIELD EXTRACTION ===\n");
+    
+    unsigned int register_value = 0x12345678;
+    printf("32-bit register: 0x%08X = ", register_value);
+    print_binary(register_value, 32);
+    
+    // Extract bits 8-15 (byte 1)
+    unsigned int byte1 = (register_value >> 8) & 0xFF;
+    printf("Bits 8-15 (byte 1): 0x%02X\n", byte1);
+    
+    // Extract bits 16-23 (byte 2)  
+    unsigned int byte2 = (register_value >> 16) & 0xFF;
+    printf("Bits 16-23 (byte 2): 0x%02X\n", byte2);
+    
+    // Extract bits 4-7 (nibble)
+    unsigned int nibble = (register_value >> 4) & 0x0F;
+    printf("Bits 4-7 (nibble): 0x%X\n", nibble);
+    
+    // CHECK SPECIFIC BITS
+    printf("\n=== BIT TESTING ===\n");
+    
+    unsigned int test_value = 0xA5;  // 1010 0101
+    printf("Test value: 0x%02X = ", test_value);
+    print_binary(test_value, 8);
+    
+    for (int bit = 0; bit < 8; bit++) {
+        int is_set = (test_value >> bit) & 1;
+        printf("Bit %d: %s\n", bit, is_set ? "SET" : "CLEAR");
+    }
+    
+    printf("\n");
+}
+
+void demonstrate_bit_flags(void) {
+    printf("=== BIT FLAGS SYSTEM ===\n");
+    
+    unsigned int permissions = 0;  // Start with no permissions
+    
+    printf("Initial permissions: 0x%02X = ", permissions);
+    print_binary(permissions, 8);
+    
+    // SET FLAGS
+    printf("\nSetting flags:\n");
+    permissions |= FLAG_READABLE;
+    printf("Set READABLE: 0x%02X = ", permissions);
+    print_binary(permissions, 8);
+    
+    permissions |= FLAG_WRITABLE;
+    printf("Set WRITABLE: 0x%02X = ", permissions);
+    print_binary(permissions, 8);
+    
+    permissions |= FLAG_EXECUTABLE;
+    printf("Set EXECUTABLE: 0x%02X = ", permissions);
+    print_binary(permissions, 8);
+    
+    // CHECK FLAGS
+    printf("\nChecking flags:\n");
+    printf("Is READABLE? %s\n", (permissions & FLAG_READABLE) ? "Yes" : "No");
+    printf("Is WRITABLE? %s\n", (permissions & FLAG_WRITABLE) ? "Yes" : "No");
+    printf("Is EXECUTABLE? %s\n", (permissions & FLAG_EXECUTABLE) ? "Yes" : "No");
+    printf("Is HIDDEN? %s\n", (permissions & FLAG_HIDDEN) ? "Yes" : "No");
+    
+    // CLEAR FLAGS
+    printf("\nClearing flags:\n");
+    permissions &= ~FLAG_WRITABLE;
+    printf("Clear WRITABLE: 0x%02X = ", permissions);
+    print_binary(permissions, 8);
+    
+    // TOGGLE FLAGS
+    printf("\nToggling flags:\n");
+    permissions ^= FLAG_HIDDEN;
+    printf("Toggle HIDDEN: 0x%02X = ", permissions);
+    print_binary(permissions, 8);
+    
+    // BIT FIELDS STRUCTURE
+    printf("\n=== BIT FIELDS STRUCTURE ===\n");
+    
+    FilePermissions file_perms = {0};
+    printf("Initial file permissions (bit field): ");
+    printf("read=%u, write=%u, execute=%u, hidden=%u\n",
+           file_perms.read, file_perms.write, file_perms.execute, file_perms.hidden);
+    
+    file_perms.read = 1;
+    file_perms.execute = 1;
+    printf("After setting read and execute: ");
+    printf("read=%u, write=%u, execute=%u, hidden=%u\n",
+           file_perms.read, file_perms.write, file_perms.execute, file_perms.hidden);
+    
+    printf("Size of FilePermissions: %zu bytes\n", sizeof(FilePermissions));
+    
+    printf("\n");
+}
+
+void demonstrate_practical_applications(void) {
+    printf("=== PRACTICAL APPLICATIONS ===\n");
+    
+    // BIT COUNTING
+    printf("1. Bit counting:\n");
+    unsigned int numbers[] = {15, 255, 1024, 0xAAAA};
+    int num_count = sizeof(numbers) / sizeof(numbers[0]);
+    
+    for (int i = 0; i < num_count; i++) {
+        printf("Number %u has %d set bits\n", numbers[i], count_set_bits(numbers[i]));
+    }
+    
+    // POWER OF TWO DETECTION
+    printf("\n2. Power of two detection:\n");
+    unsigned int test_powers[] = {1, 2, 3, 4, 8, 15, 16, 32, 100, 128};
+    int power_count = sizeof(test_powers) / sizeof(test_powers[0]);
+    
+    for (int i = 0; i < power_count; i++) {
+        printf("%u is %sa power of two\n", test_powers[i], 
+               is_power_of_two(test_powers[i]) ? "" : "not ");
+    }
+    
+    // NEXT POWER OF TWO
+    printf("\n3. Next power of two:\n");
+    unsigned int values[] = {5, 17, 33, 100, 200};
+    int val_count = sizeof(values) / sizeof(values[0]);
+    
+    for (int i = 0; i < val_count; i++) {
+        printf("Next power of two after %u is %u\n", 
+               values[i], next_power_of_two(values[i]));
+    }
+    
+    // BIT REVERSAL
+    printf("\n4. Bit reversal:\n");
+    unsigned char bytes[] = {0xF0, 0xAA, 0x12, 0xFF};
+    int byte_count = sizeof(bytes) / sizeof(bytes[0]);
+    
+    for (int i = 0; i < byte_count; i++) {
+        unsigned int reversed = reverse_bits(bytes[i]);
+        printf("0x%02X reversed = 0x%02X\n", bytes[i], reversed & 0xFF);
+    }
+    
+    // FIRST SET BIT
+    printf("\n5. First set bit position:\n");
+    unsigned int bit_values[] = {8, 12, 16, 255, 1024};
+    int bit_count_vals = sizeof(bit_values) / sizeof(bit_values[0]);
+    
+    for (int i = 0; i < bit_count_vals; i++) {
+        int first_bit = find_first_set_bit(bit_values[i]);
+        printf("First set bit in %u is at position %d\n", bit_values[i], first_bit);
+    }
+    
+    // HASH TABLE SIZING
+    printf("\n6. Hash table optimization:\n");
+    unsigned int table_sizes[] = {10, 50, 100, 1000};
+    int size_count = sizeof(table_sizes) / sizeof(table_sizes[0]);
+    
+    for (int i = 0; i < size_count; i++) {
+        unsigned int optimal_size = next_power_of_two(table_sizes[i]);
+        printf("For %u elements, use hash table size %u (allows bit masking)\n",
+               table_sizes[i], optimal_size);
+    }
+    
+    // SIMPLE ENCRYPTION (XOR cipher)
+    printf("\n7. Simple XOR encryption:\n");
+    char message[] = "Hello World";
+    char key = 0x5A;  // Simple key
+    
+    printf("Original message: %s\n", message);
+    
+    // Encrypt
+    for (int i = 0; message[i] != '\0'; i++) {
+        message[i] ^= key;
+    }
+    printf("Encrypted: ");
+    for (int i = 0; message[i] != '\0'; i++) {
+        printf("%02X ", (unsigned char)message[i]);
+    }
+    printf("\n");
+    
+    // Decrypt (XOR again with same key)
+    for (int i = 0; message[i] != '\0'; i++) {
+        message[i] ^= key;
+    }
+    printf("Decrypted message: %s\n", message);
+    
+    // PARITY BIT CALCULATION
+    printf("\n8. Parity bit calculation:\n");
+    unsigned char data_bytes[] = {0x7F, 0x80, 0xAA, 0x55};
+    int parity_count = sizeof(data_bytes) / sizeof(data_bytes[0]);
+    
+    for (int i = 0; i < parity_count; i++) {
+        int bit_count = count_set_bits(data_bytes[i]);
+        int parity = bit_count % 2;  // Even parity
+        printf("Data 0x%02X: %d set bits, parity bit = %d\n", 
+               data_bytes[i], bit_count, parity);
+    }
+    
+    // RGB COLOR MANIPULATION
+    printf("\n9. RGB color manipulation:\n");
+    unsigned int color = 0x5A3E92;  // Purple-ish color
+    
+    // Extract RGB components
+    unsigned int red = (color >> 16) & 0xFF;
+    unsigned int green = (color >> 8) & 0xFF;
+    unsigned int blue = color & 0xFF;
+    
+    printf("Color 0x%06X: R=%u, G=%u, B=%u\n", color, red, green, blue);
+    
+    // Modify components
+    red = (red * 3) / 4;    // Reduce red by 25%
+    green = green | 0x40;   // Boost green
+    blue = ~blue & 0xFF;    // Invert blue
+    
+    // Recombine
+    unsigned int new_color = (red << 16) | (green << 8) | blue;
+    printf("Modified color 0x%06X: R=%u, G=%u, B=%u\n", new_color, red, green, blue);
+    
+    // CHECKSUM CALCULATION
+    printf("\n10. Simple checksum:\n");
+    unsigned char data[] = {0x12, 0x34, 0x56, 0x78, 0x9A};
+    int data_size = sizeof(data) / sizeof(data[0]);
+    
+    unsigned char checksum = 0;
+    for (int i = 0; i < data_size; i++) {
+        checksum ^= data[i];  // XOR checksum
+    }
+    
+    printf("Data: ");
+    for (int i = 0; i < data_size; i++) {
+        printf("0x%02X ", data[i]);
+    }
+    printf("\nXOR Checksum: 0x%02X\n", checksum);
+    
+    printf("\n");
+}
+
+// UTILITY FUNCTIONS
+
+void print_binary(unsigned int n, int bits) {
+    for (int i = bits - 1; i >= 0; i--) {
+        printf("%c", (n & (1U << i)) ? '1' : '0');
+        if (i > 0 && i % 4 == 0) printf(" ");  // Space every 4 bits
+    }
+    printf("\n");
+}
+
+int count_set_bits(unsigned int n) {
+    int count = 0;
+    while (n) {
+        count += n & 1;
+        n >>= 1;
+    }
+    return count;
+    
+    /* Alternative: Brian Kernighan's algorithm (more efficient)
+    int count = 0;
+    while (n) {
+        n &= n - 1;  // Remove rightmost set bit
+        count++;
+    }
+    return count;
+    */
+}
+
+int find_first_set_bit(unsigned int n) {
+    if (n == 0) return -1;  // No bits set
+    
+    int position = 0;
+    while ((n & 1) == 0) {
+        n >>= 1;
+        position++;
+    }
+    return position;
+    
+    /* Alternative: Using builtin (GCC)
+    return __builtin_ffs(n) - 1;  // ffs returns 1-based index
+    */
+}
+
+unsigned int reverse_bits(unsigned int n) {
+    unsigned int result = 0;
+    int bits = sizeof(n) * CHAR_BIT;
+    
+    for (int i = 0; i < bits; i++) {
+        result = (result << 1) | (n & 1);
+        n >>= 1;
+    }
+    
+    return result;
+}
+
+int is_power_of_two(unsigned int n) {
+    return n > 0 && (n & (n - 1)) == 0;
+}
+
+unsigned int next_power_of_two(unsigned int n) {
+    if (n == 0) return 1;
+    
+    // Handle case where n is already a power of two
+    if (is_power_of_two(n)) {
+        return n << 1;  // Next power of two
+    }
+    
+    // Find the highest set bit and return next power
+    unsigned int power = 1;
+    while (power < n) {
+        power <<= 1;
+    }
+    
+    return power;
+}
