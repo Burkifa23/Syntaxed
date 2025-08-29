@@ -442,6 +442,52 @@ double: 8 bytes (15-17 significant digits)
 </details>
 
 - **modular-programming** - Multiple files, header files, extern, static, compilation units
+
+<details>
+<summary>Modular Programming</summary>
+Complete Project Structure:
+📁 File Organization
+
+11 files total: 4 headers, 5 source files, 1 Makefile, 1 main program
+Professional separation of concerns across modules
+Clean interfaces with proper header guards
+Comprehensive build system with multiple options
+
+🔧 Key Features Demonstrated:
+1. Header File Best Practices
+
+Header guards preventing multiple inclusion
+External declarations vs definitions
+Macro definitions and constants
+Type definitions and structures
+Function prototypes with clear documentation
+
+2. Linkage Types in Action
+
+External linkage: Variables/functions accessible across files
+Internal linkage: Static functions/variables (file scope only)
+No linkage: Local variables and parameters
+Proper extern usage for cross-file variable access
+
+3. Professional Modules
+
+Math Operations: Advanced mathematical functions with statistics
+String Utilities: Comprehensive string manipulation library
+Data Structures: Dynamic arrays, linked lists, stacks
+Configuration: Global settings and conditional compilation
+Utilities: Helper functions demonstrating various concepts
+
+4. Advanced Compilation Features
+
+Conditional compilation with DEBUG_MODE
+Dependency tracking in Makefile
+Multiple build targets (debug, release, memcheck)
+Professional error handling with custom error codes
+
+---
+
+</details>
+
 - **bitwise-operations** - Bit manipulation, masks, shifts, practical applications
 
 <details>
