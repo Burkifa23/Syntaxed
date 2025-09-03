@@ -1,0 +1,40 @@
+#include <stdio.h>
+
+int main() {
+    // Create variables of different types
+    int integer = 25;
+    char character = 'A';
+    float decimal = 3.14f;
+    
+    // Create pointers using the address-of operator (&)
+    int *int_ptr = &integer;
+    char *char_ptr = &character; 
+    float *float_ptr = &decimal;
+    
+    printf("=== ADDRESSES (using & operator) ===\n");
+    printf("Address of integer: %p\n", (void*)&integer);
+    printf("Address of character: %p\n", (void*)&character);
+    printf("Address of decimal: %p\n", (void*)&decimal);
+    
+    printf("\n=== POINTER VALUES (addresses they store) ===\n");
+    printf("int_ptr contains: %p\n", (void*)int_ptr);
+    printf("char_ptr contains: %p\n", (void*)char_ptr);
+    printf("float_ptr contains: %p\n", (void*)float_ptr);
+    
+    printf("\n=== DEREFERENCING (using * operator) ===\n");
+    printf("Value at int_ptr: %d\n", *int_ptr);
+    printf("Value at char_ptr: %c\n", *char_ptr);
+    printf("Value at float_ptr: %.2f\n", *float_ptr);
+    
+    printf("\n=== MODIFYING VALUES THROUGH POINTERS ===\n");
+    *int_ptr = 99;        // Changes 'integer' to 99
+    *char_ptr = 'Z';      // Changes 'character' to 'Z'
+    *float_ptr = 2.71f;   // Changes 'decimal' to 2.71
+    
+    printf("After modification through pointers:\n");
+    printf("integer = %d\n", integer);
+    printf("character = %c\n", character);
+    printf("decimal = %.2f\n", decimal);
+    
+    return 0;
+}
