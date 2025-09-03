@@ -1,0 +1,35 @@
+#include <stdio.h>
+#include <stddef.h>  // for NULL
+
+int main() {
+    // Initialize pointers to NULL
+    int *ptr1 = NULL;
+    char *ptr2 = NULL;
+    float *ptr3 = NULL;
+    
+    // Check if pointers are NULL before using them
+    if (ptr1 == NULL) {
+        printf("ptr1 is NULL - safe to check!\n");
+    }
+    
+    // Alternative way to check (0 is equivalent to NULL for pointers)
+    if (!ptr2) {
+        printf("ptr2 is NULL (using !ptr2)\n");
+    }
+    
+    // Now let's assign a valid address
+    int value = 100;
+    ptr1 = &value;
+    
+    // Check again
+    if (ptr1 != NULL) {
+        printf("ptr1 now points to a valid location\n");
+        printf("Value at ptr1: %d\n", *ptr1);
+    }
+    
+    // WARNING: Never dereference a NULL pointer!
+    // This would cause a program crash:
+    // printf("%d", *ptr2);  // DON'T DO THIS!
+    
+    return 0;
+}
