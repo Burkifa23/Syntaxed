@@ -187,6 +187,7 @@ document.addEventListener("DOMContentLoaded", () => {
             basic_pointer: 'snippets/c/basic-pointer.txt',
             null_pointer: 'snippets/c/null-pointer.txt',
             pointer_operations: 'snippets/c/pointer-operations.txt',
+            pointer_comparison: 'snippets/c/pointer-comparison.txt',
         },
         clojure: {
             start: 'snippets/clojure/hello.txt'
