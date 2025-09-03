@@ -1,0 +1,20 @@
+#include <stdio.h>
+
+int main() {
+    // Step 1: Declare a regular integer variable
+    int number = 42;
+    
+    // Step 2: Declare a pointer to an integer
+    int *ptr;
+    
+    // Step 3: Initialize the pointer with the address of 'number'
+    ptr = &number;  // & means "address of"
+    
+    // Step 4: Display the results
+    printf("Value of number: %d\n", number);
+    printf("Address of number: %p\n", (void*)&number);
+    printf("Value stored in ptr (address): %p\n", (void*)ptr);
+    printf("Value pointed to by ptr: %d\n", *ptr);  // * means "value at"
+    
+    return 0;
+}
