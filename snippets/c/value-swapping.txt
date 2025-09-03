@@ -1,0 +1,50 @@
+#include <stdio.h>
+
+// Function that swaps two integers using pointers
+void swap(int *x, int *y) {
+    printf("  Inside swap function:\n");
+    printf("    Address of x: %p, Value: %d\n", (void*)x, *x);
+    printf("    Address of y: %p, Value: %d\n", (void*)y, *y);
+    
+    int temp = *x;  // Store value pointed to by x
+    *x = *y;        // Set value at x to value at y
+    *y = temp;      // Set value at y to temp
+    
+    printf("    After swapping:\n");
+    printf("    Value at x: %d, Value at y: %d\n", *x, *y);
+}
+
+int main() {
+    int first = 100;
+    int second = 200;
+    
+    printf("=== BEFORE SWAP ===\n");
+    printf("first = %d (at address %p)\n", first, (void*)&first);
+    printf("second = %d (at address %p)\n", second, (void*)&second);
+    
+    printf("\n=== CALLING SWAP FUNCTION ===\n");
+    printf("Passing addresses of first and second to swap function\n");
+    swap(&first, &second);  // Pass addresses using & operator
+    
+    printf("\n=== AFTER SWAP ===\n");
+    printf("first = %d\n", first);
+    printf("second = %d\n", second);
+    
+    printf("\n=== DEMONSTRATING POINTER RELATIONSHIPS ===\n");
+    int *ptr_to_first = &first;
+    int *ptr_to_second = &second;
+    
+    printf("ptr_to_first points to: %p, contains value: %d\n", 
+           (void*)ptr_to_first, *ptr_to_first);
+    printf("ptr_to_second points to: %p, contains value: %d\n", 
+           (void*)ptr_to_second, *ptr_to_second);
+    
+    // Show that we can modify values through pointers
+    printf("\nModifying values through pointers:\n");
+    *ptr_to_first += 50;   // Add 50 to first
+    *ptr_to_second -= 25;  // Subtract 25 from second
+    
+    printf("first = %d, second = %d\n", first, second);
+    
+    return 0;
+}
