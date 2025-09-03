@@ -1,0 +1,62 @@
+#include <stdio.h>
+#include <stddef.h>
+
+int main() {
+    int a = 10, b = 20;
+    int *ptr1 = &a;
+    int *ptr2 = &b;
+    int *ptr3 = &a;  // Points to same location as ptr1
+    int *ptr4 = NULL;
+    
+    printf("=== POINTER ADDRESSES ===\n");
+    printf("ptr1 points to: %p (value: %d)\n", (void*)ptr1, *ptr1);
+    printf("ptr2 points to: %p (value: %d)\n", (void*)ptr2, *ptr2);
+    printf("ptr3 points to: %p (value: %d)\n", (void*)ptr3, *ptr3);
+    printf("ptr4 points to: %p\n", (void*)ptr4);
+    
+    printf("\n=== EQUALITY COMPARISONS ===\n");
+    
+    // Compare pointer addresses
+    if (ptr1 == ptr3) {
+        printf("ptr1 and ptr3 point to the same location ✓\n");
+    } else {
+        printf("ptr1 and ptr3 point to different locations\n");
+    }
+    
+    if (ptr1 == ptr2) {
+        printf("ptr1 and ptr2 point to the same location\n");
+    } else {
+        printf("ptr1 and ptr2 point to different locations ✓\n");
+    }
+    
+    // NULL pointer checks
+    if (ptr4 == NULL) {
+        printf("ptr4 is NULL ✓\n");
+    }
+    
+    if (ptr1 != NULL) {
+        printf("ptr1 is not NULL ✓\n");
+    }
+    
+    printf("\n=== VALUE COMPARISONS ===\n");
+    
+    // Compare values pointed to (not the pointers themselves)
+    if (*ptr1 == *ptr3) {
+        printf("Values pointed to by ptr1 and ptr3 are equal ✓\n");
+    }
+    
+    if (*ptr1 != *ptr2) {
+        printf("Values pointed to by ptr1 and ptr2 are different ✓\n");
+    }
+    
+    printf("\n=== RELATIONAL COMPARISONS ===\n");
+    
+    // You can also do relational comparisons on pointer addresses
+    if (ptr1 < ptr2) {
+        printf("ptr1 has a lower memory address than ptr2\n");
+    } else {
+        printf("ptr1 has a higher memory address than ptr2\n");
+    }
+    
+    return 0;
+}
