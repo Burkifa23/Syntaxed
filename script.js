@@ -184,7 +184,8 @@ document.addEventListener("DOMContentLoaded", () => {
             pointers_introduction: 'snippets/c/pointer-intro.txt',
             command_line_arguments: 'snippets/c/command-line-args.txt',
             bitwise_operations: 'snippets/c/bitwise-operations.txt',
-
+            basic_pointer: 'snippets/c/basic-pointer.txt',
+            
 
         },
         clojure: {
