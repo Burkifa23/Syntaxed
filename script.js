@@ -185,7 +185,7 @@ document.addEventListener("DOMContentLoaded", () => {
             command_line_arguments: 'snippets/c/command-line-args.txt',
             bitwise_operations: 'snippets/c/bitwise-operations.txt',
             basic_pointer: 'snippets/c/basic-pointer.txt',
-            
+            null_pointer: 'snippets/c/null-pointer.txt',
 
         },
         clojure: {
