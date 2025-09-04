@@ -701,3 +701,91 @@ select:focus,
     right: -20px;
     font-size: 0.8em;
 }
+
+/* Enhanced blur functionality styles */
+.blur-indicator {
+    text-align: center;
+    margin: 10px 0;
+    padding: 8px 12px;
+    background-color: #e9ecef;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 0.9em;
+    border: 1px solid #dee2e6;
+    transition: all 0.2s ease;
+}
+
+body.dark-mode .blur-indicator {
+    background-color: #495057;
+    color: #f8f9fa;
+    border-color: #4a5568;
+}
+
+/* Blur levels with better performance */
+.snippet-blur-10 { 
+    filter: blur(0.5px);
+    will-change: filter;
+}
+.snippet-blur-30 { 
+    filter: blur(1px);
+    will-change: filter;
+}
+.snippet-blur-50 { 
+    filter: blur(2px);
+    will-change: filter;
+}
+.snippet-blur-70 { 
+    filter: blur(3px);
+    will-change: filter;
+}
+.snippet-blur-90 { 
+    filter: blur(5px);
+    will-change: filter;
+}
+
+/* Enhanced word reveal with accessibility */
+.word-reveal {
+    position: relative;
+    cursor: pointer;
+    outline: none;
+    border-radius: 2px;
+    transition: all 0.2s ease;
+}
+
+.word-reveal.revealed {
+    filter: none !important;
+    background-color: rgba(74, 118, 168, 0.15);
+    box-shadow: 0 0 0 1px rgba(74, 118, 168, 0.3);
+}
+
+body.dark-mode .word-reveal.revealed {
+    background-color: rgba(90, 134, 184, 0.25);
+    box-shadow: 0 0 0 1px rgba(90, 134, 184, 0.4);
+}
+
+.word-reveal:hover:not(.revealed) {
+    background-color: rgba(74, 118, 168, 0.08);
+    transform: scale(1.02);
+}
+
+body.dark-mode .word-reveal:hover:not(.revealed) {
+    background-color: rgba(90, 134, 184, 0.15);
+}
+
+/* Focus state for accessibility */
+.word-reveal:focus {
+    outline: 2px solid #4a76a8;
+    outline-offset: 1px;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .word-reveal,
+    .blur-indicator {
+        transition: none;
+    }
+    
+    .word-reveal:hover:not(.revealed) {
+        transform: none;
+    }
+}

@@ -289,6 +289,9 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentLayout = 'vertical';
     let codeSnippet = '';
     let monacoEditor;
+    let blurLevel = 0; // 0 = off, 1 = 10%, 2 = 30%, 3 = 50%, 4 = 70%, 5 = 90%
+    let isWordRevealMode = false;
+    let revealedWords = new Set();
 
     const snippetDiv = document.getElementById("snippet");
     const resultsDiv = document.getElementById("results");
@@ -695,12 +698,14 @@ document.addEventListener("DOMContentLoaded", () => {
             // Successfully loaded snippet
             codeSnippet = text;
             snippetDiv.textContent = codeSnippet;
-            
+
+            // Reset blur mode when loading new snippet
+            blurLevel = 0;
+            updateBlurDisplay();
+
             // Safely update Monaco Editor
             if (isMonacoReady()) {
-                monacoEditor.setValue(''); // Start with empty editor
-                
-                // Check if the model exists before setting language
+                monacoEditor.setValue('');
                 const model = monacoEditor.getModel();
                 if (model) {
                     monaco.editor.setModelLanguage(model, currentLanguage);
@@ -711,12 +716,10 @@ document.addEventListener("DOMContentLoaded", () => {
             
         } catch (error) {
             console.error("Could not load snippet:", error, "Path:", filePath);
-            
-            // User-friendly error message
             const errorMsg = error.message.includes('HTTP') 
                 ? `Unable to load snippet file. Please check if ${filePath} exists.`
                 : `Error loading snippet: ${error.message}`;
-                
+            
             snippetDiv.textContent = errorMsg;
             codeSnippet = '';
             
@@ -820,6 +823,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 goToNormalMode();
             } else if (e.key.toLowerCase() === "s") {
                 showStatsModal();
+            } else if (e.key.toLowerCase() === "u") {
+                toggleBlurLevel();
+                e.preventDefault();
             } else if (e.key.toLowerCase() === "v") {
                 setLayout('vertical');
                 e.preventDefault();
@@ -1002,4 +1008,97 @@ document.addEventListener("DOMContentLoaded", () => {
             monacoEditor.layout();
         }
     });
+
+    function toggleBlurLevel() {
+        blurLevel = (blurLevel + 1) % 6; // Cycle through 0-5
+        updateBlurDisplay();
+    }
+
+    function updateBlurDisplay() {
+        const snippetDiv = document.getElementById("snippet");
+        const blurIndicator = document.getElementById("blur-indicator");
+        const blurLevelText = document.getElementById("blur-level-text");
+        
+        // Remove all blur classes
+        snippetDiv.classList.remove('snippet-blur-10', 'snippet-blur-30', 'snippet-blur-50', 'snippet-blur-70', 'snippet-blur-90');
+        
+        let levelText = 'Off';
+        let blurClass = '';
+        
+        switch(blurLevel) {
+            case 0:
+                levelText = 'Off';
+                blurIndicator.style.display = 'none';
+                isWordRevealMode = false;
+                removeWordRevealMode();
+                break;
+            case 1:
+                levelText = '10%';
+                blurClass = 'snippet-blur-10';
+                break;
+            case 2:
+                levelText = '30%';
+                blurClass = 'snippet-blur-30';
+                break;
+            case 3:
+                levelText = '50%';
+                blurClass = 'snippet-blur-50';
+                break;
+            case 4:
+                levelText = '70%';
+                blurClass = 'snippet-blur-70';
+                break;
+            case 5:
+                levelText = '90%';
+                blurClass = 'snippet-blur-90';
+                break;
+        }
+        
+        if (blurLevel > 0) {
+            snippetDiv.classList.add(blurClass);
+            blurIndicator.style.display = 'block';
+            blurLevelText.textContent = levelText;
+            enableWordRevealMode();
+        }
+    }
+
+    function enableWordRevealMode() {
+        const snippetDiv = document.getElementById("snippet");
+        isWordRevealMode = true;
+        revealedWords.clear();
+        
+        // Split content into words and wrap each in a span
+        const text = snippetDiv.textContent;
+        const words = text.split(/(\s+)/); // Keep whitespace
+        
+        snippetDiv.innerHTML = words.map((word, index) => {
+            if (word.trim()) {
+                return `<span class="word-reveal" data-word-index="${index}">${word}</span>`;
+            }
+            return word; // Keep whitespace as-is
+        }).join('');
+        
+        // Add click listeners to words
+        snippetDiv.querySelectorAll('.word-reveal').forEach(span => {
+            span.addEventListener('click', function() {
+                const wordIndex = this.getAttribute('data-word-index');
+                if (revealedWords.has(wordIndex)) {
+                    revealedWords.delete(wordIndex);
+                    this.classList.remove('revealed');
+                } else {
+                    revealedWords.add(wordIndex);
+                    this.classList.add('revealed');
+                }
+            });
+        });
+    }
+
+    function removeWordRevealMode() {
+        const snippetDiv = document.getElementById("snippet");
+        if (isWordRevealMode) {
+            snippetDiv.textContent = codeSnippet; // Restore original text
+            isWordRevealMode = false;
+            revealedWords.clear();
+        }
+    }
 });

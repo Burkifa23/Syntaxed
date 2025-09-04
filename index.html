@@ -169,6 +169,18 @@
                 <span class="button-text">Stats</span>
             </button>
             <div id="stats-help" class="sr-only">View your typing statistics</div>
+
+            
+            <button id="blur-button" type="button" aria-describedby="blur-help" title="Toggle Blur (Alt+U)">
+                <span class="button-icon" aria-hidden="true">👁️</span>
+                <span class="button-text">Blur</span>
+            </button>
+            <div id="blur-help" class="sr-only">Toggle code blur levels for memory practice</div>
+
+            
+            <div id="blur-indicator" class="blur-indicator" style="display: none;">
+                <span>Blur Level: <span id="blur-level-text">Off</span></span>
+            </div>
         </div>
 
         <div id="results" role="region" aria-label="Typing test results" aria-live="polite"></div>
