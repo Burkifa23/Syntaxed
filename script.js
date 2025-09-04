@@ -189,6 +189,7 @@ document.addEventListener("DOMContentLoaded", () => {
             pointer_operations: 'snippets/c/pointer-operations.txt',
             pointer_comparison: 'snippets/c/pointer-comparison.txt',
             pointer_value_swapping: 'snippets/c/value-swapping.txt',
+            array_names_as_pointer: 'snippets/c/array-names-pointer.txt',
         },
         clojure: {
             start: 'snippets/clojure/hello.txt'

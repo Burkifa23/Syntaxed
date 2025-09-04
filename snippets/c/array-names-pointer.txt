@@ -1,0 +1,43 @@
+#include <stdio.h>
+
+int main() {
+    int numbers[5] = {10, 20, 30, 40, 50};
+    
+    
+    
+    // Show that array name is a pointer to first element
+    printf("Address of first element (&numbers[0]): %p\n", (void*)&numbers[0]);
+    printf("Array name as pointer (numbers):        %p\n", (void*)numbers);
+    printf("Are they the same? %s\n", 
+           (numbers == &numbers[0]) ? "YES" : "NO");
+    
+    
+    for (int i = 0; i < 5; i++) {
+        printf("numbers[%d] = %d (at address %p)\n", 
+               i, numbers[i], (void*)&numbers[i]);
+    }
+    
+    
+    for (int i = 0; i < 5; i++) {
+        printf("*(numbers + %d) = %d (at address %p)\n", 
+               i, *(numbers + i), (void*)(numbers + i));
+    }
+    
+    
+    int *ptr = numbers;  // Point to the array (same as ptr = &numbers[0])
+    
+    printf("ptr points to: %p\n", (void*)ptr);
+    printf("Value at ptr: %d\n", *ptr);
+    printf("ptr == numbers? %s\n", (ptr == numbers) ? "YES" : "NO");
+    
+    
+    
+    printf("Original ptr points to: %p\n", (void*)ptr);
+    ptr++;  // We can modify ptr (move to next element)
+    printf("After ptr++, ptr points to: %p\n", (void*)ptr);
+    printf("Value at new position: %d\n", *ptr);
+    
+    // numbers++; // ERROR! Cannot modify array name - it's a constant pointer
+    
+    return 0;
+}
