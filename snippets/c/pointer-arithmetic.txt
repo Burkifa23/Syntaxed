@@ -1,0 +1,54 @@
+#include <stdio.h>
+
+int main() {
+    int numbers[6] = {100, 200, 300, 400, 500, 600};
+    int *ptr = numbers;  // Point to first element
+    
+    printf("Array: ");
+    for (int i = 0; i < 6; i++) {
+        printf("%d ", numbers[i]);
+    }
+    printf("\n\n");
+    
+    printf("Starting pointer: %p (value: %d)\n", (void*)ptr, *ptr);
+    
+    // Move forward through the array
+    for (int i = 0; i < 6; i++) {
+        printf("ptr + %d: %p -> value: %d\n", 
+               i, (void*)(ptr + i), *(ptr + i));
+    }
+    
+    // Show byte differences
+    printf("ptr:       %p\n", (void*)ptr);
+    printf("ptr + 1:   %p (difference: %ld bytes)\n", 
+           (void*)(ptr + 1), (char*)(ptr + 1) - (char*)ptr);
+    printf("ptr + 2:   %p (difference: %ld bytes)\n", 
+           (void*)(ptr + 2), (char*)(ptr + 2) - (char*)ptr);
+    
+    // Move the pointer and use it
+    printf("Initial: ptr points to %p, value = %d\n", (void*)ptr, *ptr);
+    
+    ptr++;  // Move to next element
+    printf("After ptr++: ptr points to %p, value = %d\n", (void*)ptr, *ptr);
+    
+    ptr += 2;  // Move 2 more elements forward
+    printf("After ptr += 2: ptr points to %p, value = %d\n", (void*)ptr, *ptr);
+    
+    ptr--;  // Move back one element
+    printf("After ptr--: ptr points to %p, value = %d\n", (void*)ptr, *ptr);
+    
+    // Reset pointer to beginning
+    ptr = numbers;
+    
+    char chars[4] = {'A', 'B', 'C', 'D'};
+    char *char_ptr = chars;
+    
+    printf("Character array addresses:\n");
+    for (int i = 0; i < 4; i++) {
+        printf("char_ptr + %d: %p -> '%c' (diff: %ld bytes)\n", 
+               i, (void*)(char_ptr + i), *(char_ptr + i),
+               (char_ptr + i) - char_ptr);
+    }
+    
+    return 0;
+}
