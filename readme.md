@@ -49,6 +49,7 @@
   - `Alt + S`: View statistics
   - `Alt + V`: Vertical layout
   - `Alt + H`: Horizontal layout
+  - `Alt + U`: Toggle blur levels (10%, 30%, 50%, 70%, 90%)
 - **Icon-only mode** for ultra-small screens (under 360px)
 - **Automatic test detection** - starts on first keystroke
 - **Completion celebration** with personal best comparison

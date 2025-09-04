@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
             state_machinces: 'snippets/assembly/state-machines.txt',
             context_switching: 'snippets/assembly/context-switching.txt',
             atomic_operations: 'snippets/assembly/atomic-operations.txt',
-            vectorized_operations: 'snippets/assembly/atomic-operations.txt',
+            vectorized_operations: 'snippets/assembly/vectorized-operations.txt',
             real_time_programming: 'snippets/assembly/real-time-programming.txt',
             menu_app: 'snippets/assembly/menu-app.txt',
             performance_benchmark: 'snippets/assembly/performance-benchmark.txt',
