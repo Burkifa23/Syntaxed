@@ -1,0 +1,49 @@
+This code is an x86-64 assembly program for Linux that prints "Hello, World!" to the console and then exits. Let's break it down line by line.
+
+.data Section
+The .data section is where initialized data is stored. This is typically for variables or constants that have a value at the start of the program.
+
+hello db 'Hello, World!', 0xA, 0: This line defines a string variable named hello.
+
+db stands for define byte. It allocates a sequence of bytes.
+
+'Hello, World!' is the literal string.
+
+0xA is the ASCII code for a newline character (\n), which moves the cursor to the next line.
+
+0 is a null terminator, often used to signify the end of a string, though not strictly necessary for this specific syscall.
+
+hello_len equ $ - hello - 1: This line defines a constant for the length of the hello string.
+
+equ stands for equate, which is used to define a constant.
+
+$ represents the current address of the instruction or data.
+
+The expression $ - hello calculates the difference between the current address (the end of the string) and the start of the hello variable, giving its total length in bytes.
+
+- 1 is used to exclude the null terminator (0) from the length, as the write syscall only needs the length of the string to be printed.
+
+.text Section
+The .text section is where the program's executable code (instructions) is located.
+
+global _start: This line makes the _start label globally accessible, which is crucial for the linker. The linker needs to know where the program's execution should begin, and by convention, on Linux, this is the _start label.
+
+_start Label
+This is the entry point of the program. Execution begins here.
+
+mov rax, 1: This instruction loads the value 1 into the rax register. In Linux, the rax register is used to specify which system call (syscall) to perform. The value 1 corresponds to the sys_write syscall, which is used to write data to a file descriptor.
+
+mov rdi, 1: This instruction loads the value 1 into the rdi register. The rdi register is the first argument to the syscall. The value 1 represents the standard output file descriptor (stdout), which is typically the console.
+
+mov rsi, hello: This instruction loads the address of the hello string into the rsi register. The rsi register is the second argument to the sys_write syscall, which is a pointer to the data to be written.
+
+mov rdx, hello_len: This instruction loads the value of the hello_len constant into the rdx register. The rdx register is the third argument to the sys_write syscall, which specifies the number of bytes to write.
+
+syscall: This instruction triggers the system call. The operating system takes control, reads the syscall number from rax and the arguments from rdi, rsi, and rdx, and executes the sys_write function, which writes "Hello, World!" to the console.
+
+Program Exit
+mov rax, 60: This instruction loads the value 60 into the rax register. The value 60 corresponds to the sys_exit syscall, which terminates the program.
+
+mov rdi, 0: This instruction loads the value 0 into the rdi register. This is the first argument to the sys_exit syscall. The value 0 is the exit code, indicating that the program terminated successfully.
+
+syscall: This instruction triggers the system call to exit the program. The operating system handles the cleanup and terminates the process.

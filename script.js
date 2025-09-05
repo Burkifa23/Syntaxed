@@ -292,6 +292,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let blurLevel = 0; // 0 = off, 1 = 10%, 2 = 30%, 3 = 50%, 4 = 70%, 5 = 90%
     let isWordRevealMode = false;
     let revealedWords = new Set();
+    let explanationCache = {};
 
     const snippetDiv = document.getElementById("snippet");
     const resultsDiv = document.getElementById("results");
@@ -832,6 +833,9 @@ document.addEventListener("DOMContentLoaded", () => {
             } else if (e.key.toLowerCase() === "h") {
                 setLayout('horizontal');
                 e.preventDefault();
+            } else if (e.key.toLowerCase() === "t") {
+                showExplanation();
+                e.preventDefault();
             }
         }
     });
@@ -1100,5 +1104,181 @@ document.addEventListener("DOMContentLoaded", () => {
             isWordRevealMode = false;
             revealedWords.clear();
         }
+    }
+
+    // Enhanced explanation functions
+    async function showExplanation() {
+        const explanationPath = `explanations/${currentLanguage}/${currentTopic}.txt`;
+        
+        // Create modal
+        const modal = document.createElement('div');
+        modal.className = 'explanation-modal';
+        modal.setAttribute('role', 'dialog');
+        modal.setAttribute('aria-labelledby', 'explanation-title');
+        modal.setAttribute('aria-modal', 'true');
+        
+        // Create modal content with loading state
+        modal.innerHTML = `
+            <div class="explanation-modal-content">
+                <div class="explanation-header">
+                    <h2 id="explanation-title" class="explanation-title">
+                        ${currentLanguage.charAt(0).toUpperCase() + currentLanguage.slice(1)} - ${formatTopicName(currentTopic)}
+                    </h2>
+                    <button class="close-explanation" aria-label="Close explanation">×</button>
+                </div>
+                <div class="explanation-content">
+                    <div class="loading-explanation">
+                        <div class="loading-spinner"></div>
+                        Loading explanation...
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // Add to document
+        document.body.appendChild(modal);
+        
+        // Focus close button for accessibility
+        const closeBtn = modal.querySelector('.close-explanation');
+        closeBtn.focus();
+        
+        // Load explanation content
+        try {
+            let explanationText;
+            
+            // Check cache first
+            if (explanationCache[explanationPath]) {
+                explanationText = explanationCache[explanationPath];
+            } else {
+                const response = await fetch(explanationPath);
+                
+                if (!response.ok) {
+                    throw new Error(`Explanation file not found (HTTP ${response.status})`);
+                }
+                
+                explanationText = await response.text();
+                
+                if (!explanationText.trim()) {
+                    throw new Error('Explanation file is empty');
+                }
+                
+                // Cache the explanation
+                explanationCache[explanationPath] = explanationText;
+            }
+            
+            // Display the explanation with animation
+            const contentDiv = modal.querySelector('.explanation-content');
+            contentDiv.style.opacity = '0';
+            contentDiv.innerHTML = formatExplanationContent(explanationText);
+            
+            // Fade in content
+            setTimeout(() => {
+                contentDiv.style.transition = 'opacity 0.3s ease';
+                contentDiv.style.opacity = '1';
+            }, 50);
+            
+        } catch (error) {
+            console.error("Could not load explanation:", error);
+            
+            const contentDiv = modal.querySelector('.explanation-content');
+            contentDiv.innerHTML = `
+                <div class="explanation-error">
+                    <h3>📚 Explanation Not Available</h3>
+                    <p>We couldn't find an explanation for this snippet yet.</p>
+                    <details>
+                        <summary>Technical Details</summary>
+                        <p><strong>Error:</strong> ${error.message}</p>
+                        <p><strong>Expected path:</strong> <code>${explanationPath}</code></p>
+                        <p><strong>Language:</strong> ${currentLanguage}</p>
+                        <p><strong>Topic:</strong> ${currentTopic}</p>
+                    </details>
+                    <p><em>Explanations are being added regularly. Check back soon!</em></p>
+                </div>
+            `;
+        }
+        
+        // Add event listeners
+        closeBtn.addEventListener('click', () => closeExplanationModal(modal));
+        
+        // Close modal when clicking outside
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeExplanationModal(modal);
+            }
+        });
+        
+        // Close modal with Escape key
+        const escapeHandler = (e) => {
+            if (e.key === 'Escape') {
+                closeExplanationModal(modal);
+                document.removeEventListener('keydown', escapeHandler);
+            }
+        };
+        document.addEventListener('keydown', escapeHandler);
+    }
+
+    function formatTopicName(topic) {
+        return topic
+            .split('_')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' ');
+    }
+
+    function formatExplanationContent(text) {
+        // Enhanced markdown-like formatting
+        let formatted = text
+            // Headers
+            .replace(/^# (.*$)/gm, '<h2>$1</h2>')
+            .replace(/^## (.*$)/gm, '<h3>$1</h3>')
+            .replace(/^### (.*$)/gm, '<h4>$1</h4>')
+            
+            // Code blocks (must come before inline code)
+            .replace(/```(\w+)?\n([\s\S]*?)```/g, '<pre><code class="language-$1">$2</code></pre>')
+            .replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>')
+            
+            // Inline formatting
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\*(.*?)\*/g, '<em>$1</em>')
+            .replace(/`([^`]+)`/g, '<code>$1</code>')
+            
+            // Lists
+            .replace(/^- (.*$)/gm, '<li>$1</li>')
+            .replace(/^\d+\. (.*$)/gm, '<li>$1</li>')
+            
+            // Links
+            .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
+            
+            // Line breaks and paragraphs
+            .replace(/\n\n/g, '</p><p>')
+            .replace(/^(.*)$/gm, '<p>$1</p>');
+        
+        // Clean up formatting
+        formatted = formatted
+            .replace(/<p><\/p>/g, '')
+            .replace(/<p>(<h[234]>)/g, '$1')
+            .replace(/(<\/h[234]>)<\/p>/g, '$1')
+            .replace(/<p>(<li>.*<\/li>)<\/p>/gs, '<ul>$1</ul>')
+            .replace(/<p>(<pre>)/g, '$1')
+            .replace(/(<\/pre>)<\/p>/g, '$1')
+            .replace(/(<li>.*<\/li>)(?=\s*<li>)/gs, '$1');
+        
+        return formatted;
+    }
+
+    function closeExplanationModal(modal) {
+        if (modal && modal.parentNode) {
+            // Add fade out animation
+            modal.style.opacity = '0';
+            setTimeout(() => {
+                if (modal.parentNode) {
+                    document.body.removeChild(modal);
+                }
+            }, 200);
+        }
+    }
+
+    // Add event listener for explain button
+    if (document.getElementById('explain-button')) {
+        document.getElementById('explain-button').addEventListener('click', showExplanation);
     }
 });
