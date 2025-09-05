@@ -789,3 +789,183 @@ body.dark-mode .word-reveal:hover:not(.revealed) {
         transform: none;
     }
 }
+
+/* Explanation Modal Styles */
+.explanation-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1001;
+    animation: fadeIn 0.3s ease;
+}
+
+.explanation-modal-content {
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 10px;
+    max-width: 700px;
+    width: 90%;
+    max-height: 85vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    animation: slideUp 0.3s ease;
+}
+
+body.dark-mode .explanation-modal-content {
+    background-color: #2d3748;
+    color: #e2e8f0;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.explanation-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e9ecef;
+}
+
+body.dark-mode .explanation-header {
+    border-bottom-color: #4a5568;
+}
+
+.explanation-title {
+    margin: 0;
+    color: #4a76a8;
+    font-size: 1.5em;
+}
+
+body.dark-mode .explanation-title {
+    color: #63b3ed;
+}
+
+.close-explanation {
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: #666;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s;
+}
+
+.close-explanation:hover {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+body.dark-mode .close-explanation {
+    color: #a0aec0;
+}
+
+body.dark-mode .close-explanation:hover {
+    background-color: #4a5568;
+    color: #e2e8f0;
+}
+
+.explanation-content {
+    line-height: 1.6;
+    font-size: 16px;
+}
+
+.explanation-content h2,
+.explanation-content h3,
+.explanation-content h4 {
+    color: #333;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+body.dark-mode .explanation-content h2,
+body.dark-mode .explanation-content h3,
+body.dark-mode .explanation-content h4 {
+    color: #e2e8f0;
+}
+
+.explanation-content pre {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 4px;
+    padding: 10px;
+    overflow-x: auto;
+    font-family: 'Consolas', 'Monaco', 'Lucida Console', monospace;
+    font-size: 14px;
+}
+
+body.dark-mode .explanation-content pre {
+    background-color: #1a202c;
+    border-color: #4a5568;
+    color: #e2e8f0;
+}
+
+.explanation-content ul,
+.explanation-content ol {
+    padding-left: 20px;
+    margin: 10px 0;
+}
+
+.explanation-content li {
+    margin-bottom: 5px;
+}
+
+.loading-explanation {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+}
+
+body.dark-mode .loading-explanation {
+    color: #a0aec0;
+}
+
+.explanation-error {
+    text-align: center;
+    padding: 20px;
+    color: #e74c3c;
+    background-color: #fdf2f2;
+    border-radius: 4px;
+    margin: 10px 0;
+}
+
+body.dark-mode .explanation-error {
+    color: #ff6b6b;
+    background-color: #2d1b1b;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Mobile responsiveness for explanation modal */
+@media (max-width: 768px) {
+    .explanation-modal-content {
+        width: 95%;
+        padding: 20px;
+        max-height: 90vh;
+    }
+    
+    .explanation-title {
+        font-size: 1.3em;
+    }
+}
