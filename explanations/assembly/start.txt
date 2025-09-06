@@ -1,4 +1,5 @@
-This code is an x86-64 assembly program for Linux that prints "Hello, World!" to the console and then exits. Let's break it down line by line.
+This code is an x86-64 assembly program for Linux that prints "Hello, World!" to the console and then exits.
+Let's break it down line by line.
 
 .data Section
 The .data section is where initialized data is stored. This is typically for variables or constants that have a value at the start of the program.
