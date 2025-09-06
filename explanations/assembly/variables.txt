@@ -1,0 +1,31 @@
+This x86-64 assembly code demonstrates how to load different sizes of data from memory into registers.
+
+Data Declaration (.data section)
+This section defines variables of different sizes.
+
+byte_val db 42: db (define byte) allocates 1 byte of memory and initializes it with the value 42.
+
+word_val dw 1024: dw (define word) allocates 2 bytes of memory and initializes it with the value 1024.
+
+dword_val dd 65536: dd (define doubleword) allocates 4 bytes of memory and initializes it with the value 65536.
+
+qword_val dq 1000000: dq (define quadword) allocates 8 bytes of memory and initializes it with the value 1000000.
+
+Code Execution (.text section)
+The .text section contains the executable instructions. The global _start directive marks the program's entry point.
+
+mov al, [byte_val]: This instruction moves the 1-byte value from the memory address byte_val into the al register, which is the lowest 8 bits of the rax register.
+
+mov ax, [word_val]: This moves the 2-byte value from word_val into the ax register, which is the lowest 16 bits of rax. This overwrites the previous value in al.
+
+mov eax, [dword_val]: This moves the 4-byte value from dword_val into the eax register, which is the lowest 32 bits of rax. This overwrites the value in ax.
+
+mov rax, [qword_val]: This moves the 8-byte value from qword_val into the rax register, which is the full 64-bit register. This final move overwrites all previous values, so at this point, rax holds 1000000.
+
+The final lines of code handle program exit:
+
+mov rax, 60: Loads the system call number for sys_exit into rax.
+
+mov rdi, 0: Loads the exit status code 0 (success) into rdi.
+
+syscall: Executes the sys_exit system call, terminating the program.
