@@ -1,0 +1,104 @@
+This x86-64 assembly code is a well-commented program that prints a string to the standard output and then exits. The comments themselves are a key part of the code, explaining each step.
+
+Let's break down the code line by line, focusing on both the instructions and the comments.
+
+.data Section
+The .data section is where initialized data is stored.
+
+msg db 'Comments example', 0xA, 0 ; Inline comment
+
+msg: This is a label that gives the string a name so you can refer to it later.
+
+db: This directive means "define byte," which allocates a sequence of bytes in memory.
+
+'Comments example': This is the string content itself.
+
+0xA: This is the ASCII value for the newline character, which ensures the output appears on a new line.
+
+0: This is a null terminator, used to signal the end of the string.
+
+; Inline comment: This is a comment on the same line as the code. It explains what that specific line does.
+
+msg_len equ $ - msg - 1 ; Calculate length
+
+msg_len: This is a label for a constant. equ is an assembler directive that sets the value of a label.
+
+$: This symbol represents the current address in the assembly file.
+
+$ - msg: This calculates the difference between the current address (the end of the string) and the start of the msg string, which gives the length of the string and the null terminator.
+
+- 1: This subtracts the null terminator from the length, because the write syscall only needs the length of the characters to print.
+
+; Calculate length: This is another inline comment that clearly describes the purpose of this calculation.
+
+.text Section
+The .text section contains the executable code.
+
+global _start
+
+global: This keyword makes the _start label visible to the linker.
+
+_start: This is the entry point of the program. The operating system starts executing your program from this label.
+
+_start Label
+This is where the program's logic begins.
+
+; This is a line comment
+
+This is a line comment. It takes up a full line and is used to describe the purpose of the following block of code.
+
+; System call to write
+
+This line comment tells you that the next set of instructions is for a system call to write data.
+
+mov rax, 1 ; sys_write
+
+mov: This is the instruction to move data.
+
+rax: This is a 64-bit register used to hold the system call number.
+
+1: This is the system call number for sys_write, which writes to a file.
+
+; sys_write: The inline comment clarifies the purpose of the value 1.
+
+mov rdi, 1 ; stdout
+
+rdi: This register holds the first argument for a system call.
+
+1: This is the file descriptor for standard output (stdout), which is the console.
+
+; stdout: The inline comment explains that 1 corresponds to the console.
+
+mov rsi, msg ; message
+
+rsi: This register holds the second argument, which is the address of the data to be written. Here, it holds the address of the msg string.
+
+; message: The inline comment explains that the value in rsi is the message.
+
+mov rdx, msg_len ; length
+
+rdx: This register holds the third argument, which is the length of the data to be written. This is the value we calculated earlier.
+
+; length: The inline comment indicates that this is the length argument.
+
+syscall
+
+This instruction executes the system call. The operating system looks at the values in rax, rdi, rsi, and rdx and performs the sys_write function, printing the string to the console.
+
+mov rax, 60 ; sys_exit
+
+This prepares for another system call. The value 60 in rax corresponds to the sys_exit system call, which terminates the program.
+
+; sys_exit: The inline comment identifies the system call.
+
+mov rdi, 0 ; status
+
+rdi: This register holds the first argument for sys_exit.
+
+0: This is the exit status code. A value of 0 conventionally means the program completed successfully.
+
+; status: The inline comment explains that the value is the program's exit status.
+
+syscall
+
+This instruction executes the sys_exit system call. The program terminates and returns an exit code of 0.
