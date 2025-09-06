@@ -1,0 +1,39 @@
+This x86-64 assembly code demonstrates how to load the maximum possible unsigned values for different data sizes into the rax register. The program then exits.
+
+Data Declaration (.data section)
+This section defines and initializes variables of different sizes.
+
+byte_val db 255: The db directive allocates 1 byte. The value 255 is the maximum unsigned value that can be stored in a single byte (2 
+8
+ −1).
+
+word_val dw 65535: The dw directive allocates 2 bytes (a word). The value 65535 is the maximum unsigned value for a 16-bit word (2 
+16
+ −1).
+
+dword_val dd 4294967295: The dd directive allocates 4 bytes (a doubleword). The value is the maximum unsigned 32-bit integer (2 
+32
+ −1).
+
+qword_val dq 18446744073709551615: The dq directive allocates 8 bytes (a quadword). This is the maximum unsigned 64-bit integer (2 
+64
+ −1).
+
+Code Execution (.text section)
+The _start label is the entry point of the program.
+
+mov al, [byte_val]: This instruction moves the 1-byte value from the memory address byte_val (255) into the al register, which is the lowest 8 bits of the rax register.
+
+mov ax, [word_val]: This moves the 2-byte value from word_val (65535) into the ax register, which is the lowest 16 bits of rax. This overwrites the value previously loaded into al.
+
+mov eax, [dword_val]: This moves the 4-byte value from dword_val into the eax register, which is the lowest 32 bits of rax. This overwrites the value in ax.
+
+mov rax, [qword_val]: This moves the 8-byte value from qword_val into the rax register, which is the full 64-bit register. This final move overwrites all previous values, so at this point, rax holds the value 18446744073709551615.
+
+The last two lines handle the program exit:
+
+mov rax, 60: Sets up the sys_exit system call.
+
+mov rdi, 0: Sets the exit code to 0, indicating successful execution.
+
+syscall: Executes the system call to exit the program.
