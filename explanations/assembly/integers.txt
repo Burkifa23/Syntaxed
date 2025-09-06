@@ -3,21 +3,13 @@ This x86-64 assembly code demonstrates how to load the maximum possible unsigned
 Data Declaration (.data section)
 This section defines and initializes variables of different sizes.
 
-byte_val db 255: The db directive allocates 1 byte. The value 255 is the maximum unsigned value that can be stored in a single byte (2 
-8
- −1).
+byte_val db 255: The db directive allocates 1 byte. The value 255 is the maximum unsigned value that can be stored in a single byte (2^8 −1).
 
-word_val dw 65535: The dw directive allocates 2 bytes (a word). The value 65535 is the maximum unsigned value for a 16-bit word (2 
-16
- −1).
+word_val dw 65535: The dw directive allocates 2 bytes (a word). The value 65535 is the maximum unsigned value for a 16-bit word (2^16 −1).
 
-dword_val dd 4294967295: The dd directive allocates 4 bytes (a doubleword). The value is the maximum unsigned 32-bit integer (2 
-32
- −1).
+dword_val dd 4294967295: The dd directive allocates 4 bytes (a doubleword). The value is the maximum unsigned 32-bit integer (2^32 −1).
 
-qword_val dq 18446744073709551615: The dq directive allocates 8 bytes (a quadword). This is the maximum unsigned 64-bit integer (2 
-64
- −1).
+qword_val dq 18446744073709551615: The dq directive allocates 8 bytes (a quadword). This is the maximum unsigned 64-bit integer (2^64 −1).
 
 Code Execution (.text section)
 The _start label is the entry point of the program.

@@ -1,0 +1,32 @@
+This x86-64 assembly code demonstrates basic floating-point operations using the SSE (Streaming SIMD Extensions) instruction set. It loads a single-precision float and a double-precision float, converts the single to a double, adds them together, and stores the result.
+
+Data Declaration (.data section)
+This section defines and initializes floating-point variables. Unlike integer values, floating-point numbers are stored in a different format (IEEE 754 standard).
+
+float_val dd 3.14159: The dd directive allocates 4 bytes for a single-precision floating-point number. The assembler converts the decimal value 3.14159 into its 32-bit binary representation.
+
+double_val dq 2.71828: The dq directive allocates 8 bytes for a double-precision floating-point number. The value 2.71828 is stored in 64-bit binary format.
+
+result dq 0.0: This allocates 8 bytes for a double-precision floating-point number, initialized to 0.0. This is where the final sum will be stored.
+
+Code Execution (.text section)
+The _start label is the entry point of the program.
+
+movss xmm0, [float_val]: The movss instruction moves a single-precision scalar (4 bytes) from memory into the xmm0 register. The xmm registers are dedicated 128-bit registers used for floating-point and SIMD (Single Instruction, Multiple Data) operations. Here, the value 3.14159 is loaded into the lower 32 bits of xmm0.
+
+movsd xmm1, [double_val]: The movsd instruction moves a double-precision scalar (8 bytes) from memory into the xmm1 register. The value 2.71828 is loaded into the lower 64 bits of xmm1.
+
+Floating-Point Operations
+cvtss2sd xmm0, xmm0: The cvtss2sd instruction converts a single-precision float to a double-precision float. It reads the 4-byte float from the source operand (xmm0) and writes the 8-byte double into the destination (xmm0). This is a crucial step to ensure both values have the same precision before addition.
+
+addsd xmm0, xmm1: The addsd instruction performs a double-precision scalar addition. It adds the 8-byte value from xmm1 to the 8-byte value in xmm0 and stores the result in xmm0. After this instruction, xmm0 contains the sum of 3.14159 and 2.71828, which is approximately 5.85987.
+
+movsd [result], xmm0: This instruction moves the double-precision scalar value from the xmm0 register back into the result memory location.
+
+The final lines of code handle program exit:
+
+mov rax, 60: Sets up the sys_exit system call.
+
+mov rdi, 0: Sets the exit code to 0, indicating successful execution.
+
+syscall: Executes the system call to terminate the program.
