@@ -1,0 +1,33 @@
+This assembly code defines two constants and a memory buffer, then loads the constants into registers before exiting.
+
+Data Declaration (.data section)
+The .data section is used to declare initialized data, but it can also be used to define symbolic constants and reserve uninitialized memory.
+
+MAX_SIZE equ 1024: The equ directive defines a constant. MAX_SIZE is a symbolic name for the value 1024. It's a compile-time constant, not a variable stored in memory.
+
+PI equ 314159: Similarly, this line defines a constant PI for the value 314159. This is just a numeric constant and not a floating-point number.
+
+buffer times MAX_SIZE db 0: This line reserves a block of memory.
+
+buffer: This is a label for the start of the memory block.
+
+times MAX_SIZE: This tells the assembler to repeat the next instruction MAX_SIZE (1024) times.
+
+db 0: This instruction defines a byte with the value 0.
+
+Together, this line reserves 1024 bytes of memory and initializes each byte to 0. This is a common way to create a buffer or array.
+
+Code Execution (.text section)
+The .text section contains the program's instructions. The _start label is the entry point.
+
+mov rax, MAX_SIZE: This instruction moves the constant value 1024 into the rax register. The assembler replaces the MAX_SIZE symbol with its value before the program is run.
+
+mov rbx, PI: This instruction moves the constant value 314159 into the rbx register.
+
+The final lines of code handle program exit:
+
+mov rax, 60: Loads the system call number for sys_exit into rax.
+
+mov rdi, 0: Loads the exit status code 0 into rdi, indicating success.
+
+syscall: Executes the sys_exit system call, terminating the program.
