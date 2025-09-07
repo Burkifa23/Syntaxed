@@ -1,16 +1,29 @@
-section .data
-    numbers db 10, 20, 30, 40, 50
-    array_size equ 5
+This x86-64 assembly code demonstrates how to access individual elements of a byte array in memory.
 
-section .text
-    global _start
+The program loads the address of the array and then uses offsets to access different elements.
 
-_start:
-    mov rsi, numbers
-    mov al, [rsi]
-    mov al, [rsi + 1]
-    mov al, [rsi + 2]
-    
-    mov rax, 60
-    mov rdi, 0
-    syscall
+Data Declaration (.data section)
+The .data section is where initialized data is stored.
+
+numbers db 10, 20, 30, 40, 50: This defines a byte array named numbers. The db directive allocates 1 byte for each value listed. The values are stored sequentially in memory.
+
+array_size equ 5: This defines a constant named array_size with the value 5. The equ directive is used for constants that don't change.
+
+Code Execution (.text section)
+The _start label is the entry point of the program.
+
+mov rsi, numbers: This instruction loads the base memory address of the numbers array into the rsi register. The rsi register is often used as a source index register for memory operations.
+
+mov al, [rsi]: This instruction moves the 1-byte value from the memory address pointed to by rsi into the al register. Since rsi points to the start of the array, al gets the first value, which is 10.
+
+mov al, [rsi + 1]: This instruction moves the 1-byte value from the memory address rsi plus an offset of 1 byte into al. This accesses the second element in the array, so al gets the value 20.
+
+mov al, [rsi + 2]: This moves the 1-byte value from the address rsi plus an offset of 2 bytes into al. This accesses the third element in the array, so al gets the value 30. Each mov instruction overwrites the previous value in al.
+
+The final lines handle program exit:
+
+mov rax, 60: Sets up the sys_exit system call.
+
+mov rdi, 0: Sets the exit code to 0, indicating successful execution.
+
+syscall: Executes the system call to exit the program.
