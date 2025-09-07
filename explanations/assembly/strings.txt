@@ -1,0 +1,39 @@
+This assembly code is a simple program that prints the string "Learning strings" to the console and then exits.
+
+Here's a line-by-line breakdown of how it works.
+
+Data Declaration (.data section)
+The .data section is where initialized data is stored.
+
+greeting db 'Hello Assembly!', 0: This line defines a string variable named greeting. The db directive allocates a sequence of bytes. It stores the literal string 'Hello Assembly!' followed by a null terminator (0), which is often used to mark the end of a string. This string is defined but not used in the code.
+
+message db 'Learning strings', 0xA, 0: This line defines another string variable named message. It stores the literal string 'Learning strings', followed by a newline character (0xA or \n), and a null terminator.
+
+msg_len equ $ - message - 1: This line defines a constant named msg_len. The equ directive assigns a value that won't change.
+
+$ represents the current memory address.
+
+$ - message calculates the total length of the message string, including the newline and null terminator.
+
+- 1 subtracts the null terminator from the length, as it's not needed for the sys_write system call.
+
+Code Execution (.text section)
+The .text section contains the program's instructions.
+
+global _start: This makes the _start label globally visible, marking it as the entry point for the program.
+
+mov rax, 1: This instruction loads the value 1 into the rax register. In Linux, rax is used to specify the system call number. The value 1 corresponds to the sys_write system call, which writes data to a file.
+
+mov rdi, 1: This loads the value 1 into the rdi register. rdi holds the first argument to the system call. The value 1 is the file descriptor for standard output (stdout), which is the console.
+
+mov rsi, message: This loads the memory address of the message string into the rsi register. rsi holds the second argument, which is a pointer to the data to be written.
+
+mov rdx, msg_len: This loads the length of the string (msg_len) into the rdx register. rdx holds the third argument, which is the number of bytes to write.
+
+syscall: This instruction executes the system call. The operating system uses the values in rax, rdi, rsi, and rdx to call the sys_write function, which prints "Learning strings" to the console.
+
+mov rax, 60: This loads the value 60 into rax, setting up the next system call. 60 is the number for sys_exit, which terminates the program.
+
+mov rdi, 0: This loads the value 0 into rdi. For sys_exit, rdi holds the exit code. A value of 0 indicates that the program exited successfully.
+
+syscall: This executes the sys_exit system call, and the program terminates.
