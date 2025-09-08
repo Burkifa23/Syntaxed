@@ -1,0 +1,29 @@
+This assembly code performs a simple addition of two 64-bit numbers and then stores the result in a variable. 
+
+Here's a line-by-line explanation.
+
+Data Declaration (.data section)
+The .data section is where initialized data is stored.
+
+num1 dq 15: dq (define quadword) allocates 8 bytes of memory and initializes it with the value 15.
+
+num2 dq 7: dq allocates another 8 bytes of memory and initializes it with the value 7.
+
+result dq 0: dq allocates 8 bytes for a variable named result, initialized to 0. This is where the sum will be stored.
+
+Code Execution (.text section)
+The _start label marks the program's entry point.
+
+mov rax, [num1]: This instruction moves the value from the memory location num1 (which is 15) into the rax register.
+
+add rax, [num2]: This instruction adds the value from the memory location num2 (which is 7) to the current value in rax (15). The result, 22, is stored back in rax.
+
+mov [result], rax: This instruction moves the value from rax (which is 22) into the memory location result. The square brackets [] are crucial here, as they indicate that you're moving the value into the memory address pointed to by result, not into the result label itself.
+
+The final lines of code handle program exit:
+
+mov rax, 60: Sets up the sys_exit system call.
+
+mov rdi, 0: Sets the exit code to 0, indicating successful execution.
+
+syscall: Executes the system call to terminate the program.
