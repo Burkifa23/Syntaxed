@@ -1,0 +1,57 @@
+This x86-64 assembly code demonstrates data alignment and struct definition in memory. Alignment ensures that data is placed at a memory address that is a multiple of its size, which can improve program performance on modern processors.
+
+Data Declaration (.data section)
+This section defines and initializes variables, paying special attention to memory alignment.
+
+align 8: This directive tells the assembler to pad the memory until the next address is a multiple of 8.
+
+aligned_qword dq 0x123456789ABCDEF0: dq (define quadword) allocates 8 bytes. Because of the align 8 directive, this 8-byte value starts at an address divisible by 8.
+
+align 4: This pads the memory to an address divisible by 4.
+
+aligned_dword dd 0x12345678: dd (define doubleword) allocates 4 bytes, starting at a 4-byte aligned address.
+
+align 2: This pads the memory to an address divisible by 2.
+
+aligned_word dw 0x1234: dw (define word) allocates 2 bytes, starting at a 2-byte aligned address.
+
+Structure Definition
+This part of the code defines a simple C-style structure in assembly, complete with explicit padding for alignment.
+
+align 16: Ensures the entire structure starts at an address that is a multiple of 16.
+
+person_struct:: This is a label for the start of the structure.
+
+.name resb 16: resb (reserve bytes) reserves 16 bytes of uninitialized memory for a name. The dot . prefix is a common convention for fields within a structure.
+
+.age dd 0: Reserves 4 bytes for the age, initialized to 0.
+
+.padding resb 4: This is a manual padding to ensure the next field (.salary) is properly aligned. Without this, the .salary field would start at a 20-byte offset (16 + 4), which is not an 8-byte boundary. By adding 4 bytes of padding, the next field starts at a 24-byte offset, which is divisible by 8.
+
+.salary dq 0: Reserves 8 bytes for the salary, initialized to 0. This field is now aligned to an 8-byte boundary relative to the start of the structure.
+
+person_struct_size equ $ - person_struct: This calculates the total size of the structure in bytes by subtracting its starting address from the current address.
+
+Code Execution (.text section)
+The _start label is the program's entry point.
+
+mov rax, person_struct: Moves the memory address of the person_struct label into the rax register.
+
+and rax, 0xF: The and instruction performs a bitwise AND. 0xF is 0000...1111 in binary. The result of this operation will be 0 only if the lower 4 bits of the address are 0, which means the address is a multiple of 16 (2 
+4
+ ), confirming it is 16-byte aligned.
+
+Filling the Structure
+mov qword [person_struct.name], 'John Doe': Moves the ASCII values for the string "John Doe" into the first 8 bytes of the .name field. Note that this is a 64-bit move, so it will only fill the first 8 bytes of the 16-byte field.
+
+mov dword [person_struct.age], 30: Moves the 4-byte integer 30 into the .age field.
+
+mov qword [person_struct.salary], 50000: Moves the 8-byte integer 50000 into the .salary field.
+
+The final lines of code handle program exit:
+
+mov rax, 60: Sets up the sys_exit system call.
+
+mov rdi, 0: Sets the exit code to 0 for success.
+
+syscall: Executes the system call to exit the program.
