@@ -1,0 +1,36 @@
+This x86-64 assembly code performs addition, subtraction, and multiplication on two numbers stored in memory. The final result of the multiplication is what's left in the rax register when the program exits.
+
+Data Declaration (.data section)
+The .data section is for initialized data.
+
+num1 dq 15: Allocates 8 bytes (dq for quadword) and stores the value 15.
+
+num2 dq 7: Allocates 8 bytes and stores the value 7.
+
+result dq 0: Allocates 8 bytes for a variable named result, initialized to 0. This variable is used for the addition result but is overwritten by the later calculations.
+
+Arithmetic Operations (_start label)
+The _start label is the program's entry point.
+
+mov rax, [num1]: Moves the value 15 from memory location num1 into the rax register.
+
+add rax, [num2]: Adds the value 7 from memory location num2 to rax. rax now holds 15 + 7 = 22.
+
+mov [result], rax: Moves the value 22 from rax into the memory location result.
+
+mov rax, [num1]: Overwrites the previous value in rax by moving 15 back into it.
+
+sub rax, [num2]: Subtracts the value 7 from rax. rax now holds 15 - 7 = 8.
+
+mov rax, [num1]: Overwrites rax again with the value 15.
+
+mov rbx, [num2]: Moves the value 7 from num2 into the rbx register.
+
+mul rbx: This is the multiplication instruction. It multiplies the value in the rax register by the value in the operand (rbx). The 128-bit result is stored across two registers: the higher 64 bits in rdx and the lower 64 bits in rax. In this case, 15 * 7 = 105, which fits entirely within a single 64-bit register. So, rax holds 105 and rdx holds 0.
+
+Program Exit
+mov rax, 60: Sets up the sys_exit system call.
+
+mov rdi, 0: Sets the exit code to 0, indicating successful execution.
+
+syscall: Executes the system call to terminate the program.
