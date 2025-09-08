@@ -1,0 +1,50 @@
+This x86-64 assembly code demonstrates endianness and byte manipulation. It shows how a multi-byte value is stored in memory and how to extract or swap its individual bytes.
+
+Data Declaration (.data section)
+The .data section defines the variables used in the program.
+
+big_number dq 0x123456789ABCDEF0: This allocates 8 bytes for a quadword and initializes it with the hexadecimal value 0x123456789ABCDEF0. This value is stored in memory using little-endian byte order, meaning the least significant byte comes first. The memory layout for this value would be F0 DE BC 9A 78 56 34 12.
+
+byte_array db 0x12, 0x34, 0x56, 0x78: This allocates 4 bytes for a byte array, storing the values in the order they are listed. This is the big-endian representation of a 32-bit integer, and serves as a contrast to big_number.
+
+Code Execution (.text section)
+The _start label is the entry point of the program.
+
+mov rax, [big_number]: This loads the 8-byte value from memory into the rax register. The rax register will now contain 0x123456789ABCDEF0 as a single value.
+
+Little-Endian Byte Extraction
+This section manually extracts the individual bytes from the rax register, demonstrating little-endian storage in memory. The least significant byte of rax corresponds to the first byte in memory.
+
+mov bl, al: al is the lowest 8 bits of rax. Since rax contains 0x123456789ABCDEF0, al holds 0xF0 (the least significant byte). This value is moved to the bl register.
+
+mov cl, ah: ah is the second lowest 8 bits of rax. It holds 0xDE. This value is moved to the cl register.
+
+shr rax, 16: The shr instruction performs a logical right shift by 16 bits. This shifts the value in rax to the right, effectively dropping the lowest two bytes (0xF0DE) and moving the next bytes into the al and ah positions. rax now holds 0x0000123456789ABC.
+
+mov dl, al: al now contains 0xBC (the third byte of the original value), which is moved to the dl register.
+
+mov dh, ah: ah now contains 0x9A (the fourth byte of the original value), which is moved to the dh register.
+
+Endianness Conversion
+mov rax, [big_number]: The rax register is reloaded with the original value 0x123456789ABCDEF0.
+
+bswap rax: The bswap instruction reverses the byte order within the rax register. This effectively converts the number from little-endian to big-endian representation. After this instruction, rax will contain 0xF0DEBC9A78563412.
+
+Manual Array Extraction
+mov rsi, byte_array: This loads the memory address of the byte_array into the rsi register.
+
+mov al, [rsi]: This loads the first byte from the array (0x12) into al.
+
+mov bl, [rsi + 1]: This loads the second byte (0x34) into bl. The + 1 is an offset from the base address.
+
+mov cl, [rsi + 2]: This loads the third byte (0x56) into cl.
+
+mov dl, [rsi + 3]: This loads the fourth byte (0x78) into dl.
+
+The final lines of code handle program exit:
+
+mov rax, 60: Sets up the sys_exit system call.
+
+mov rdi, 0: Sets the exit code to 0 for success.
+
+syscall: Executes the system call to exit the program.
