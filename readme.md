@@ -193,6 +193,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **DevIcons** - For the beautiful programming language icons
 - **Web Accessibility Initiative** - For accessibility guidelines
 - **The Developer Community** - For inspiration and feedback
+- **Gemini and Claude** - For Documentation, Suggestions and endless hours of debugging
 
 ---
 
