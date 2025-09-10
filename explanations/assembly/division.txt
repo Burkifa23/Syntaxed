@@ -1,0 +1,37 @@
+This x86-64 assembly code demonstrates both unsigned division (div) and signed division (idiv) of 64-bit numbers. It performs a division, stores the results, and then shows a second division example before exiting.
+
+Unsigned Division
+mov rax, [dividend]: Loads the value 100 into the rax register. For division, the rax and rdx registers together form the dividend.
+
+xor rdx, rdx: This instruction clears the rdx register by performing an XOR operation on it with itself. rdx must be zero before an unsigned division to ensure the dividend is correctly interpreted as a 64-bit number. The dividend is effectively rdx:rax (or 0:100).
+
+div qword [divisor]: This instruction performs an unsigned division. It divides the 128-bit value in rdx:rax by the 64-bit value at the memory location divisor (which is 7).
+
+The quotient is stored in rax (100 / 7 = 14).
+
+The remainder is stored in rdx (100 % 7 = 2).
+
+mov [quotient], rax: Moves the quotient (14) from rax into the memory location quotient.
+
+mov [remainder], rdx: Moves the remainder (2) from rdx into the memory location remainder.
+
+Signed Division
+mov rax, -100: Loads the signed value -100 into rax.
+
+cqo: This instruction stands for Convert Quadword to Octalword. It sign-extends the 64-bit value in rax to the 128-bit value rdx:rax. If rax is negative, rdx will be filled with all 1s. If rax is positive, rdx will be filled with all 0s. This is the correct way to prepare for signed division.
+
+mov rbx, 7: Loads the divisor 7 into the rbx register. idiv can use a register or memory location as its operand.
+
+idiv rbx: This instruction performs a signed division. It divides the signed 128-bit value in rdx:rax by the 64-bit value in rbx.
+
+The signed quotient is stored in rax (-100 / 7 = -14).
+
+The signed remainder is stored in rdx (-100 % 7 = -2).
+
+The final lines of code handle program exit:
+
+mov rax, 60: Sets up the sys_exit system call.
+
+mov rdi, 0: Sets the exit code to 0, indicating a successful exit.
+
+syscall: Executes the system call to exit the program.
