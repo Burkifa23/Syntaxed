@@ -1,0 +1,21 @@
+This assembly code performs a series of register-to-register moves and arithmetic operations before the program exits. The core idea is to copy values between different registers.
+
+Code Breakdown
+mov rax, 100: The immediate value 100 is moved into the rax register.
+
+mov rbx, rax: The current value of rax (100) is copied into the rbx register. rax remains unchanged.
+
+mov rcx, rbx: The current value of rbx (100) is copied into the rcx register.
+
+The state of the registers is now: rax = 100, rbx = 100, and rcx = 100.
+
+add rax, rbx: The value in rbx (100) is added to the value in rax (100). The result, 200, is stored back in rax.
+
+sub rcx, rax: The value in rax (200) is subtracted from the value in rcx (100). The result, -100, is stored back in rcx.
+
+Program Exit
+mov rax, 60: Sets up the system call for sys_exit.
+
+mov rdi, 0: Sets the exit code to 0 for a successful exit.
+
+syscall: Executes the system call to terminate the program.
