@@ -1,0 +1,25 @@
+This x86-64 assembly code demonstrates how to load values from memory into registers using different addressing modes. It defines an array of numbers and then accesses specific elements using their memory addresses.
+
+Data Declaration (.data section)
+The .data section is where initialized data is stored.
+
+numbers dq 10, 20, 30, 40: This defines an array named numbers using the dq (define quadword) directive. This allocates four 8-byte values in consecutive memory locations.
+
+Code Execution (.text section)
+The _start label is the entry point for the program.
+
+mov rsi, numbers: This instruction loads the base memory address of the numbers array into the rsi register. rsi is often used as a source index for memory operations.
+
+mov rdi, numbers + 16: This loads the memory address of the fourth element of the array into the rdi register. Since each number is 8 bytes, an offset of 16 bytes (8 * 2) from the start of the array points to the third element (30). The offset to get to the fourth element would be 24 (8 * 3). This line is an example of an effective address calculation at assembly time. The assembler calculates numbers + 16 and stores that specific memory address in rdi.
+
+mov rbp, rsp: This instruction moves the current value of the stack pointer (rsp) into the base pointer (rbp). This is a standard part of a function's prologue and is used to establish a consistent frame of reference for accessing local variables and function arguments on the stack. In this simple program, it doesn't have a functional effect but is included for good practice.
+
+mov rax, [rsi]: This instruction moves the 8-byte value from the memory address stored in rsi into the rax register. Since rsi points to the start of the array, rax will get the value 10. This is an example of register indirect addressing.
+
+mov rbx, [rdi]: This instruction moves the 8-byte value from the memory address stored in rdi into the rbx register. Since rdi was loaded with numbers + 16, it points to the third element (30). Therefore, rbx gets the value 30.
+
+mov rax, 60: Loads the system call number for sys_exit into rax.
+
+mov rdi, 0: Loads the exit status code 0 into rdi.
+
+syscall: Executes the sys_exit system call.
