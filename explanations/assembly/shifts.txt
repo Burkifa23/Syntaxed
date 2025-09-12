@@ -1,0 +1,37 @@
+This x86-64 assembly code demonstrates bitwise shift operations on both positive and negative numbers. These instructions are a fast way to perform multiplication and division by powers of two.
+
+Code Execution (.text section)
+The _start label is the entry point of the program.
+
+Logical Shifts (shl and shr)
+mov rax, 8: This instruction loads the value 8 (binary 1000) into the rax register.
+
+shl rax, 2: The shl (shift left) instruction shifts all bits in rax to the left by 2 positions. This is equivalent to multiplying the value by 2 
+2
+  (4). The most significant bits are shifted out and discarded, while the least significant bits are filled with zeros.
+
+8 * 4 = 32. rax now holds 32.
+
+shr rax, 1: The shr (shift right) instruction shifts all bits in rax to the right by 1 position. This is equivalent to an unsigned division by 2 
+1
+  (2). The least significant bits are shifted out and discarded, and the most significant bits are filled with zeros.
+
+32 / 2 = 16. rax now holds 16.
+
+Arithmetic Shifts (sal and sar)
+mov rbx, -4: This loads the signed value -4 into the rbx register.
+
+sal rbx, 1: The sal (arithmetic shift left) instruction is identical to shl. It shifts the bits of rbx to the left by 1 position, effectively multiplying the value by 2.
+
+-4 * 2 = -8. rbx now holds -8.
+
+sar rbx, 1: The sar (arithmetic shift right) instruction shifts the bits of rbx to the right by 1 position, effectively performing a signed division by 2. This instruction preserves the sign of the original number by duplicating the most significant bit.
+
+-8 / 2 = -4. rbx now holds -4.
+
+Program Exit
+mov rax, 60: Sets up the sys_exit system call.
+
+mov rdi, 0: Sets the exit code to 0 for a successful exit.
+
+syscall: Executes the system call to exit the program.
