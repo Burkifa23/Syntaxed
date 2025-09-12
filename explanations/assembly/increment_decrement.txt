@@ -1,0 +1,26 @@
+This assembly code demonstrates how to use the inc (increment) and dec (decrement) instructions on both a register and a value in memory. The program ultimately exits without a visible change to the counter variable because the increments and decrements cancel each other out.
+
+Data Declaration (.data section)
+The .data section is for initialized data.
+
+counter dq 10: This allocates 8 bytes (dq for quadword) and stores the value 10.
+
+Code Execution (.text section)
+The _start label is the program's entry point.
+
+mov rax, [counter]: This loads the value 10 from the counter memory location into the rax register.
+
+inc rax: This instruction increments the value in the rax register by 1. rax now holds 11.
+
+dec rax: This instruction decrements the value in rax by 1. rax now holds 10 again.
+
+inc qword [counter]: This instruction directly increments the value at the memory location counter by 1. The qword prefix is a size specifier, telling the assembler to increment an 8-byte value. The value stored in memory at counter becomes 11.
+
+dec qword [counter]: This instruction directly decrements the value at the memory location counter by 1. The value in memory at counter becomes 10 again.
+
+Program Exit
+mov rax, 60: Loads the system call number for sys_exit into rax.
+
+mov rdi, 0: Loads the exit status code 0 into rdi, indicating a successful exit.
+
+syscall: Executes the system call to exit the program.
