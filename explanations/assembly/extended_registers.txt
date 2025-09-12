@@ -1,0 +1,29 @@
+This x86-64 assembly code demonstrates the use of general-purpose registers r8 through r15 for data manipulation. These registers were introduced with the 64-bit architecture to provide more storage space for variables, reducing the need for frequent memory access.
+
+Code Breakdown
+mov r8, 100: The immediate value 100 is moved into the 64-bit register r8.
+
+mov r9, 200: The value 200 is moved into r9.
+
+mov r10, 300: The value 300 is moved into r10.
+
+mov r11, 400: The value 400 is moved into r11.
+
+mov r12, 500: The value 500 is moved into r12.
+
+mov r13, 600: The value 600 is moved into r13.
+
+mov r14, 700: The value 700 is moved into r14.
+
+mov r15, 800: The value 800 is moved into r15.
+
+add r8, r9: The value in r9 (200) is added to the value in r8 (100). The result, 300, is stored back in r8.
+
+sub r10, r11: The value in r11 (400) is subtracted from the value in r10 (300). The result, -100, is stored back in r10.
+
+Program Exit
+mov rax, 60: The value 60, the system call number for sys_exit, is loaded into rax.
+
+mov rdi, r8: The value from r8 (300) is moved into rdi. For the sys_exit call, rdi holds the exit code.
+
+syscall: This executes the sys_exit system call. The program terminates and returns 300 as its exit code.
