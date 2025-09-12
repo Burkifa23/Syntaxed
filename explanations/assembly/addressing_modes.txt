@@ -1,0 +1,36 @@
+This x86-64 assembly code demonstrates various ways to access data in memory, known as addressing modes. The program loads values from an array into the rax register using different methods before exiting.
+
+Data Declaration (.data section)
+base_array dq 10, 20, 30, 40, 50: Defines an array of five 8-byte (dq for quadword) values. The numbers are stored sequentially in memory.
+
+scale_factor equ 8: Defines a constant for the size of each array element.
+
+Addressing Modes (.text section)
+The _start label is the program's entry point.
+
+Direct Addressing: mov rax, [base_array]
+This mode uses the label base_array as a direct memory address to access the value. It loads the first element (10) into rax.
+
+Register Indirect Addressing: mov rbx, base_array followed by mov rax, [rbx]
+The first line loads the address of base_array into the rbx register. The second line then uses the value in rbx as a pointer to access the data, also loading 10 into rax.
+
+Register + Displacement: mov rax, [rbx + 8]
+This accesses the value at the address in rbx plus a fixed offset of 8 bytes. Since rbx holds the address of the first element, this loads the second element (20) into rax.
+
+Register + Index: mov rcx, 2 followed by mov rax, [rbx + rcx]
+This mode adds a register's value (rcx) to a base address (rbx) to calculate the final address. This is often used with byte arrays. Since each element is 8 bytes, this loads the value at an offset of 2 bytes, which is part of the first element.
+
+Register + Index * Scale: mov rax, [rbx + rcx * 8]
+This is a powerful mode for accessing array elements. The index (rcx, which is 2) is multiplied by a scale factor (8, the size of a quadword), and then added to the base address (rbx). This correctly loads the third element (30) into rax.
+
+Register + Index * Scale + Displacement: mov rax, [rbx + rcx * 8 + 16]
+This is the most complex addressing mode, combining all previous components. The final address is calculated as: base_array + (2 * 8) + 16. This loads the fifth element (50) into rax.
+
+RIP-Relative Addressing: mov rax, [rel base_array]
+This is a key feature of 64-bit code for creating position-independent executables. The rel keyword tells the assembler to calculate the address of base_array relative to the current Instruction Pointer (rip). This loads the first element (10) into rax but does so in a way that allows the code to be loaded anywhere in memory without modification.
+
+Complex Addressing: mov rsi, 1 followed by mov rax, [base_array + rsi * scale_factor + 8]
+This shows a combination of a base label (base_array), a register index (rsi), a scale factor (scale_factor), and a displacement (8). This correctly loads the third element (30) into rax.
+
+Program Exit
+The final lines of code handle the program exit. mov rax, 60 sets the system call to sys_exit, and mov rdi, 0 sets the exit code to 0 for success. syscall then executes the call to terminate the program.
