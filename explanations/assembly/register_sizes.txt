@@ -1,0 +1,22 @@
+This x86-64 assembly code shows how to access different sizes of a single register. It demonstrates that the same register, rax, can be addressed as a 64-bit, 32-bit, 16-bit, or 8-bit value, with each operation overwriting a different part of it.
+
+Data Declaration (.data section)
+value dq 0x123456789ABCDEF0: A quadword (8 bytes) is allocated and initialized with the hexadecimal value 0x123456789ABCDEF0.
+
+Register Manipulation (.text section)
+The _start label is the entry point of the program.
+
+mov rax, [value]: The full 64-bit value 0x123456789ABCDEF0 is moved from the value memory location into the rax register.
+
+mov eax, 0x12345678: The lower 32 bits of rax (the eax portion) are overwritten with the value 0x12345678. The upper 32 bits of rax are automatically zeroed out by this instruction. At this point, rax contains 0x0000000012345678.
+
+mov ax, 0x1234: The lower 16 bits of rax (the ax portion) are overwritten with 0x1234. The upper bits of rax remain unchanged. rax is now 0x0000000012341234.
+
+mov al, 0x12: The lowest 8 bits of rax (the al portion) are overwritten with 0x12. The rest of rax is untouched. rax now contains 0x0000000012341212.
+
+Program Exit
+mov rax, 60: Sets up the sys_exit system call.
+
+mov rdi, 0: Sets the exit code to 0 for success.
+
+syscall: Executes the system call to exit the program.
