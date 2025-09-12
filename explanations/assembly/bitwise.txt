@@ -1,0 +1,48 @@
+This x86-64 assembly code demonstrates bitwise logical operations on registers. It performs a series of AND, OR, XOR, and NOT operations on two values.
+
+Code Execution (.text section)
+The _start label is the entry point of the program.
+
+mov rax, 0xFF: This instruction loads the hexadecimal value 0xFF (binary 11111111) into the rax register.
+
+mov rbx, 0xF0: This loads the hexadecimal value 0xF0 (binary 11110000) into the rbx register.
+
+Bitwise Operations
+The following instructions perform logical operations on the bits of the rax register.
+
+and rax, rbx: The AND operation compares the bits of rax with rbx. A resulting bit is 1 only if both corresponding bits are 1.
+
+rax (before): 11111111
+
+rbx: 11110000
+
+rax (after): 11110000 (0xF0)
+
+or rax, 0x0F: The OR operation compares the bits of rax with the immediate value 0x0F (binary 00001111). A resulting bit is 1 if at least one of the corresponding bits is 1.
+
+rax (before): 11110000
+
+0x0F: 00001111
+
+rax (after): 11111111 (0xFF)
+
+xor rax, 0xFF: The XOR (exclusive OR) operation compares the bits of rax with 0xFF (binary 11111111). A resulting bit is 1 if the corresponding bits are different. This has the effect of "flipping" all the bits.
+
+rax (before): 11111111
+
+0xFF: 11111111
+
+rax (after): 00000000 (0x00)
+
+not rax: The NOT operation performs a bitwise inversion, flipping every bit in rax.
+
+rax (before): 00000000
+
+rax (after): 11111111 (0xFF)
+
+Program Exit
+mov rax, 60: Sets up the sys_exit system call.
+
+mov rdi, 0: Sets the exit code to 0 for a successful exit.
+
+syscall: Executes the system call to exit the program.
