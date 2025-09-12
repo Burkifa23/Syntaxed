@@ -1,0 +1,25 @@
+This x86-64 assembly code performs a series of arithmetic operations before exiting the program with the final result as the exit code.
+
+Code Execution (.text section)
+The .text section holds the program's executable instructions.
+
+global _start: This makes the _start label the program's official entry point for the linker. Execution begins here.
+
+mov rax, 100: The value 100 is moved into the rax register.
+
+mov rbx, 25: The value 25 is moved into the rbx register.
+
+add rax, rbx: The value in rbx (25) is added to the value in rax (100). The result, 125, is stored back in rax.
+
+sub rax, 50: The value 50 is subtracted from the value in rax (125). The new result, 75, is stored in rax.
+
+mov rcx, rax: The final value from rax (75) is moved into the rcx register.
+
+Program Exit
+The program then prepares to exit.
+
+mov rax, 60: The value 60 is loaded into rax. This is the system call number for sys_exit on Linux, which terminates the program.
+
+mov rdi, rcx: The value from rcx (75) is moved into the rdi register. rdi is used to pass the first argument to a system call, which for sys_exit is the exit code.
+
+syscall: This instruction executes the sys_exit system call. The program terminates and returns an exit code of 75.
