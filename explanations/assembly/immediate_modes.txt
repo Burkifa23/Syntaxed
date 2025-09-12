@@ -1,0 +1,22 @@
+This assembly code demonstrates how to load decimal, hexadecimal, and character literal values into registers and perform simple arithmetic operations before the program exits.
+
+Code Execution (.text section)
+The _start label is the entry point of the program.
+
+mov rax, 42: This instruction loads the decimal integer 42 into the rax register.
+
+mov rbx, 0x100: This loads the hexadecimal value 0x100 into the rbx register. In decimal, 0x100 is equivalent to 256.
+
+mov rcx, 'A': This loads the ASCII value of the character 'A' into the rcx register. The ASCII value for 'A' is 65.
+
+add rax, 10: The value 10 is added to the value in rax (42). rax now holds 52.
+
+sub rbx, 50: The value 50 is subtracted from the value in rbx (256). rbx now holds 206.
+
+The final lines of code handle the program exit:
+
+mov rax, 60: Sets up the sys_exit system call.
+
+mov rdi, 0: Sets the exit code to 0 for a successful exit.
+
+syscall: Executes the sys_exit system call, terminating the program.
