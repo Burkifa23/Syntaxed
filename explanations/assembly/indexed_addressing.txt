@@ -1,0 +1,25 @@
+This assembly code demonstrates how to access elements of a 64-bit array using register indirect addressing with a displacement. It loads the first three elements of the array into different registers before the program exits.
+
+Data Declaration (.data section)
+The .data section is for initialized data.
+
+array dq 10, 20, 30, 40, 50: This defines a block of memory named array. The dq (define quadword) directive means it allocates 8 bytes for each of the five listed numbers. The values are stored sequentially in memory.
+
+Code Execution (.text section)
+The _start label is the entry point of the program.
+
+mov rsi, array: This instruction loads the starting memory address of the array into the rsi register. rsi is often used as a source index register for memory operations.
+
+mov rax, [rsi]: This loads the 8-byte value from the address pointed to by rsi into the rax register. Since rsi points to the start of the array, rax will get the first element, 10.
+
+mov rbx, [rsi + 8]: This loads the 8-byte value from the address in rsi plus an 8-byte offset. Since each element is 8 bytes, this correctly accesses the second element, 20, and loads it into rbx.
+
+mov rcx, [rsi + 16]: This loads the 8-byte value from the address in rsi plus a 16-byte offset. This accesses the third element, 30, and loads it into rcx.
+
+The final lines of code handle program exit:
+
+mov rax, 60: Sets up the sys_exit system call.
+
+mov rdi, 0: Sets the exit code to 0 for a successful exit.
+
+syscall: Executes the system call to exit the program.
