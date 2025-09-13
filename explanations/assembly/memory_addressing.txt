@@ -1,0 +1,25 @@
+This x86-64 assembly code adds a constant value to a number stored in memory and then saves the result. Here's a line-by-line explanation.
+
+Data Declaration (.data section)
+The .data section is for initialized data.
+
+value dq 42: Defines an 8-byte (dq for quadword) variable named value and initializes it with the number 42.
+
+result dq 0: Defines an 8-byte variable named result and initializes it with 0. This variable will be used to store the outcome of the calculation.
+
+Code Execution (.text section)
+The _start label is the entry point of the program.
+
+mov rax, [value]: This instruction moves the value from the memory location value (which is 42) into the rax register.
+
+add rax, 10: This adds the immediate value 10 to the current value in rax (42). The result, 52, is stored back in rax.
+
+mov [result], rax: This instruction moves the value from rax (which is 52) into the memory location result. The square brackets [] indicate that the data is being moved into the memory address pointed to by result.
+
+The final lines of code handle program exit:
+
+mov rax, 60: Loads the system call number for sys_exit into rax.
+
+mov rdi, 0: Loads the exit status code 0 into rdi, which indicates a successful exit.
+
+syscall: Executes the sys_exit system call.
