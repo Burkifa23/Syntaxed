@@ -1,0 +1,23 @@
+This x86-64 assembly code performs simple addition and subtraction operations on registers before exiting the program. It demonstrates how to load values and perform basic arithmetic.
+
+Code Breakdown
+mov rax, 10: The immediate value 10 is moved into the rax register.
+
+mov rbx, 20: The value 20 is moved into the rbx register.
+
+mov rcx, 30: The value 30 is moved into the rcx register.
+
+mov rdx, 40: The value 40 is moved into the rdx register.
+
+add rax, rbx: The value in rbx (20) is added to the value in rax (10). The result, 30, is stored back in rax.
+
+sub rcx, rdx: The value in rdx (40) is subtracted from the value in rcx (30). The result, -10, is stored back in rcx.
+
+Program Exit
+The final lines of code handle the program's exit.
+
+mov rax, 60: The value 60 is loaded into rax. This is the system call number for sys_exit on Linux.
+
+mov rdi, 0: The value 0 is loaded into rdi. For sys_exit, rdi holds the exit code, with 0 indicating successful execution.
+
+syscall: This instruction executes the system call, terminating the program.
