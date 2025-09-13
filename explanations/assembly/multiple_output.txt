@@ -1,0 +1,45 @@
+This assembly code prints two separate lines of text to the console, one after the other, before the program exits.
+
+Data Declaration (.data section)
+The .data section is where the program's initialized data is stored.
+
+msg1 db 'First line', 0xA, 0: This defines a string variable named msg1. db allocates bytes for the literal string, followed by a newline character (0xA) and a null terminator (0).
+
+msg1_len equ $ - msg1 - 1: This defines a constant, msg1_len, to hold the length of the msg1 string, excluding the null terminator. The $ symbol represents the current memory address.
+
+msg2 db 'Second line', 0xA, 0: This defines a second string, msg2, with its own newline and null terminator.
+
+msg2_len equ $ - msg2 - 1: This defines a constant msg2_len for the length of the second string.
+
+Code Execution (.text section)
+The _start label is the entry point of the program.
+
+mov rax, 1: The sys_write system call number (1) is moved into rax.
+
+mov rdi, 1: The file descriptor for standard output (1) is moved into rdi.
+
+mov rsi, msg1: The address of the msg1 string is moved into rsi.
+
+mov rdx, msg1_len: The length of msg1 is moved into rdx.
+
+syscall: This executes the sys_write call, printing "First line" to the console.
+
+The next set of instructions is a repeat of the first, but with the second string.
+
+mov rax, 1: The sys_write call is set up again.
+
+mov rdi, 1: Standard output is specified again.
+
+mov rsi, msg2: The address of the msg2 string is moved into rsi.
+
+mov rdx, msg2_len: The length of msg2 is moved into rdx.
+
+syscall: This executes the sys_write call, printing "Second line" to the console.
+
+The final instructions handle the program exit.
+
+mov rax, 60: The sys_exit system call number (60) is moved into rax.
+
+mov rdi, 0: The exit code 0 (for success) is moved into rdi.
+
+syscall: This executes the sys_exit call, terminating the program.
