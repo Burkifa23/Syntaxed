@@ -1,0 +1,18 @@
+This assembly code uses an unconditional jump (jmp) to alter the normal flow of execution. The program loads a value, skips some code, and then performs an addition before exiting.
+
+Code Breakdown
+mov rax, 5: The value 5 is loaded into the rax register.
+
+jmp skip_code: This is an unconditional jump instruction. It immediately transfers control of the program to the line of code with the skip_code label. The code on the next line is completely ignored.
+
+mov rax, 10: This line is skipped by the jump instruction. It is never executed.
+
+skip_code:: This is a label that marks the destination of the jmp instruction. The program's execution continues from here.
+
+add rax, 20: The value 20 is added to the current value of rax. Since rax still holds the initial value of 5, the result is 5 + 20 = 25. rax now holds 25.
+
+mov rdi, rax: The final value from rax (25) is moved into the rdi register.
+
+mov rax, 60: Sets up the sys_exit system call.
+
+syscall: Executes the sys_exit system call. The program terminates and returns an exit code of 25.
