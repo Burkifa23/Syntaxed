@@ -1,0 +1,40 @@
+This x86-64 assembly code checks if a number is positive, and if so, prints a message to the console before exiting. If the number is negative, it skips the printing part and jumps directly to the exit.
+
+Data Declaration (.data section)
+The .data section is where initialized data is stored.
+
+num dq 42: Defines an 8-byte (dq for quadword) variable named num and initializes it with the value 42.
+
+positive db 'Positive number', 0xA, 0: Defines a string positive to hold the message "Positive number", a newline character (0xA), and a null terminator (0).
+
+positive_len equ $ - positive - 1: A constant that holds the length of the positive string, excluding the null terminator.
+
+Code Execution (.text section)
+The _start label is the entry point of the program.
+
+mov rax, [num]: The value 42 from the num memory location is loaded into the rax register.
+
+cmp rax, 0: The cmp instruction compares the value in rax with the immediate value 0. This comparison sets various flags in the CPU's status register.
+
+jl negative: The jl (jump if less) instruction is a conditional jump. It checks if the comparison result from cmp indicates that the first operand (rax) was less than the second (0). Since 42 is not less than 0, this jump is not taken, and the program continues to the next line.
+
+The following instructions are executed only if the number is positive or zero:
+
+mov rax, 1: Sets up the sys_write system call.
+
+mov rdi, 1: Sets the file descriptor to standard output (stdout).
+
+mov rsi, positive: Loads the address of the positive string.
+
+mov rdx, positive_len: Loads the length of the string.
+
+syscall: Executes the system call, printing "Positive number" to the console.
+
+Program Exit
+negative:: This is a label that marks a point in the code.
+
+mov rax, 60: Sets up the sys_exit system call.
+
+mov rdi, 0: Sets the exit code to 0, indicating success.
+
+syscall: Executes the system call, terminating the program.
