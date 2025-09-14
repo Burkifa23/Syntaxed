@@ -1,0 +1,32 @@
+This x86-64 assembly code calculates the sum of all integers from 1 to 5 using a loop. It demonstrates a common loop structure with a counter and a conditional jump.
+
+Code Breakdown
+mov rcx, 5: The rcx register is initialized as a counter with the value 5. rcx is conventionally used for loop counters.
+
+mov rax, 0: The rax register is initialized to 0. It will be used as an accumulator to store the running total.
+
+The Loop
+loop_start:: This is a label that marks the beginning of the loop.
+
+add rax, rcx: The current value of rcx is added to rax.
+
+Iteration 1: rax = 0 + 5 = 5
+
+Iteration 2: rax = 5 + 4 = 9
+
+Iteration 3: rax = 9 + 3 = 12
+
+Iteration 4: rax = 12 + 2 = 14
+
+Iteration 5: rax = 14 + 1 = 15
+
+dec rcx: The value in rcx is decremented by 1.
+
+jnz loop_start: The jnz (jump if not zero) instruction checks the Zero Flag in the CPU's status register. If the result of the previous instruction (dec rcx) was not zero, the program jumps back to the loop_start label. The loop continues until rcx becomes 0.
+
+Program Exit
+mov rdi, rax: The final sum (15) from rax is moved into the rdi register.
+
+mov rax, 60: The sys_exit system call number (60) is loaded into rax.
+
+syscall: The program exits with an exit code of 15.
