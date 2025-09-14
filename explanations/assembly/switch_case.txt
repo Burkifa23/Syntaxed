@@ -1,0 +1,43 @@
+This assembly code demonstrates how to implement a switch-case statement using a jump table. Instead of using a series of cmp and je instructions, it uses an array of addresses to jump directly to the correct code block, which is more efficient for a large number of cases.
+
+Data Declaration (.data section)
+The .data section defines the jump table.
+
+jump_table dq case_0, case_1, case_2, case_3, default_case: This line creates an array of quadwords (dq), where each element is the memory address (label) of a specific code block. The array effectively maps an index (0, 1, 2, etc.) to a specific jump destination.
+
+Code Execution (.text section)
+The _start label is the entry point of the program.
+
+mov rax, 2: The value to be tested, 2, is loaded into the rax register. This is the case index.
+
+cmp rax, 4: This instruction compares rax with 4. This is a crucial bounds check to ensure the index is not out of range for the jump_table. The value 4 corresponds to the number of valid cases (0, 1, 2, 3).
+
+jae default_case: The jae (jump if above or equal) instruction checks the result of the cmp. If rax is greater than or equal to 4, it means the index is out of bounds, so the program jumps to the default_case label. Since 2 is not greater than or equal to 4, this jump is not taken.
+
+jmp [jump_table + rax * 8]: This is the core of the jump table logic.
+
+rax * 8: The value in rax (2) is multiplied by 8. The scale factor 8 is used because each address in the jump_table is an 8-byte quadword. The result is 16.
+
+jump_table + rax * 8: The offset 16 is added to the base address of the jump_table.
+
+jmp [address]: The program then performs an indirect jump to the address at that calculated memory location. In this case, it jumps to jump_table + 16, which contains the address of the case_2 label.
+
+Case Labels
+case_0:, case_1:, case_2:, case_3:: These labels define the different code blocks for each case. The program jumps directly to case_2.
+
+mov rbx, 300: The value 300 is moved into the rbx register.
+
+jmp done: An unconditional jump to the done label to skip the rest of the case blocks.
+
+Default Case and Exit
+default_case:: This is the code block for out-of-bounds or default values.
+
+mov rbx, 0: The value 0 is moved into rbx. This block is skipped in this execution.
+
+done:: This is the final label for program exit.
+
+mov rax, 60: Sets up the sys_exit system call.
+
+mov rdi, rbx: The value in rbx (300) is moved into rdi as the exit code.
+
+syscall: Executes the system call to exit the program with an exit code of 300.
