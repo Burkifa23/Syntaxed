@@ -1,0 +1,25 @@
+This x86-64 assembly code demonstrates a Last-In, First-Out (LIFO) data structure known as the stack. It pushes two values onto the stack and then pops them off in the reverse order into different registers.
+
+How the Stack Works
+The stack is a region of memory used for temporary data storage. It grows downward in memory, meaning new items are added at lower addresses. The rsp register (stack pointer) always points to the top of the stack.
+
+push: This instruction decrements the stack pointer (rsp) and then copies the value of its operand onto the top of the stack.
+
+pop: This instruction copies the value from the top of the stack into its operand and then increments the stack pointer (rsp).
+
+Code Breakdown
+mov rax, 10: The value 10 is loaded into the rax register.
+
+mov rbx, 20: The value 20 is loaded into the rbx register.
+
+push rax: The value 10 from rax is pushed onto the stack. The stack now contains 10.
+
+push rbx: The value 20 from rbx is pushed onto the stack. The stack now contains 10 followed by 20 at the top.
+
+pop rcx: The value at the top of the stack (20) is popped off and moved into the rcx register. The stack pointer moves up. rcx now holds 20.
+
+pop rdx: The next value on the stack (10) is popped off and moved into the rdx register. rdx now holds 10.
+
+This clearly shows the LIFO principle: the last value pushed (20) was the first value popped.
+
+The program then exits with a status code of 0.
