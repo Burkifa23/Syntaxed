@@ -1,0 +1,31 @@
+This x86-64 assembly code demonstrates how to call a function and pass arguments to it using registers. The sum_three function takes three numbers as input, adds them together, and returns the sum to the main program.
+
+Code Breakdown
+Main Program (_start)
+This is where the program begins execution and sets up the function call.
+
+mov rdi, 10: The value 10 is loaded into the rdi register. In the x86-64 Linux calling convention, rdi is used for the first argument to a function.
+
+mov rsi, 20: The value 20 is loaded into the rsi register, which is used for the second argument.
+
+mov rdx, 30: The value 30 is loaded into the rdx register, which is used for the third argument.
+
+call sum_three: This instruction transfers program control to the sum_three label. It first pushes the address of the next instruction (mov rdi, rax) onto the stack and then jumps to the sum_three label.
+
+The sum_three Subroutine
+This is the function that performs the calculation.
+
+mov rax, rdi: The value of the first argument (10) is moved from rdi into the rax register. rax is the conventional register for storing a function's return value.
+
+add rax, rsi: The second argument (20) is added to the value currently in rax. rax is now 10 + 20 = 30.
+
+add rax, rdx: The third argument (30) is added to rax. rax is now 30 + 30 = 60.
+
+ret: The ret (return) instruction pops the address from the stack (which was pushed by call) and jumps back to that address. Execution resumes in the _start section, to the line immediately following the call.
+
+Program Exit
+mov rdi, rax: The final sum (60) from rax is moved into rdi.
+
+mov rax, 60: The sys_exit system call number (60) is loaded into rax.
+
+syscall: This executes the sys_exit system call. The program terminates and returns an exit code of 60.
