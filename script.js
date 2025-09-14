@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
             functions: 'snippets/assembly/functions.txt',
             function_pointers: 'snippets/assembly/function-pointers.txt',
             variadic_functions: 'snippets/assembly/variadic-functions.txt',
-            stack_operations: 'snippets/assembly/stack-operation.txt',
+            stack_operations: 'snippets/assembly/stack-operations.txt',
             parameters: 'snippets/assembly/parameters.txt',
             calling_conventions: 'snippets/assembly/calling-conventions.txt',
             local_variables: 'snippets/assembly/local-variables.txt',
