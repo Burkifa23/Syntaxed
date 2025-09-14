@@ -1,0 +1,62 @@
+This x86-64 assembly code demonstrates a variadic function in a simplified way. A variadic function is one that can accept a variable number of arguments. In this example, the sum_variadic function is called with three arguments and calculates their sum.
+
+Code Breakdown
+Main Program (_start):
+
+The main program calls the sum_variadic function with four arguments, following a common convention where the first argument is the count of subsequent arguments.
+
+mov rdi, 3: The number of arguments to sum (3) is passed in the rdi register. In the Linux calling convention, rdi holds the first argument.
+
+mov rsi, 10: The first value (10) is passed in rsi (the second argument register).
+
+mov rdx, 20: The second value (20) is passed in rdx (the third argument register).
+
+mov rcx, 30: The third value (30) is passed in rcx (the fourth argument register).
+
+call sum_variadic: This transfers program control to the sum_variadic function.
+
+Variadic Function (sum_variadic):
+
+This function's purpose is to sum the values passed to it.
+
+push rbp and mov rbp, rsp: These instructions form the prologue of the function, setting up a new stack frame.
+
+push rsi, push rdx, push rcx: The function saves the registers that contain the arguments onto the stack. This is a crucial step to preserve their original values before using the registers for calculations.
+
+xor rax, rax: The rax register is zeroed out. It will act as the accumulator for the sum.
+
+mov rbx, rdi: The argument count (3) from rdi is copied to the rbx register, which will be used as a counter.
+
+test rbx, rbx: This instruction performs a bitwise AND of rbx with itself. Its purpose is to check if rbx is zero and set the Zero Flag accordingly without modifying rbx.
+
+jz done_sum: If the counter (rbx) is zero, the function jumps to done_sum.
+
+add rax, rsi: Adds the first value (10) to rax. rax is now 10.
+
+dec rbx: Decrements the counter. rbx is now 2.
+
+jz done_sum: The counter is not zero, so the jump is not taken.
+
+add rax, rdx: Adds the second value (20) to rax. rax is now 30.
+
+dec rbx: Decrements the counter. rbx is now 1.
+
+jz done_sum: Not zero.
+
+add rax, rcx: Adds the third value (30) to rax. rax is now 60.
+
+dec rbx: Decrements the counter. rbx is now 0.
+
+jz done_sum: The counter is now zero, so the program jumps to done_sum.
+
+Function Epilogue and Exit:
+
+done_sum:: This label marks the end of the summing logic.
+
+pop rcx, pop rdx, pop rsi: The registers that were pushed onto the stack are restored to their original values.
+
+pop rbp: The original base pointer is restored.
+
+ret: The ret instruction returns control to the _start program, with the final sum (60) in the rax register.
+
+The final lines of the main program use this result to exit with a status code of 60.
