@@ -1,0 +1,26 @@
+This assembly code uses a comparison and a series of conditional jumps to determine if one number is greater than, less than, or equal to another. The program then exits with an exit code corresponding to the result of the comparison.
+
+Code Breakdown
+mov rax, 10: The value 10 is loaded into the rax register.
+
+mov rbx, 5: The value 5 is loaded into the rbx register.
+
+cmp rax, rbx: The cmp instruction compares the value in rax (10) with the value in rbx (5). This instruction does not store a result in a register, but instead sets various flags in the CPU's status register based on the outcome of the comparison (specifically, rax - rbx).
+
+jg greater: The jg (jump if greater) instruction checks the flags set by cmp. Since 10 is greater than 5, the condition is true, and the program jumps to the greater label. The following jl and je instructions are skipped.
+
+greater:: This label marks the start of the code to be executed when the first number is greater than the second.
+
+mov rcx, 1: The value 1 is loaded into the rcx register. This value will be used as the exit code to signify the "greater" condition.
+
+jmp done: This is an unconditional jump that moves control to the done label, skipping the less and equal sections.
+
+less:, equal:: These sections are not executed in this program's run but serve as alternative paths for the jl (jump if less) and je (jump if equal) instructions, respectively.
+
+done:: This label marks the point where all execution paths converge.
+
+mov rax, 60: The system call number for sys_exit is loaded into rax.
+
+mov rdi, rcx: The value from rcx (which is 1) is moved into rdi to be used as the exit code.
+
+syscall: This executes the sys_exit system call. The program terminates with an exit code of 1.
