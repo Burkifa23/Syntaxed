@@ -1,0 +1,27 @@
+This x86-64 assembly code demonstrates how to use the jz and jnz conditional jump instructions, which rely on the Zero Flag (ZF) in the CPU's flags register. The program manipulates the Zero Flag and then jumps to different sections of code based on its state.
+
+Code Breakdown
+mov rax, 10: The value 10 is loaded into the rax register.
+
+sub rax, 10: The value 10 is subtracted from rax. The result is 0. This operation sets the Zero Flag to 1 because the result is zero.
+
+jz zero_flag_set: The jz (jump if zero) instruction checks the state of the Zero Flag. Since the flag is set (equal to 1), the condition is met, and the program jumps to the zero_flag_set label. The subsequent lines of code are skipped.
+
+mov rbx, 1: This line is not executed because of the jump.
+
+test rbx, rbx: This line is also not executed. The test instruction performs a bitwise AND and sets flags, but it doesn't store the result. A test operation with the same register is a common way to check if a value is zero without changing it.
+
+jnz not_zero: This jump is also not executed. The jnz (jump if not zero) instruction checks the Zero Flag. Since the flag is set, this condition is not met.
+
+zero_flag_set:: This is a label. The program's execution continues from here after the jz jump.
+
+mov rcx, 100: The value 100 is moved into the rcx register.
+
+not_zero:: This label is a potential jump destination. Since the program jumped to zero_flag_set, execution flows naturally into this label. There is no instruction here, so the program proceeds to the final lines.
+
+Program Exit
+mov rax, 60: Sets up the sys_exit system call.
+
+mov rdi, 0: Sets the exit code to 0 for a successful exit.
+
+syscall: Executes the system call, terminating the program.
