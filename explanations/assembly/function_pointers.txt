@@ -1,0 +1,52 @@
+This x86-64 assembly code demonstrates how to implement a function pointer table, also known as a dispatch table, to dynamically call different functions based on an index. It uses a single entry point (execute_operation) to handle multiple arithmetic operations.
+
+Data Declaration (.data section)
+The .data section defines the table of function pointers.
+
+operation_table dq add_func, sub_func, mul_func, div_func: This creates a table of quadwords (dq), where each element is the memory address (label) of a different function. The index in the table corresponds to the operation to be performed: 0 for add_func, 1 for sub_func, and so on.
+
+Code Execution (.text section)
+The _start label is the program's entry point.
+
+mov rdi, 10: The first operand, 10, is loaded into the rdi register (the first argument register in the Linux calling convention).
+
+mov rsi, 5: The second operand, 5, is loaded into the rsi register (the second argument register).
+
+mov rdx, 0: The operation index, 0 for addition, is loaded into the rdx register. This is the key to selecting the correct function from the table.
+
+call execute_operation: The program calls the execute_operation subroutine.
+
+Subroutine execute_operation
+This is the central function that uses the function pointer table.
+
+push rbp and mov rbp, rsp: These are standard instructions for a function prologue, used to set up a new stack frame. In this simple example, they aren't strictly necessary but are good practice.
+
+mov rax, [operation_table + rdx * 8]: This is the core instruction.
+
+rdx * 8: The operation index (rdx, which is 0) is multiplied by 8 because each address in the table is an 8-byte quadword.
+
+operation_table + ...: The result is added to the base address of the operation_table.
+
+[address]: The value at this calculated memory address (which is the address of add_func) is loaded into rax.
+
+call rax: The call instruction performs an indirect call using the address currently stored in rax. It jumps to the add_func subroutine.
+
+The Operation Functions
+add_func:, sub_func:, mul_func:, div_func:: These are the different subroutines that perform the actual arithmetic. The add_func is called in this example.
+
+mov rax, rdi: The first operand is moved to rax, the conventional register for return values.
+
+add rax, rsi: The second operand is added to rax. The sum (15) is now in rax.
+
+ret: The function returns to the execute_operation subroutine.
+
+Final Steps
+pop rbp: The function epilogue restores the previous stack frame.
+
+ret: The execute_operation subroutine returns to the _start label.
+
+mov rdi, rax: The result (15) from rax is moved into rdi.
+
+mov rax, 60: Sets up the sys_exit system call.
+
+syscall: The program exits with an exit code of 15.
