@@ -1,0 +1,66 @@
+This x86-64 assembly program demonstrates how to set up a signal handler in Linux to respond to the SIGINT signal, which is typically generated when a user presses Ctrl+C. The program enters an infinite loop and, upon receiving the signal, jumps to the designated handler to print a message before resuming its loop.
+
+Data Declaration (.data section)
+The .data section is crucial for defining the data structures needed for the system calls.
+
+msg db 'Signal handler called', 0xA, 0: This defines a string to be printed by the signal handler, followed by a newline and a null terminator.
+
+msg_len equ $ - msg - 1: A constant to hold the length of the message.
+
+sigaction_struct: This is a data structure for the sys_rt_sigaction system call. The fields are defined in the Linux kernel headers.
+
+dq signal_handler: The sa_handler field, which holds the address of our signal handler function (signal_handler).
+
+dq 0: The sa_flags field, set to 0.
+
+dq 0: The sa_restorer field, not used here.
+
+times 16 db 0: The sa_mask field, a 16-byte area to specify which signals should be blocked during the execution of the handler.
+
+timespec: This is a data structure for the sys_nanosleep system call, defining the sleep duration.
+
+dq 1: The number of seconds to sleep.
+
+dq 0: The number of nanoseconds.
+
+Code Execution (.text section)
+The _start label is the program's entry point.
+
+Setting the Signal Handler
+mov rax, 13: The system call number 13 for sys_rt_sigaction is loaded into rax. This is the system call used to set up a signal handler.
+
+mov rdi, 2: The signal number 2 for SIGINT is loaded into rdi (the first argument).
+
+mov rsi, sigaction_struct: The address of the sigaction structure is loaded into rsi (the second argument). This structure tells the kernel which function to call when the signal is received.
+
+mov rdx, 0: The old sigaction structure pointer is null.
+
+mov r10, 8: The size of the sa_mask is loaded into r10.
+
+syscall: This system call is executed, telling the kernel to call signal_handler whenever SIGINT is received.
+
+The Infinite Loop
+loop:: This label marks the beginning of the program's main loop.
+
+mov rax, 162: sys_nanosleep call number is loaded into rax.
+
+mov rdi, timespec: The address of the timespec structure (specifying a 1-second sleep) is loaded into rdi.
+
+mov rsi, 0: A null pointer for the remainder timespec is loaded into rsi.
+
+syscall: The program sleeps for one second.
+
+jmp loop: This is an unconditional jump that sends the program back to the loop label, creating an infinite loop.
+
+The Signal Handler (signal_handler)
+This is the function that the kernel will call when SIGINT is received. It is crucial to save and restore registers that the handler modifies to avoid corrupting the main program's state.
+
+push rax, push rdi, etc.: All registers that the handler will use (rax, rdi, rsi, rdx) are pushed onto the stack to preserve their original values.
+
+mov rax, 1, mov rdi, 1, etc.: These lines set up and execute the sys_write system call to print the "Signal handler called" message.
+
+pop rdx, pop rsi, etc.: The saved registers are popped off the stack in reverse order, restoring them to their state before the handler was called.
+
+ret: The ret instruction returns control to the kernel, which then returns to the main program's loop.
+
+The program must be manually terminated (e.g., by another signal like SIGKILL with kill -9 <PID>) as the sys_exit call is never reached.
