@@ -1,0 +1,42 @@
+This x86-64 assembly program demonstrates basic file I/O operations in Linux: creating a file, writing content to it, and then closing it.
+
+Data Declaration (.data section)
+The .data section defines the file's name and the content to be written.
+
+filename db 'test.txt', 0: A null-terminated string defining the filename.
+
+content db 'Hello file!', 0xA: The string content to be written to the file, followed by a newline character.
+
+content_len equ $ - content: A constant that holds the length of the content string.
+
+Code Execution (.text section)
+The _start label is the entry point.
+
+Creating the File
+mov rax, 2: The system call number for sys_open is loaded into rax.
+
+mov rdi, filename: The address of the filename string is loaded into rdi, the first argument.
+
+mov rsi, 577: The value 577 is loaded into rsi, the second argument. This is the file access mode, which is a combination of flags. The value 577 in octal is 0o1101, which corresponds to O_CREAT | O_WRONLY | O_TRUNC (create if it doesn't exist, write-only, and truncate to zero length if it already exists).
+
+mov rdx, 644: The value 644 is loaded into rdx, the third argument. This is the file permissions (0o644 in octal, which means read/write for the owner and read-only for group and others).
+
+syscall: This executes the sys_open system call. If successful, the kernel returns a file descriptor (a small integer identifying the opened file) in rax.
+
+Writing to the File
+mov rdi, rax: The file descriptor returned by sys_open is moved from rax into rdi. For the next system call, this will be the file to write to.
+
+mov rax, 1: The system call number for sys_write is loaded into rax.
+
+mov rsi, content: The address of the content string is loaded into rsi, the second argument.
+
+mov rdx, content_len: The length of the content string is loaded into rdx, the third argument.
+
+syscall: This executes the sys_write system call, writing the string "Hello file!" to the file.
+
+Closing the File
+mov rax, 3: The system call number for sys_close is loaded into rax.
+
+syscall: This executes the sys_close system call using the file descriptor still in rdi, closing the file.
+
+The program then exits gracefully. mov rax, 60 sets the sys_exit call, and mov rdi, 0 sets the exit code to 0 for success.
