@@ -1,0 +1,33 @@
+This is a standard x86-64 assembly program for Linux that prints a message to the console and then exits. It demonstrates a fundamental programming concept: using system calls to interact with the operating system.
+
+Data Declaration (.data section)
+The .data section is where initialized data, like strings, is stored.
+
+msg db 'System call example', 0xA, 0: This line defines a string named msg. The db directive allocates a sequence of bytes for the characters, a newline character (0xA), and a null terminator (0).
+
+msg_len equ $ - msg - 1: The equ directive creates a constant msg_len. The expression $ - msg calculates the length of the string, and subtracting 1 removes the null terminator, which is not needed for the sys_write call.
+
+Code Execution (.text section)
+The .text section contains the program's executable instructions.
+
+global _start: This makes the _start label globally visible, marking it as the entry point for the program.
+
+The first syscall is for printing the string:
+
+mov rax, 1: The value 1 is loaded into the rax register. On Linux, rax is used to specify the system call number. 1 corresponds to sys_write, which writes data to a file.
+
+mov rdi, 1: The value 1 is loaded into the rdi register. rdi holds the first argument to the system call. The value 1 is the file descriptor for standard output (stdout), which is the console.
+
+mov rsi, msg: The address of the msg string is loaded into the rsi register. rsi holds the second argument, which is a pointer to the data to be written.
+
+mov rdx, msg_len: The length of the string is loaded into the rdx register. rdx holds the third argument, the number of bytes to write.
+
+syscall: This instruction triggers the system call. The operating system uses the values in the registers to perform the sys_write action.
+
+The second syscall is for exiting the program:
+
+mov rax, 60: The value 60, the system call number for sys_exit, is loaded into rax.
+
+mov rdi, 0: The value 0 is loaded into rdi. This is the first argument for sys_exit and serves as the exit code, with 0 indicating a successful termination.
+
+syscall: This instruction executes the sys_exit system call, and the program terminates.
