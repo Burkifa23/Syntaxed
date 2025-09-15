@@ -1,0 +1,69 @@
+This x86-64 assembly code demonstrates the System V AMD64 ABI calling convention for passing six integer arguments to a function. It passes the arguments through a specific set of registers, which is the standard practice on Linux and other Unix-like systems.
+
+Code Breakdown
+Main Program (_start)
+This section sets up the arguments for the function call.
+
+mov rdi, 10: The first argument (10) is placed in the rdi register.
+
+mov rsi, 20: The second argument (20) is placed in the rsi register.
+
+mov rdx, 30: The third argument (30) is placed in the rdx register.
+
+mov rcx, 40: The fourth argument (40) is placed in the rcx register.
+
+mov r8, 50: The fifth argument (50) is placed in the r8 register.
+
+mov r9, 60: The sixth argument (60) is placed in the r9 register.
+
+The System V AMD64 ABI specifies that the first six integer or pointer arguments are passed in these six registers in a specific order: rdi, rsi, rdx, rcx, r8, and r9.
+
+call six_param_function: This instruction jumps to the six_param_function label and pushes the return address onto the stack.
+
+six_param_function Subroutine
+This is the function that receives and processes the arguments.
+
+Prologue:
+
+push rbp: The current rbp (base pointer) is saved onto the stack.
+
+mov rbp, rsp: The rbp is set to the current rsp (stack pointer), establishing a new stack frame.
+
+Saving Callee-Saved Registers:
+
+push rbx: The rbx register is pushed onto the stack.
+
+push r12: The r12 register is pushed onto the stack.
+According to the ABI, registers rbx, rbp, and r12 through r15 are callee-saved. This means that if a function uses these registers, it is responsible for saving their original values at the beginning of the function and restoring them before returning to the caller. This prevents the function from corrupting data the caller may have stored in those registers.
+
+Function Logic:
+
+mov rax, rdi: The first argument is moved to rax, the conventional register for the return value.
+
+add rax, rsi: The second argument is added to rax.
+
+add rax, rdx: The third argument is added.
+
+add rax, rcx: The fourth argument is added.
+
+add rax, r8: The fifth argument is added.
+
+add rax, r9: The sixth argument is added.
+The rax register now holds the sum of all six numbers, which is 210.
+
+Epilogue:
+
+pop r12: The saved value of r12 is restored from the stack.
+
+pop rbx: The saved value of rbx is restored from the stack.
+
+pop rbp: The original rbp is restored, collapsing the function's stack frame.
+
+ret: This instruction returns control to the caller by popping the return address from the stack and jumping to it.
+
+Program Exit
+mov rdi, rax: The final sum from the function (210) is moved into rdi.
+
+mov rax, 60: The sys_exit system call number is loaded into rax.
+
+syscall: The program exits with a status code of 210.
