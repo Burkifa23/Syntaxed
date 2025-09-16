@@ -1,0 +1,52 @@
+This complex x86-64 assembly code implements a simplified memory allocator, featuring init_allocator, malloc, and free functions. It manages a fixed-size memory heap by dividing it into equally sized blocks and using a free list to keep track of available blocks.
+
+Memory and Data Structures
+.data section: Stores initialized variables.
+
+HEAP_SIZE, BLOCK_SIZE, NUM_BLOCKS: Constants defining the heap's structure.
+
+heap_initialized: A flag to ensure the allocator is only initialized once.
+
+.bss section: Reserves uninitialized data.
+
+heap_start resb HEAP_SIZE: A block of 4096 bytes reserved for the custom heap.
+
+free_list resq NUM_BLOCKS: A free list of pointers. Each entry points to the start of a free memory block within the heap.
+
+Core Functions
+init_allocator
+This function is responsible for setting up the free list.
+
+Prologue: Standard push/pop of base pointer and registers.
+
+Check Initialization: It checks heap_initialized to see if it has been run before.
+
+Initialization Loop: It iterates through each potential block in the heap.
+
+It calculates the address of each block (heap_start + rcx * BLOCK_SIZE).
+
+It stores this address in the corresponding entry of the free_list array ([free_list + rcx * 8]). Each entry is 8 bytes (* 8) because it's a 64-bit address.
+
+malloc
+This function allocates memory from the custom heap.
+
+Prologue: Standard setup.
+
+Find Free Block: It iterates through the free_list to find the first entry that is not 0. A 0 entry indicates that the block is currently in use.
+
+Return Pointer: Once a free block is found, its address is moved into rax (the return value register).
+
+Mark as Used: The corresponding entry in the free_list is set to 0 to mark the block as used.
+
+Failure: If no free blocks are found after checking the entire list, rax is set to 0 to return a NULL pointer.
+
+free
+This function returns a block of memory to the heap.
+
+Prologue: Standard setup.
+
+Calculate Block Index: It takes the address to free (rdi), subtracts the heap's starting address, and then divides by BLOCK_SIZE to calculate the index of the block in the free_list.
+
+Mark as Free: The original address of the freed block (rdi) is stored back into the calculated index of the free_list ([free_list + rax * 8]), effectively making that block available for future allocations.
+
+The main program (_start) calls these functions to demonstrate a simple allocate-and-free cycle.
