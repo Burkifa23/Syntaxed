@@ -1,0 +1,22 @@
+This x86-64 assembly code demonstrates how to dynamically allocate memory on the heap using the brk system call. The program first gets the current heap size and then extends it by 1024 bytes.
+
+Code Execution (.text section)
+The _start label is the entry point of the program.
+
+mov rax, 12: The system call number for sys_brk is loaded into rax. This is the system call used to change the location of the program break, which marks the end of the heap segment.
+
+mov rdi, 0: A brk call with an argument of 0 returns the current program break address (the end of the heap) in rax.
+
+syscall: The system call is executed. The address is now in rax.
+
+mov r8, rax: The current break address is saved into the r8 register. This is done so the program can still reference the old break address after rax is overwritten.
+
+add rax, 1024: The value 1024 (1 kilobyte) is added to the address in rax. This calculates the new, desired program break address.
+
+mov rdi, rax: The new address is moved into rdi, the first argument register for the sys_brk system call.
+
+mov rax, 12: The system call number for sys_brk is reloaded into rax.
+
+syscall: This executes the sys_brk system call with a non-zero argument, which sets the new program break. The kernel either allocates the new memory and returns the new break address in rax or returns -1 on failure.
+
+The program then exits gracefully. mov rax, 60 sets the sys_exit call, and mov rdi, 0 sets the exit code to 0 for success.
