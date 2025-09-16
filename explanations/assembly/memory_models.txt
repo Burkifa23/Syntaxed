@@ -1,0 +1,50 @@
+This x86-64 assembly code demonstrates key aspects of a process's virtual memory layout in Linux. It obtains and stores the addresses of different memory segments to show their relative locations: the stack, the heap, and the code segment.
+
+Data and Read-Only Data Sections
+.data:
+
+heap_ptr dq 0: Reserves an 8-byte space to store the address of the program break (the end of the heap).
+
+stack_info dq 0: Reserves an 8-byte space to store the current stack pointer address.
+
+code_addr dq _start: Stores the memory address of the _start label in the code segment.
+
+.rodata:
+
+memory_layout_msg db ...: A string that's stored in a read-only section. This is a good practice for data that shouldn't be modified during program execution.
+
+Code Execution (.text section)
+The _start label is the entry point.
+
+Get Stack Address:
+
+mov [stack_info], rsp: The rsp register holds the address of the current top of the stack. This instruction copies that address from the register into the stack_info memory location. The stack typically resides at a high memory address and grows downwards.
+
+Allocate Heap Memory:
+
+mov rax, 12: The system call number for sys_brk is loaded into rax. The brk system call is used to change the location of the program break, thereby allocating or deallocating memory in the heap.
+
+mov rdi, 0: A brk call with an argument of 0 returns the current program break address.
+
+syscall: The system call is executed. The address of the current program break is returned in rax.
+
+mov [heap_ptr], rax: This instruction saves the current heap address into the heap_ptr memory location. The heap is located at a lower memory address, between the data segment and the stack.
+
+Display a Message (Conceptual):
+
+The code uses sys_write to print a message to the console. This part is conceptual, as printing the actual addresses in assembly requires more complex string conversion routines. The purpose of this step is to illustrate that these addresses can be used.
+
+Program Exit:
+
+The program exits with a status code of 0.
+
+Virtual Memory Layout
+When this program runs, the addresses stored in code_addr, heap_ptr, and stack_info would show the following general layout:
+
+Code/Text Segment: The _start label is located here.
+
+Data Segment: The heap_ptr, stack_info, and code_addr variables are located here.
+
+Heap: Grows upwards from the data segment. heap_ptr points to the end of the heap.
+
+Stack: Grows downwards from a high memory address. stack_info points to the current top of the stack.
