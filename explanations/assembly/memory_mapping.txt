@@ -1,0 +1,42 @@
+This x86-64 assembly code demonstrates memory-mapping a file using the mmap system call. The program first creates a file and writes some data to it, then opens the file again and maps its contents into the program's virtual memory space. This allows the program to access the file's data as if it were a regular block of memory.
+
+File Creation and Writing
+The initial part of the code handles standard file I/O:
+
+sys_open (rax=2): Creates and opens a file named test_mmap.txt with write-only access (O_WRONLY|O_CREAT|O_TRUNC is 0x241). The file descriptor is returned in rax and saved in r8.
+
+sys_write (rax=1): Writes the test_data string to the file using the saved file descriptor.
+
+sys_close (rax=3): Closes the file, which is necessary before re-opening it.
+
+Memory Mapping the File
+This is the core section of the code, which uses mmap.
+
+Re-opening the File: The program first opens the file again, this time with read-only permissions (O_RDONLY is 0). The new file descriptor is returned in rax and saved in r8.
+
+sys_mmap (rax=9): This is the system call to perform the memory map. The arguments are:
+
+rdi=0: The address where the memory should be mapped. 0 lets the kernel choose a suitable address.
+
+rsi=4096: The length of the memory region to map, which is a common page size.
+
+rdx=1: The protection flags (PROT_READ), allowing the mapped memory to be read.
+
+r10=1: The mapping flags (MAP_SHARED), which means changes to the memory region will be written back to the file.
+
+r9=r8: The file descriptor for the open file.
+
+r8=0: The offset into the file from which to start the mapping.
+
+The kernel returns the starting address of the newly mapped memory region in rax. This address is then saved in r9.
+
+Accessing Mapped Memory:
+
+mov al, [r9]: This instruction reads the first byte from the memory address in r9. Since the file was mapped to this address, this effectively reads the first character of the file content ('M').
+
+Cleanup and Exit
+sys_munmap (rax=11): This unmaps the memory region. It is crucial to unmap memory after it is no longer needed. The arguments are the starting address (r9) and the length (4096).
+
+sys_close (rax=3): The file descriptor is closed.
+
+The program then exits gracefully with a status code of 0.
