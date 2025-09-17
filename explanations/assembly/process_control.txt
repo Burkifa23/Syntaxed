@@ -1,0 +1,37 @@
+This x86-64 assembly code demonstrates inter-process communication (IPC) by creating a new process using the fork system call. The program then branches into two separate execution paths: one for the parent process and one for the child process. The parent process waits for the child to finish and then exits, while the child process exits immediately with a specific status code.
+
+Code Breakdown
+Creating a New Process
+mov rax, 57: The system call number for sys_fork is loaded into rax. This is the core instruction for creating a new process.
+
+syscall: The system call is executed. The kernel creates a new process (the child) that is an exact copy of the calling process (the parent). The return value of the fork call is crucial for distinguishing the two processes:
+
+In the parent process: The return value in rax is the Process ID (PID) of the newly created child process.
+
+In the child process: The return value in rax is 0.
+
+test rax, rax: This performs a bitwise AND of rax with itself. Its purpose is to check the value in rax and set the Zero Flag accordingly.
+
+jz child_process: The jz (jump if zero) instruction checks the Zero Flag.
+
+In the child process, rax is 0, so the Zero Flag is set. The program jumps to the child_process label.
+
+In the parent process, rax contains a non-zero PID, so the Zero Flag is not set. The program continues to the next line, parent_process.
+
+Parent Process Execution
+parent_process:: This label marks the entry point for the parent.
+
+mov rdi, rax: The child's PID is moved from rax into rdi.
+
+mov rax, 61: The system call number for sys_wait4 is loaded into rax.
+
+mov rsi, 0, mov rdx, 0, mov r10, 0: The other arguments for sys_wait4 are set to 0. sys_wait4 allows a parent process to wait for a child process to change state (e.g., to terminate).
+
+syscall: The parent process pauses its execution here and waits for the child process to terminate.
+
+mov rax, 60 & mov rdi, 0 & syscall: After the child terminates, the parent process resumes and exits with a status code of 0, indicating a successful wait and termination.
+
+Child Process Execution
+child_process:: This label marks the entry point for the child.
+
+mov rax, 60 & mov rdi, 42 & syscall: The child process immediately sets up and executes the sys_exit system call, terminating itself with a status code of 42. When the child exits, the parent process's sys_wait4 call returns.
