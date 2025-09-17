@@ -1,52 +1,37 @@
-section .data
-    shm_key equ 12345
-    shm_size equ 4096
-    
-section .bss
-    shm_id resd 1
-    shm_addr resq 1
+This x86-64 assembly code attempts to demonstrate inter-process communication (IPC) using shared memory, though it uses a simplified, non-functional approach for the system calls. Shared memory is a method for two or more processes to access the same region of memory, enabling very fast communication between them.
 
-section .text
-    global _start
+Data and BSS Sections
+.data: Defines constants for the shared memory key (12345) and size (4096 bytes).
 
-_start:
-    ; Create shared memory segment
-    call create_shared_memory
-    
-    ; Attach to shared memory
-    call attach_shared_memory
-    
-    ; Write to shared memory
-    mov rax, [shm_addr]
-    mov qword [rax], 0x1234567890ABCDEF
-    
-    ; Detach shared memory
-    call detach_shared_memory
-    
-    mov rax, 60
-    mov rdi, 0
-    syscall
+.bss: Reserves uninitialized space for variables that will hold the shared memory ID (shm_id) and its memory address (shm_addr).
 
-create_shared_memory:
-    ; This would use shmget() system call in real implementation
-    ; Simplified for demonstration
-    ret
+Function Breakdown
+The program's main logic is divided into three functions, though only one has an actual implementation.
 
-attach_shared_memory:
-    ; This would use shmat() system call in real implementation
-    ; For demo, just use a regular memory allocation
-    mov rax, 12 ; sys_brk
-    mov rdi, 0
-    syscall
-    
-    mov [shm_addr], rax
-    add rax, shm_size
-    mov rdi, rax
-    mov rax, 12 ; sys_brk
-    syscall
-    
-    ret
+create_shared_memory
+This function is a placeholder for the shmget() system call. In a real-world scenario, shmget() would be called to create or get a shared memory segment from the kernel, returning an identifier. This assembly code simply returns without performing the call.
 
-detach_shared_memory:
-    ; This would use shmdt() system call in real implementation
-    ret
+attach_shared_memory
+This function is a simplified replacement for the shmat() system call, which attaches a shared memory segment to the process's address space. Instead of using shmat(), this code uses the sys_brk system call to allocate a new segment of heap memory for demonstration purposes.
+
+mov rax, 12 & mov rdi, 0 & syscall: This gets the current program break (the end of the heap) and stores it in shm_addr.
+
+add rax, shm_size: The heap address is increased by 4096 bytes to allocate space.
+
+mov rdi, rax & mov rax, 12 & syscall: This sets the new program break, effectively allocating the memory.
+
+detach_shared_memory
+This is a placeholder for the shmdt() system call, which detaches the shared memory segment from the process's address space.
+
+Program Execution (_start)
+call create_shared_memory: This calls the placeholder function.
+
+call attach_shared_memory: The program allocates 4096 bytes of heap memory, and the address is stored in shm_addr.
+
+mov rax, [shm_addr]: The address of the newly allocated memory is loaded into rax.
+
+mov qword [rax], 0x1234567890ABCDEF: This writes a 64-bit value to the allocated memory, simulating writing to a shared memory segment.
+
+call detach_shared_memory: This calls the placeholder function.
+
+The program then exits with a status code of 0.
