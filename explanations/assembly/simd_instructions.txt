@@ -1,0 +1,31 @@
+This x86-64 assembly code demonstrates Single Instruction, Multiple Data (SIMD) operations using the Streaming SIMD Extensions (SSE) instruction set. It performs vector addition and multiplication on two vectors of double-precision floating-point numbers.
+
+Data Declaration (.data section)
+align 16: This directive ensures that the memory address of the next item is a multiple of 16. This is crucial for performance with some SIMD instructions (like movapd) that require data alignment.
+
+vector1 dq 1.0, 2.0: Defines a vector containing two 64-bit double-precision floating-point numbers.
+
+vector2 dq 3.0, 4.0: Defines a second vector.
+
+result dq 0.0, 0.0: A variable to store the result of the vector operations.
+
+SIMD Operations (.text section)
+The code uses XMM registers (xmm0, xmm1), which are 128 bits wide and can hold two 64-bit double-precision numbers.
+
+Vector Addition
+movupd xmm0, [vector1]: The movupd (move unaligned packed double) instruction loads the two floating-point numbers from vector1 into xmm0. movupd can be used on data that is not aligned to a 16-byte boundary, while movapd requires alignment.
+
+movupd xmm1, [vector2]: The second vector is loaded into xmm1.
+
+addpd xmm0, xmm1: The addpd (add packed double) instruction adds the corresponding elements of the two vectors: (1.0 + 3.0) and (2.0 + 4.0). The results, 4.0 and 6.0, are stored in xmm0.
+
+movupd [result], xmm0: The result is stored back into the result variable in memory.
+
+Vector Multiplication and Horizontal Addition
+movupd xmm0, [vector1]: xmm0 is reloaded with 1.0 and 2.0.
+
+mulpd xmm0, xmm1: The mulpd (multiply packed double) instruction multiplies the corresponding elements of xmm0 and xmm1: (1.0 * 3.0) and (2.0 * 4.0). The results, 3.0 and 8.0, are stored in xmm0.
+
+haddpd xmm0, xmm0: The haddpd (horizontal add packed double) instruction adds the two numbers horizontally within the same register. It adds the two numbers in xmm0 (3.0 + 8.0) and stores the sum (11.0) in the lower part of xmm0. This is useful for reducing a vector to a single scalar value.
+
+The program then exits with a status code of 0.
