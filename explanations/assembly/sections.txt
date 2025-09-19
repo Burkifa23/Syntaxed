@@ -1,0 +1,21 @@
+This x86-64 assembly code demonstrates the use of the three primary memory segments in a typical Linux program: .data, .bss, and .rodata. The program moves a value from an initialized data segment to an uninitialized data segment before exiting.
+
+Memory Segments
+.data (Initialized Data)
+
+initialized_data dq 42: This section stores variables that are initialized with a value at compile time. The assembler places this value directly into the executable file. When the program is loaded, this section is copied into the process's address space.
+
+.bss (Block Started by Symbol)
+
+uninitialized_data resq 1: This section reserves a block of memory for uninitialized data. The resq 1 directive reserves one quadword (8 bytes) of space. This section does not take up space in the executable file. Instead, the kernel allocates space for it and initializes it to zero when the program is loaded into memory.
+
+.rodata (Read-Only Data)
+
+constant_data db 'Read only', 0: This section contains read-only data, such as strings or constants. The operating system loads this segment into memory with read-only permissions, preventing the program from accidentally modifying it.
+
+Code Execution (.text section)
+mov rax, [initialized_data]: The value 42 from the initialized_data variable in the .data segment is moved into the rax register.
+
+mov [uninitialized_data], rax: The value from rax (42) is then moved into the uninitialized_data variable in the .bss segment.
+
+The program then exits with a status code of 0.
