@@ -1,0 +1,35 @@
+This x86-64 assembly code attempts to demonstrate the concept of the Global Offset Table (GOT) and the Procedure Linkage Table (PLT), which are crucial for dynamic linking in modern operating systems like Linux. . It simulates how a program calls a function from a shared library without knowing its address at compile time.
+
+Understanding GOT and PLT
+Global Offset Table (GOT): A table that holds the absolute memory addresses of global variables and functions.
+
+Procedure Linkage Table (PLT): A table of executable code stubs. When a program first calls a function in a shared library, the PLT entry for that function redirects the call to a dynamic linker stub. This stub resolves the function's real address and then stores it in the corresponding GOT entry. Subsequent calls to the function go directly to the resolved address via the GOT, bypassing the expensive resolution process.
+
+Code Breakdown
+section .data:
+
+external_symbol dq 0: This reserves an 8-byte space in the data segment. In a real-world scenario, this would be an entry in the GOT, initially containing a placeholder address.
+
+section .text:
+
+global _start: The program's entry point.
+
+extern printf: This is a key line. The extern directive tells the assembler that printf is defined in another file (like libc.so). The assembler creates a placeholder for its address. The code in this example is conceptual; it doesn't actually call printf but instead uses a custom label external_function for the demonstration.
+
+_start:
+
+mov rax, [rel external_symbol]: The program loads the value from the external_symbol GOT entry into rax.
+
+test rax, rax & jnz call_external: This checks if the GOT entry is non-zero (i.e., if the address has already been resolved). In this simplified example, the first time this code runs, the value is 0, so the jump is not taken.
+
+mov qword [rel external_symbol], external_function: This line simulates the dynamic linker's job. It manually resolves the address of external_function and stores it into the external_symbol GOT entry.
+
+call_external: This label marks the start of the function call.
+
+call [rel external_symbol]: This is the crucial instruction. It performs an indirect call using the address stored in the GOT entry (external_symbol). On the first call, this jumps to the external_function label because the address was manually resolved. On subsequent calls (if the program looped), the jnz jump would be taken, and the program would jump directly to this call without re-resolving the address.
+
+external_function:
+
+This is a placeholder for the external function's code. It simply returns.
+
+The program then exits with a status code of 0. This code provides a hands-on look at the mechanism behind dynamic linking, which is fundamental for creating modern, modular software.
