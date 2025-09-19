@@ -1,0 +1,30 @@
+This x86-64 assembly code demonstrates the significant impact of CPU cache memory on program performance by comparing two different memory access patterns: sequential and strided. The program sums the elements of a large array twice, once with each pattern, to highlight the difference in efficiency.
+
+Data and Memory
+.data:
+
+large_array times 1024 dq 0: This reserves space for a large array of 1024 quadwords, totaling 8 KB. This size is chosen because it's a common size that can fit into a single L1 data cache on many CPUs.
+
+array_size equ 1024: Defines a constant for the number of elements.
+
+Access Patterns and Cache Behavior
+sequential_access
+This function accesses memory in a linear, predictable fashion.
+
+mov rsi, large_array: The base address of the array is loaded into rsi.
+
+add rsi, 8: In each loop iteration, the pointer is incremented by 8 bytes, which is the size of one array element.
+
+Why it's Cache-Friendly: When the CPU fetches data from RAM, it doesn't just get the requested byte; it loads an entire cache line (typically 64 bytes) into the L1 cache. Because the next memory access is likely to be in the same cache line, the CPU finds the data in the fast cache instead of going back to the slower RAM. This is called a cache hit, and it makes sequential access very fast.
+
+strided_access
+This function accesses memory by skipping a fixed number of elements.
+
+mov rsi, large_array: The base address of the array is loaded into rsi.
+
+add rsi, 64: In each loop, the pointer is incremented by 64 bytes. This means it skips 8 elements (64 / 8).
+
+Why it's Cache-Unfriendly: Since the code jumps by 64 bytes, each memory access likely misses the cache and forces the CPU to fetch a new cache line from RAM. The data needed for the next iteration is not in the cache, resulting in a cache miss. The constant back-and-forth to RAM makes this access pattern significantly slower, even though both loops perform the same number of additions and memory accesses.
+
+Conclusion
+This example demonstrates a fundamental principle of modern computer architecture: the principle of locality. Algorithms that exhibit spatial locality (accessing memory locations that are close to each other) or temporal locality (accessing the same memory location multiple times) can perform dramatically better by making effective use of the CPU's cache hierarchy.
