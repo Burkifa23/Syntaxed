@@ -1,0 +1,37 @@
+section .data
+    start_time dq 0
+    end_time dq 0
+    iterations equ 1000000
+
+section .text
+    global _start
+
+_start:
+    ; Get start time using RDTSC
+    rdtsc
+    shl rdx, 32
+    or rax, rdx
+    mov [start_time], rax
+    
+    ; Execute code to profile
+    mov rcx, iterations
+profile_loop:
+    ; Some computation to measure
+    mov rax, rcx
+    mul rax
+    dec rcx
+    jnz profile_loop
+    
+    ; Get end time
+    rdtsc
+    shl rdx, 32
+    or rax, rdx
+    mov [end_time], rax
+    
+    ; Calculate elapsed cycles
+    mov rax, [end_time]
+    sub rax, [start_time]
+    
+    mov rdi, rax
+    mov rax, 60
+    syscall
