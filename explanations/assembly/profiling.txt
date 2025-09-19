@@ -1,37 +1,38 @@
-section .data
-    start_time dq 0
-    end_time dq 0
-    iterations equ 1000000
+This x86-64 assembly code demonstrates a simple performance profiling technique using the RDTSC (Read Time-Stamp Counter) instruction. It measures the number of CPU clock cycles required to execute a loop a million times and then exits with that value as the exit code.
 
-section .text
-    global _start
+How It Works
+The Time-Stamp Counter (TSC) is a 64-bit register in the CPU that increments with every clock cycle since the last reset. The RDTSC instruction reads the value of this counter into the rdx:rax register pair.
 
-_start:
-    ; Get start time using RDTSC
-    rdtsc
-    shl rdx, 32
-    or rax, rdx
-    mov [start_time], rax
-    
-    ; Execute code to profile
-    mov rcx, iterations
-profile_loop:
-    ; Some computation to measure
-    mov rax, rcx
-    mul rax
-    dec rcx
-    jnz profile_loop
-    
-    ; Get end time
-    rdtsc
-    shl rdx, 32
-    or rax, rdx
-    mov [end_time], rax
-    
-    ; Calculate elapsed cycles
-    mov rax, [end_time]
-    sub rax, [start_time]
-    
-    mov rdi, rax
-    mov rax, 60
-    syscall
+Get Start Time:
+
+rdtsc: This instruction reads the current TSC value into edx:eax.
+
+shl rdx, 32: The value in edx (the high 32 bits of the counter) is shifted left by 32 bits, placing it in the upper half of rdx.
+
+or rax, rdx: The high 32 bits from rdx are combined with the low 32 bits from rax to form a single 64-bit value in rax.
+
+mov [start_time], rax: The 64-bit start time is saved in memory.
+
+Code to Profile:
+
+mov rcx, iterations: A loop counter is set to 1,000,000.
+
+profile_loop: This is a simple loop that performs a multiplication (mul rax) in each iteration. The multiplication is a placeholder for the code you wish to measure. The loop continues until the counter (rcx) reaches zero.
+
+Get End Time:
+
+The rdtsc instruction is used again to get the final TSC value, which is then combined into a 64-bit value and stored in end_time.
+
+Calculate Elapsed Cycles:
+
+mov rax, [end_time]: The end time is loaded into rax.
+
+sub rax, [start_time]: The start time is subtracted from the end time. The result in rax is the number of clock cycles elapsed during the loop's execution.
+
+Exit:
+
+mov rdi, rax: The final result (the number of elapsed cycles) is moved into rdi.
+
+mov rax, 60 & syscall: The program exits, returning the number of cycles as the exit code. You can view this value by running echo $? in the shell after the program finishes.
+
+Note: The TSC value can be affected by power-saving features (dynamic frequency scaling), so the results may not be perfectly consistent across different runs or systems unless these features are disabled.

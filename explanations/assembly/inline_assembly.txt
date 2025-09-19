@@ -1,0 +1,57 @@
+This x86-64 assembly code calculates the integer square root of a number using Newton's method. The algorithm iteratively refines a guess until it converges on the true square root.
+
+Code Breakdown
+Data Section
+input_val dq 25: This holds the number for which the square root will be calculated. The value is 25.
+
+output_val dq 0: This is where the final calculated square root will be stored.
+
+Core Logic
+mov rax, [input_val]: The input value 25 is loaded into the rax register.
+
+mov rbx, rax: The rax value is copied to rbx, which will serve as the current guess.
+
+shr rbx, 1: The initial guess is set to half of the input value using a right shift. This is a quick and simple starting point. 25 / 2 = 12. rbx now holds 12.
+
+sqrt_loop
+This is the main loop where Newton's method is applied. The formula for the next guess is:
+next_guess = (current_guess + (number / current_guess)) / 2
+
+mov rdx, rax & mov rcx, rbx: The current guess (rbx) is moved to rcx, and the original number (rax) is moved to rdx. These are needed for the div instruction.
+
+xor rax, rax & div rcx: The div instruction divides the 128-bit number rdx:rax by rcx. The number is 25, and the divisor is 12. The result of the division, 2, is placed in rax.
+
+add rax, rbx: The result from the division (2) is added to the current guess (12). rax is now 14.
+
+shr rax, 1: The sum is divided by 2. 14 / 2 = 7. This is the new guess.
+
+Convergence Check
+The loop checks if the new guess is close enough to the old guess.
+
+sub rax, rbx: The difference between the new guess (7) and the old guess (12) is calculated. The result is -5.
+
+cmp rax, 1 & jg continue_sqrt: If the difference is greater than 1, the loop continues.
+
+cmp rax, -1 & jl continue_sqrt: If the difference is less than -1, the loop continues.
+
+jmp sqrt_done: If the difference is between -1 and 1 (inclusive), the approximation is considered close enough, and the program jumps to sqrt_done.
+
+Since -5 is less than -1, the program jumps to continue_sqrt.
+
+continue_sqrt
+add rax, rbx: The difference (-5) is added back to the old guess (12), which results in 7.
+
+mov rbx, rax: The new guess 7 is moved into rbx. This will be the current_guess for the next iteration.
+
+mov rax, [input_val]: The original input value 25 is reloaded into rax for the next loop.
+
+jmp sqrt_loop: The loop repeats.
+
+The process continues, and the guesses will converge: 12 -> 7 -> 5. When the guess is 5, the difference between the new and old guess will be 0, and the loop will terminate.
+
+Final Step
+sqrt_done::
+
+mov [output_val], rbx: The final guess, 5, is moved into output_val.
+
+The program then exits with a status code of 0.
