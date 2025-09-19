@@ -1,0 +1,25 @@
+This x86-64 assembly code demonstrates conditional assembly using preprocessor directives. It allows the assembler to include or exclude blocks of code based on defined constants, which is useful for creating different builds (e.g., debug vs. release or different versions) from a single source file.
+
+Preprocessor Directives
+%define DEBUG 1: This directive defines a constant named DEBUG with a value of 1.
+
+%define VERSION 2: This directive defines a constant named VERSION with a value of 2.
+
+The assembler uses these values to evaluate the conditional blocks.
+
+Conditional Assembly (%if, %else, %endif)
+The code uses these directives to control which parts are assembled into the final program.
+
+%if DEBUG: The assembler checks if the constant DEBUG is defined and has a non-zero value. Since it is defined as 1, the block of code inside this %if is included. This code prints the "Debug mode enabled" message.
+
+%if VERSION >= 2: The assembler checks if the VERSION constant is greater than or equal to 2. Since it is defined as 2, this condition is true. The block of code that defines version_msg as "Version 2.0" is included, and the code inside the %else block is ignored.
+
+%endif: This marks the end of a conditional block.
+
+Execution
+The final assembled program will include the code to print both messages because both conditions were met. The output will be:
+
+Debug mode enabled
+Version 2.0
+
+This technique is a powerful way to manage different configurations of a program without manually editing the source code.
