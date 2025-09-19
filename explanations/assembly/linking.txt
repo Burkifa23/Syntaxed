@@ -1,0 +1,24 @@
+This x86-64 assembly code demonstrates how to link to an external function from another file. The program itself is simple: it calls a function named external_function and then exits. The key is in the extern directive, which tells the assembler that this function is not defined in the current file.
+
+Code Breakdown
+section .text: This is the code segment where instructions are placed.
+
+global _start: Makes the _start label visible to the linker, as it's the program's entry point.
+
+extern external_function: The extern directive is a command to the assembler. It tells the assembler that external_function is a symbol (a label, or a function name) that is defined somewhere else, likely in a separate assembly or C file. The assembler will not be able to resolve its address and will leave a placeholder for the linker to fill in later.
+
+_start:: The program's entry point.
+
+call external_function: This instruction attempts to call the function. The assembler generates a call instruction with a placeholder for the function's address.
+
+mov rax, 60 & mov rdi, 0 & syscall: These instructions set up and execute the sys_exit system call to terminate the program.
+
+When you compile this code, you need to link it with the file that contains the definition of external_function. For example, if external_function is in a file named ext.asm, you would compile and link them together:
+
+Bash
+
+nasm -f elf64 main.asm -o main.o
+nasm -f elf64 ext.asm -o ext.o
+ld main.o ext.o -o my_program
+
+The linker (ld) will then resolve the address of external_function and place it in the correct location in the final executable.
