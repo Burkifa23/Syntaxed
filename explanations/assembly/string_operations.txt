@@ -1,0 +1,34 @@
+This x86-64 assembly code copies a null-terminated string from a source memory location to a destination memory location. It demonstrates a common string manipulation task by implementing a basic string_copy function.
+
+Data Declaration (.data section)
+source db 'Hello Assembly', 0: Defines a string variable named source. The 0 at the end is a null terminator, a byte with a value of zero, which marks the end of the string.
+
+dest times 20 db 0: Reserves 20 bytes of space for the destination string, initially filled with zeros.
+
+Code Execution (.text section)
+mov rsi, source: The address of the source string is loaded into the rsi register. rsi is a common register for source operands in string operations.
+
+mov rdi, dest: The address of the dest string is loaded into the rdi register. rdi is a common register for destination operands.
+
+call string_copy: This transfers control to the string_copy function.
+
+string_copy Function
+This function contains the core logic for copying the string.
+
+copy_loop:: This is a label that marks the beginning of the loop.
+
+mov al, [rsi]: The byte at the address pointed to by rsi (the source) is moved into the 8-bit al register (the low byte of rax).
+
+mov [rdi], al: The byte from al is then moved into the memory location pointed to by rdi (the destination).
+
+test al, al: This instruction performs a bitwise AND of al with itself. Its purpose is to check if al is zero and set the CPU's Zero Flag accordingly.
+
+jz copy_done: The jz (jump if zero) instruction checks the Zero Flag. If the byte copied was the null terminator (0), the jump is taken, and the loop terminates.
+
+inc rsi & inc rdi: The rsi and rdi registers are incremented to point to the next byte in both the source and destination strings.
+
+jmp copy_loop: If the byte was not zero, the program unconditionally jumps back to the start of the loop to copy the next character.
+
+copy_done:: This label is the destination of the jump, and ret returns control to the _start section.
+
+The program then exits with a status code of 0.
