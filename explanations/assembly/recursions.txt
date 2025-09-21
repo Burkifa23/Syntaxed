@@ -1,0 +1,41 @@
+This x86-64 assembly code calculates the factorial of a number (in this case, 5) using a recursive function. It demonstrates how to handle the flow of control and preserve data on the stack during recursive calls.
+
+How the Program Works
+The _start section sets up the initial call to the factorial function.
+
+mov rdi, 5: The number 5 is moved into rdi. In the Linux calling convention, rdi holds the first argument to a function.
+
+call factorial: This instruction transfers program execution to the factorial function.
+
+The factorial Function
+This is the core of the recursive logic.
+
+Prologue:
+
+push rbp & mov rbp, rsp: These instructions establish a new stack frame for the function call.
+
+push rbx: The rbx register is pushed onto the stack. In the x86-64 calling convention, rbx is a callee-saved register, meaning the called function (factorial) is responsible for saving and restoring its value. This is crucial because the function will use rbx to store a value (n) that must be preserved across recursive calls.
+
+Base Case:
+
+cmp rdi, 1: The argument n is compared to 1.
+
+jle base_case: If n is less than or equal to 1, the function jumps to the base_case label. This is the termination condition for the recursion.
+
+base_case:: mov rax, 1. The return value 1 is loaded into rax.
+
+Recursive Step:
+
+dec rdi: The argument is decremented to n-1. For the first call, 5 becomes 4.
+
+call factorial: The function calls itself with the new argument. This process repeats until the base case is reached (when n is 1). Each call places a new return address on the stack.
+
+mul rbx: After the recursive call returns, rax contains the factorial of n-1 (e.g., 4!=24). The mul instruction multiplies the value in rax by the value in rbx, which holds the original n for this level of recursion. The product (5∗24=120) is stored in rax.
+
+Epilogue:
+
+pop rbx & pop rbp: The saved registers and the previous stack frame are restored.
+
+ret: The function returns to the previous call in the recursion chain, with the result in rax.
+
+The final call returns to _start, where the result (120) is moved to rdi to be used as the program's exit code. The program then terminates.
