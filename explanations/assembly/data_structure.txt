@@ -1,0 +1,50 @@
+This x86-64 assembly code implements the bubble sort algorithm to sort an array of 64-bit integers in ascending order. It demonstrates a common sorting technique using nested loops and conditional swaps.
+
+How the Algorithm Works
+Bubble sort repeatedly steps through the list, compares adjacent elements, and swaps them if they are in the wrong order. The pass through the list is repeated until the list is sorted. Each full pass "bubbles" the largest unsorted element to its correct position.
+
+Code Breakdown
+The main program (_start) calls the bubble_sort function with the array's starting address in rdi and its size in rsi.
+
+The bubble_sort Function
+Outer Loop:
+
+mov rcx, rsi & dec rcx: The outer loop counter, rcx, is initialized with array_size - 1 (since n comparisons are needed for n+1 elements).
+
+outer_loop:: This label marks the beginning of the outer loop. The outer loop controls the number of passes through the array.
+
+Inner Loop:
+
+mov rdx, 0: The inner loop counter, rdx, is initialized to 0. rdx serves as the index for the array elements being compared.
+
+inner_loop:: This label marks the beginning of the inner loop. The inner loop performs the comparisons and swaps for each pass.
+
+mov rax, [rdi + rdx * 8]: The first element of a pair is loaded into rax. The address is calculated using the base address (rdi), the index (rdx), and the size of each element (8 bytes for a quadword).
+
+cmp rax, [rdi + rdx * 8 + 8]: rax is compared with the next element in the array. The next element's address is calculated as the current address plus 8 bytes.
+
+jle no_swap: If the first element is less than or equal to the second, they are already in order, and the program jumps to no_swap.
+
+Swapping Elements: If jle is not taken, a swap is performed.
+
+mov rbx, [rdi + rdx * 8 + 8]: The value of the second element is loaded into rbx.
+
+mov [rdi + rdx * 8], rbx: The second element's value is written into the first element's position.
+
+mov [rdi + rdx * 8 + 8], rax: The first element's value (which was saved in rax) is written into the second element's position.
+
+no_swap:: This label is the destination of the jle jump.
+
+inc rdx: The inner loop counter is incremented.
+
+cmp rdx, rcx & jl inner_loop: The inner loop continues until it reaches the end of the unsorted part of the array.
+
+Loop Termination:
+
+dec rcx: The outer loop counter is decremented after each pass.
+
+jnz outer_loop: If the counter is not zero, the program jumps back to the outer_loop label for the next pass.
+
+ret: When the outer loop completes, the function returns.
+
+The program then exits with a status code of 0.

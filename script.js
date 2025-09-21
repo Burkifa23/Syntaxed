@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
             conditional_assembly: 'snippets/assembly/conditional-assembly.txt',
             string_operations: 'snippets/assembly/string-operations.txt',
             recursions: 'snippets/assembly/recursions.txt',
-            data_structures: 'snippets/assembly/data-structures.txt',
+            data_structure: 'snippets/assembly/data-structure.txt',
             stack_frames: 'snippets/assembly/stack-frames.txt',
             hash_tables: 'snippets/assembly/hash-tables.txt',
             algorithms: 'snippets/assembly/algorithms.txt',
