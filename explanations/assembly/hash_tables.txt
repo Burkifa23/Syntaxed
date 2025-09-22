@@ -1,0 +1,71 @@
+section .data
+    HASH_TABLE_SIZE equ 16
+    
+section .bss
+    hash_table resq HASH_TABLE_SIZE ; Simple hash table
+    
+section .text
+    global _start
+
+_start:
+    ; Test hash table operations
+    mov rdi, 42 ; Key
+    mov rsi, 100 ; Value
+    call hash_insert
+    
+    mov rdi, 42 ; Key to lookup
+    call hash_lookup
+    
+    mov rdi, rax ; Exit with found value
+    mov rax, 60
+    syscall
+
+hash_function:
+    ; Simple hash function: key % table_size
+    push rbp
+    mov rbp, rsp
+    
+    xor rdx, rdx
+    mov rax, rdi ; Key
+    mov rbx, HASH_TABLE_SIZE
+    div rbx ; rax = key / size, rdx = key % size
+    
+    mov rax, rdx ; Return hash value
+    pop rbp
+    ret
+
+hash_insert:
+    ; Insert key-value pair
+    push rbp
+    mov rbp, rsp
+    push rbx
+    push rcx
+    
+    mov rbx, rdi ; Save key
+    mov rcx, rsi ; Save value
+    
+    call hash_function ; Get hash index
+    
+    ; Store value at hash_table[index]
+    mov [hash_table + rax * 8], rcx
+    
+    pop rcx
+    pop rbx
+    pop rbp
+    ret
+
+hash_lookup:
+    ; Lookup value by key
+    push rbp
+    mov rbp, rsp
+    push rbx
+    
+    mov rbx, rdi ; Save key
+    call hash_function ; Get hash index
+    
+    ; Load value from hash_table[index]
+    mov rax, [hash_table + rax * 8]
+    
+    pop rbx
+    pop rbp
+    ret
