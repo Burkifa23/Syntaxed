@@ -1,0 +1,64 @@
+This x86-64 assembly code implements a binary search algorithm to find a target value in a sorted array of 64-bit integers. Binary search is an efficient search algorithm that works by repeatedly dividing the search interval in half.
+
+How the Algorithm Works
+Binary search operates on a sorted array and uses two pointers: a low pointer and a high pointer. It checks the middle element of the current search interval.
+
+If the middle element is the target, the search is successful.
+
+If the middle element is less than the target, the search continues in the upper half of the array.
+
+If the middle element is greater than the target, the search continues in the lower half of the array.
+
+This process continues until the target is found or the search interval is empty.
+
+Code Breakdown
+The _start section sets up the initial call to binary_search.
+
+mov rdi, numbers: The base address of the array is moved to rdi.
+
+mov rsi, 0: The low pointer, rsi, is initialized to the first index, 0.
+
+mov rdx, array_size - 1: The high pointer, rdx, is initialized to the last index, 7.
+
+mov rcx, [target]: The target value, 7, is moved to rcx.
+
+binary_search Function
+Loop Condition:
+
+cmp rsi, rdx: The low pointer is compared to the high pointer.
+
+jg not_found: If low is greater than high, the search interval is invalid, and the element is not in the array. The program jumps to not_found.
+
+Calculate Midpoint:
+
+mov r8, rsi & add r8, rdx: The sum of the low and high indices is calculated and stored in r8.
+
+shr r8, 1: The sum is divided by 2 using a right shift to find the middle index.
+
+Compare Midpoint to Target:
+
+mov r9, [rdi + r8 * 8]: The value at the midpoint index is loaded into r9. The address is calculated using the base address (rdi), the middle index (r8), and the element size (8 bytes).
+
+cmp r9, rcx: The value from the array (r9) is compared to the target value (rcx).
+
+je found: If they are equal, the element is found. The program jumps to found.
+
+jl search_right: If the element is less than the target, the program jumps to search_right.
+
+Adjust Search Interval:
+
+If target < midpoint:
+
+mov rdx, r8 & dec rdx: The high pointer is updated to midpoint - 1. The program then jumps to the search_loop to continue in the left half.
+
+If target > midpoint:
+
+mov rsi, r8 & inc rsi: The low pointer is updated to midpoint + 1. The program then jumps to the search_loop to continue in the right half.
+
+Results:
+
+found: mov rax, r8: The found index is returned in rax.
+
+not_found: mov rax, -1: A value of -1 is returned in rax to indicate that the target was not found.
+
+The program then exits with the returned value as its status code. In this case, 7 is found at index 3, so the exit code will be 3.
