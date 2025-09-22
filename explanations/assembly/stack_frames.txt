@@ -1,0 +1,53 @@
+This x86-64 assembly code demonstrates function calls and stack frame management, including the use of a prologue and epilogue, local variables, and callee-saved registers. It models how a high-level language function might be translated into assembly.
+
+_start
+The program's entry point sets up the arguments and calls complex_function.
+
+mov rdi, 10 & mov rsi, 20: The values 10 and 20 are loaded into the rdi and rsi registers, respectively, to be used as the first two arguments for the complex_function.
+
+call complex_function: This instruction transfers program control to the complex_function and pushes the return address onto the stack.
+
+complex_function
+This function demonstrates a typical function structure.
+
+Prologue
+The prologue is responsible for setting up the function's execution environment.
+
+push rbp: The current base pointer is pushed onto the stack, saving the caller's stack frame.
+
+mov rbp, rsp: The stack pointer's current value is moved to the base pointer, establishing a new stack frame for complex_function.
+
+sub rsp, 16: The stack pointer is decremented by 16 bytes to allocate space for two local variables.
+
+push rbx, push r12, push r13: The values of these callee-saved registers are pushed onto the stack. By convention, a function that uses these registers must save them at the beginning and restore them at the end to prevent side effects on the caller's state.
+
+Function Body
+mov [rbp - 8], rdi & mov [rbp - 16], rsi: The two arguments from the caller are saved as local variables on the stack.
+
+mov rax, [rbp - 8] & add rax, [rbp - 16]: The two local variables are added together (10 + 20), and the sum (30) is stored in rax.
+
+mov rbx, rax: The sum (30) is saved in rbx. This value will be needed later.
+
+mov rdi, rbx & call nested_function: The sum (30) is passed as an argument to nested_function.
+
+add rax, rbx: The result from nested_function (60) is added to the value saved in rbx (30), and the final result (90) is stored in rax.
+
+Epilogue
+The epilogue cleans up the function's environment before returning.
+
+pop r13, pop r12, pop rbx: The callee-saved registers are restored to their original values.
+
+add rsp, 16: The space allocated for local variables is deallocated.
+
+pop rbp: The caller's base pointer is restored, collapsing the stack frame.
+
+ret: The ret instruction returns control to the caller (_start).
+
+nested_function
+mov rax, rdi: The input argument (30) is moved into rax.
+
+shl rax, 1: The value in rax is doubled (30 * 2 = 60) using a left shift.
+
+ret: The function returns, with the result 60 in rax.
+
+The program then exits with a status code of 90, the final result of the calculation.
