@@ -1,0 +1,21 @@
+This x86-64 assembly code demonstrates Position Independent Code (PIC) using RIP-relative addressing. PIC is a technique that allows a program's code to be loaded and executed at any address in memory without modification. This is essential for creating shared libraries (.so files) that can be mapped into a process's address space at runtime.
+
+How RIP-Relative Addressing Works
+The core of PIC on x86-64 is the [rip + offset] addressing mode. Instead of using a fixed, absolute memory address, this mode calculates the address of a variable or function by adding an offset to the current instruction pointer (RIP). Since the offset between the current instruction and the data/target is constant regardless of where the code is loaded, the address can be resolved at runtime.
+
+Code Breakdown
+_start Section:
+
+mov rsi, [rel pic_message]: This is an example of an absolute memory access using RIP-relative addressing. The rel prefix tells the assembler to calculate the offset from the current RIP to the pic_message label and use that to load the value at that address.
+
+lea rdi, [rel pic_message]: This instruction uses LEA (Load Effective Address) to load the address of pic_message into the rdi register. This is the common way to pass a pointer to data in PIC.
+
+call print_pic_message: This call instruction is also position-independent, as the assembler automatically calculates a RIP-relative offset to the print_pic_message label.
+
+print_pic_message Function:
+
+lea rsi, [rel pic_message]: This is the most crucial part of the demonstration. Inside the function, the address of pic_message is loaded again using RIP-relative addressing. This ensures the function can find its data no matter where the shared library is loaded.
+
+The rest of the function sets up and executes a sys_write system call to print the string to standard output.
+
+By using RIP-relative addressing for all code and data access, this program can be compiled as a PIC executable and will function correctly even if the operating system loads it at a different base address each time it's run.
