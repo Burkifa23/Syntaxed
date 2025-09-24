@@ -1,0 +1,31 @@
+This x86-64 assembly code demonstrates error handling by checking the return value of a system call. It attempts to open a file that doesn't exist and then uses conditional jumps to handle either a success or a failure. This is a fundamental concept in robust low-level programming.
+
+Code Breakdown
+sys_open Call
+The program attempts to open a file named nonexistent.txt in read-only mode.
+
+mov rax, 2: The system call number for sys_open is loaded into rax.
+
+mov rdi, filename: The filename's address is loaded into rdi.
+
+mov rsi, 0: The O_RDONLY flag (0) is loaded into rsi.
+
+syscall: This executes the sys_open call.
+
+Checking for Errors
+In Linux, system calls return one of two values in the rax register:
+
+Success: A non-negative value (e.g., a file descriptor).
+
+Failure: A negative value, typically -1, with the specific error code stored in the errno variable (though this example doesn't explicitly read errno).
+
+test rax, rax: This instruction performs a bitwise AND of rax with itself. Its main purpose here is to set the Sign Flag and the Zero Flag. If rax contains a negative number, the Sign Flag will be set.
+
+js handle_error: The js (jump if sign) instruction checks the Sign Flag. If the flag is set (meaning rax is negative), the program jumps to the handle_error label. If rax is non-negative, the jump is not taken, and the program continues to the success path.
+
+Success and Failure Paths
+Success Path: If the file were to be opened successfully (which it won't be in this example), the code would print "File opened successfully" to standard output (rdi=1) and then close the file.
+
+Failure Path (handle_error): Since sys_open will fail with an error code like -2 (for ENOENT, or "No such file or directory"), rax will contain a negative value. The js instruction will be taken. The program jumps to handle_error, prints "Error: File not found" to standard error (rdi=2), and then exits with a non-zero error code of 1.
+
+This example highlights the importance of checking system call return values to ensure program stability.
