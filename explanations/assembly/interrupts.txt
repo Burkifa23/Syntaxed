@@ -1,0 +1,21 @@
+This x86-64 assembly code demonstrates how to use the syscall instruction to perform a software interrupt on a modern Linux system. It prints a message to the console before exiting. The commented-out code also provides an example of a hardware exception (div by zero).
+
+Software Interrupts vs. System Calls
+Software Interrupts (int 0x80): On older 32-bit Linux systems, system calls were initiated using the int 0x80 instruction. This would transfer control to an interrupt handler in the kernel.
+
+System Calls (syscall): On modern 64-bit Linux systems, the preferred method is the syscall instruction. It is much faster and more efficient than a software interrupt, as it directly switches the CPU into kernel mode without the overhead of an interrupt.
+
+Code Breakdown
+mov rax, 1: The value 1 is loaded into the rax register. This is the system call number for sys_write, the function used to write data to a file or stream.
+
+mov rdi, 1: The value 1 is loaded into rdi. This is the file descriptor for standard output (stdout), which corresponds to the console.
+
+mov rsi, interrupt_msg: The address of the interrupt_msg string is loaded into rsi. This is a pointer to the data to be written.
+
+mov rdx, interrupt_msg_len: The length of the message is loaded into rdx.
+
+syscall: This instruction triggers the system call. The kernel executes the sys_write function using the arguments passed in the registers.
+
+The commented-out lines below show an example of a hardware exception (a divide-by-zero error), which triggers a specific type of interrupt (#DE, or Divide Error). This would normally cause the program to terminate with a SIGFPE (Floating-point exception) signal.
+
+The program then exits with a status code of 0.
