@@ -1,0 +1,52 @@
+This is a GNU Make makefile for compiling and linking a simple x86-64 assembly program. It automates the process of building an executable from one or more NASM assembly source files.
+
+Makefile Breakdown
+Variables:
+
+NASM = nasm: Sets the assembler command to nasm.
+
+LD = ld: Sets the linker command to ld.
+
+NASMFLAGS = -f elf64 -g -F dwarf: These are the flags passed to nasm.
+
+-f elf64: Specifies the output format as ELF 64-bit object file.
+
+-g -F dwarf: These flags enable debugging information in the DWARF format, which is essential for using a debugger like GDB.
+
+LDFLAGS =: This is left empty but can be used for linker flags (e.g., -dynamic-linker /lib64/ld-linux-x86-64.so.2 for dynamic linking).
+
+OBJECTS = main.o utils.o: Lists the object files that will be created from the assembly source files.
+
+TARGET = program: Sets the name of the final executable file.
+
+Rules:
+
+all: $(TARGET): This is the default target. When you run make, it looks for this rule first. It specifies that to build all, it must first build the $(TARGET) (program).
+
+$(TARGET): $(OBJECTS): This is the linking rule. It states that the program depends on the main.o and utils.o object files.
+
+$(LD) $(LDFLAGS) -o $@ $^: This is the command executed.
+
+$@ is an automatic variable that expands to the target name (program).
+
+$^ is an automatic variable that expands to all prerequisites (main.o utils.o).
+
+The command links the object files into the final executable.
+
+%.o: %.asm: This is a pattern rule. It tells make how to build any .o file from a corresponding .asm file.
+
+$(NASM) $(NASMFLAGS) -o $@ $<: This is the command for compilation.
+
+$@ expands to the target (main.o or utils.o).
+
+$< is an automatic variable that expands to the first prerequisite (main.asm or utils.asm).
+
+clean:: This is a common rule to remove all generated files.
+
+rm -f $(OBJECTS) $(TARGET): The command removes the object files and the final executable.
+
+debug:: This is an extended target for a debug build.
+
+NASMFLAGS += -g: This line adds the -g flag to the NASMFLAGS variable, ensuring the debug information is included.
+
+debug: $(TARGET): This specifies that running make debug will build the program target.
