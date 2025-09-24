@@ -1,0 +1,28 @@
+This x86-64 assembly code demonstrates key concepts of real-time programming on a Linux system. It sets a high-priority scheduling policy, uses a monotonic clock for precise timing, and enters a loop that simulates a real-time task with an accurate sleep interval.
+
+How it works
+Real-time systems are designed to guarantee a response within a strict time constraint. This code uses Linux system calls to achieve this:
+
+Setting Real-Time Priority (set_real_time_priority):
+
+The program uses the sys_sched_setscheduler system call to change its scheduling policy.
+
+SCHED_FIFO (1) is a real-time scheduling policy that ensures the process runs until it voluntarily yields the CPU, is preempted by a higher-priority task, or terminates.
+
+A high priority (50) is assigned, making the process less likely to be interrupted by other non-real-time tasks.
+
+Precise Timing (precise_timing_loop):
+
+The code enters a loop to repeatedly execute a task.
+
+It uses sys_clock_gettime with CLOCK_MONOTONIC to read the current time. The monotonic clock is critical for real-time applications because it's guaranteed to move forward at a constant rate and is not affected by system time changes (e.g., a user changing the clock).
+
+sys_clock_nanosleep is used for precise sleeping. This system call can sleep for a specified duration in nanoseconds, which is much more accurate than the traditional sleep or usleep calls.
+
+Simulated Task (real_time_task):
+
+The real_time_task function simulates a workload that must be completed within a time frame. In this case, it's a simple loop.
+
+In a real-world scenario, this would be the critical part of the program, such as reading a sensor, controlling a motor, or processing data.
+
+By combining real-time scheduling with high-precision timers, this program creates a robust framework for time-sensitive applications.
