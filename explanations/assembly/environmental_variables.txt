@@ -1,0 +1,28 @@
+This x86-64 assembly code attempts to demonstrate how to access environment variables, but the implementation is simplified and non-functional. The program's goal is to find an environment variable (in this case, PATH), and if found, print its value.
+
+The _start Section
+The main entry point of the program attempts to find the PATH environment variable.
+
+mov rdi, env_name: The program loads the address of the env_name string (PATH) into the rdi register, which would be the input to a function that searches for the variable.
+
+call find_env_var: This is a call to the find_env_var function. In a complete implementation, this function would search for the variable's value.
+
+test rax, rax & jz not_found: The test instruction checks if the return value in rax is zero. A real find_env_var function would return the address of the environment variable's value if found, and 0 (or NULL) if not found. Based on this, the program jumps to the not_found section or continues to the print_string section.
+
+The find_env_var Function (Placeholder)
+The find_env_var function is a placeholder and does not contain the necessary logic to actually find an environment variable. A correct implementation would:
+
+Access the envp (environment pointer) array, which is passed to the main function and resides on the stack.
+
+Iterate through the envp array, which is a null-terminated array of strings.
+
+Compare each string (e.g., "PATH=/usr/bin") with the requested name ("PATH") until a match is found.
+
+This placeholder function always returns 0, causing the program to behave as if the environment variable was never found.
+
+Helper Functions
+print_string: This function correctly prints a null-terminated string to standard output, adding a newline at the end. It first calls a strlen function to determine the length of the string, which is a required argument for the sys_write system call.
+
+strlen: This helper function correctly calculates the length of a null-terminated string. It iterates through the string byte by byte until it finds the null terminator (0) and returns the count.
+
+Because the find_env_var function is a placeholder, this program will always output "PATH" and then exit, regardless of whether the PATH variable actually exists. A robust implementation would need to fill in the missing logic in find_env_var to properly parse the envp array.
