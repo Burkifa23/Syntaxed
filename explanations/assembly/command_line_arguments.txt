@@ -1,0 +1,47 @@
+This x86-64 assembly code demonstrates how to access command-line arguments passed to a program. It retrieves the argument count (argc) and argument vector (argv) from the stack, checks if the correct number of arguments are provided, and then prints each argument to standard output.
+
+Understanding argc and argv
+When a program starts, the operating system's loader places the command-line arguments on the stack. The argc (argument count) and argv (argument vector) are at specific locations relative to the stack pointer (rsp).
+
+[rsp]: This address holds the value of argc, which is the total number of command-line arguments, including the program's name.
+
+[rsp + 8]: This address points to argv, which is an array of pointers to the argument strings.
+
+Code Breakdown
+Entry Point (_start)
+mov rax, [rsp]: The program retrieves the argument count (argc) from the top of the stack and stores it in rax.
+
+cmp rax, 3: The program checks if argc is at least 3. This is because the first argument is always the program's name, and the program expects two additional arguments.
+
+jl show_usage: If the number of arguments is less than 3, the program jumps to the show_usage section.
+
+mov rbx, 1: The argument index rbx is initialized to 1 to skip the program's name, which is at index 0.
+
+print_args Loop
+The program loops through each argument from index 1 to argc-1.
+
+Print "Argument: ": This section prints the arg_msg string before each argument. The current values of rax and rbx are pushed onto the stack to preserve them across the system call.
+
+Get Argument String:
+
+mov rcx, [rsp + 8]: The base address of the argv array is loaded into rcx.
+
+mov rdi, [rcx + rbx * 8]: This instruction calculates the address of the current argument string. It uses the formula base_address + index * element_size, where the element size is 8 bytes (for a 64-bit pointer).
+
+Calculate String Length: The call strlen function is used to calculate the length of the current argument string, which is needed for the sys_write call.
+
+Print Argument: The program then sets up a sys_write call to print the argument string.
+
+Print Newline: A newline character is printed to separate the arguments.
+
+inc rbx: The argument index is incremented.
+
+jmp print_args: The loop continues to the next argument.
+
+strlen Function
+This is a helper function that calculates the length of a null-terminated string by iterating through its characters until it finds a 0 byte. The length is returned in rax.
+
+Exit and Usage
+show_usage: If the argument count is insufficient, the program prints a usage message and exits with a status code of 1 (indicating an error).
+
+done: If the arguments are successfully processed, the program exits with a status code of 0 (success).
