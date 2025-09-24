@@ -1,0 +1,33 @@
+This x86-64 assembly code demonstrates a standalone function that can be called from within the same program. It performs a simple calculation and returns the result to the main _start section before the program exits.
+
+Code Breakdown
+The program is structured into two main parts: the entry point and a separate function.
+
+_start
+This is the program's main entry point, where execution begins.
+
+mov rdi, 10: The value 10 is loaded into the rdi register. In the x86-64 Linux calling convention, rdi is used for the first argument passed to a function.
+
+mov rsi, 20: The value 20 is loaded into the rsi register, which is used for the second argument.
+
+call asm_function: This instruction transfers program control to the asm_function label. It pushes the address of the next instruction (mov rdi, rax) onto the stack and then jumps.
+
+asm_function
+This function performs the calculation.
+
+push rbp and mov rbp, rsp: This is a standard function prologue that sets up a new stack frame.
+
+mov rax, rdi: The first argument (10) is moved from rdi into the rax register. The rax register is conventionally used for a function's return value.
+
+add rax, rsi: The second argument (20) is added to the value in rax. The sum (30) is stored back in rax.
+
+mul rdi: The mul instruction multiplies the value in rax (30) by the value in rdi (10). The product (300) is stored in rax.
+
+pop rbp and ret: This is the standard function epilogue. pop rbp restores the caller's stack frame, and ret returns control to the address on the stack, which is the line immediately following the call instruction in _start.
+
+Program Exit
+mov rdi, rax: The final result (300) from the function is moved into rdi.
+
+mov rax, 60: The sys_exit system call number (60) is loaded into rax.
+
+syscall: The program exits with a status code of 300.
