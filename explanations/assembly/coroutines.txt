@@ -1,0 +1,35 @@
+This x86-64 assembly code attempts to demonstrate coroutines, a programming concept for cooperative multitasking. It simulates switching execution context between two coroutines and a main function by manually manipulating the stack pointer (RSP).
+
+How Coroutines Work
+Unlike threads, which are preemptively scheduled by the operating system, coroutines are cooperatively scheduled. This means a coroutine voluntarily yields control to another, allowing for efficient context switching without the overhead of a kernel-level thread scheduler. The state of a coroutine is saved by preserving its stack pointer, which holds the current execution context.
+
+Code Breakdown
+Data and BSS Sections
+section .bss: This section reserves uninitialized memory for the two coroutine stacks (coroutine1_stack, coroutine2_stack) and for the memory to store the contexts of the main routine and the two coroutines. Each context is a placeholder for the rsp register.
+
+Function Breakdown
+_start
+The main entry point of the program orchestrates the flow. It first initializes the coroutines, then switches to coroutine1, and finally switches to coroutine2.
+
+init_coroutines
+This function is a simplified initializer.
+
+mov rax, coroutine1_stack + 4096 & mov [coro1_context], rax: The stack pointer for coroutine1 is set to the top of its dedicated stack space. The same is done for coroutine2.
+
+switch_to_coro1
+This function demonstrates a manual context switch.
+
+mov [main_context], rsp: The current stack pointer of the main routine is saved. This is the crucial step that preserves the main routine's state.
+
+mov rsp, [coro1_context]: The stack pointer is changed to point to the top of the stack of coroutine1, effectively switching to its execution context.
+
+call coroutine1_func: coroutine1 is called. It executes its logic and returns.
+
+mov rsp, [main_context]: The stack pointer is restored to the main routine's context, and the function returns.
+
+The switch_to_coro2 function works identically but for coroutine2.
+
+coroutine1_func and coroutine2_func
+These are the simple routines that simulate the work of the coroutines. They just move a value into rax and return.
+
+The example, however, is simplified and does not fully demonstrate the key feature of coroutines: yielding. In a real-world scenario, the coroutine functions would periodically switch back to the main context to allow other coroutines to run. This would require saving the coroutine's own context before switching back.
