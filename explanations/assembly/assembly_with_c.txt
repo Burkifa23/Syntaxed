@@ -1,0 +1,14 @@
+This x86-64 assembly code defines a function named asm_add that can be called from a C program. It demonstrates how to adhere to the System V Application Binary Interface (ABI) for passing parameters and returning a value.
+
+Code Breakdown
+The program defines a single function, asm_add. The global directive makes this function visible to the C linker, while the extern directive declares that printf will be provided by an external library (libc).
+
+asm_add:: This is the function's entry point.
+
+push rbp & mov rbp, rsp: This is the standard function prologue that sets up a new stack frame.
+
+mov rax, rdi: In the System V ABI for 64-bit systems, the first integer argument is passed in the rdi register. The instruction moves this value into the rax register. The rax register is used for a function's return value.
+
+add rax, rsi: The second integer argument is passed in the rsi register. This instruction adds the value in rsi to the value already in rax. The sum is stored back in rax.
+
+pop rbp & ret: This is the standard function epilogue that restores the stack frame and returns control to the calling C function. The ret instruction uses the return address that was automatically pushed onto the stack by the call instruction from the C code.
