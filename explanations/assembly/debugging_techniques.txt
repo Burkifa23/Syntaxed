@@ -1,0 +1,23 @@
+This x86-64 assembly code demonstrates two common debugging techniques: using a software breakpoint (int3) and adding debug output to the program itself. This allows a developer to pause execution and inspect the program's state or trace its flow.
+
+Software Breakpoint (int3)
+int3: The int3 instruction generates a one-byte software interrupt. When a debugger like GDB is attached to the process, it intercepts this interrupt. The debugger then pauses program execution at that exact point. This allows the developer to:
+
+Inspect the values of registers and memory.
+
+Step through the code instruction by instruction.
+
+Set new breakpoints.
+
+By uncommenting the int3 instruction, you can run the program under a debugger, and it will automatically stop at that line.
+
+Debug Output
+This is a simpler, though less flexible, debugging method. It involves adding sys_write system calls to print messages to the console at key points in the code. This is useful for:
+
+Tracing execution flow: By placing messages at different labels, you can see which code paths are being taken.
+
+Inspecting variable values: You can add code to print the contents of registers or memory locations.
+
+Conditional logging: The example shows how to add a conditional check (cmp rax, 42) to only print a message if a specific condition is met, which is helpful for debugging subtle bugs.
+
+The program's output will be the "Debug checkpoint reached" message, printed twice because the condition (rax equals 42) is met. The int3 instruction would not produce any visible output without a debugger attached.
