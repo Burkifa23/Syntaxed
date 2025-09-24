@@ -1,0 +1,26 @@
+This x86-64 assembly code implements a finite state machine (FSM). A state machine is a mathematical model of computation that can be in one of a finite number of states at any given time. It transitions between these states based on a set of rules. This code uses a state transition table to manage its flow, which is a common and efficient approach for implementing state machines.
+
+How It Works
+The program cycles through a loop, reads the current state, and then calls the corresponding function from a state transition table.
+
+state_machine_loop:
+
+mov rax, [current_state]: The program's current state (a numerical value) is loaded into rax.
+
+cmp rax, STATE_DONE & je state_machine_done: If the current state is STATE_DONE, the loop terminates, and the program exits.
+
+call [state_table + rax * 8]: This is the core of the state machine logic. The program performs an indirect call to the address stored in the state_table. The address is calculated by adding rax * 8 to the base address of the table. For example, if rax is 1 (for STATE_PROCESS), the program jumps to the address stored at state_table + 8.
+
+State Handlers (state_init, state_process, etc.):
+
+Each state handler function contains the logic for that specific state.
+
+state_init: This is the starting state. It checks an input_value and, if it's valid, transitions the state to STATE_PROCESS.
+
+state_process: This state decrements the input_value. If the value reaches 0, it transitions to STATE_DONE. Otherwise, it transitions to STATE_WAIT.
+
+state_wait: This state, in this simplified example, immediately transitions back to STATE_PROCESS. In a real-world scenario, it might wait for an external event.
+
+The current_state variable is updated in each handler to control the next iteration of the loop.
+
+This implementation is highly modular and flexible. You can easily add, remove, or change states and transitions without altering the main state_machine_loop.
