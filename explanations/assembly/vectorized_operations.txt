@@ -1,0 +1,33 @@
+This x86-64 assembly code demonstrates vectorized operations using both Advanced Vector Extensions (AVX) and Streaming SIMD Extensions (SSE). It performs parallel floating-point arithmetic on vectors of single-precision floating-point numbers.
+
+How Vectorization Works
+Vectorization, a form of Single Instruction, Multiple Data (SIMD), allows a single instruction to operate on multiple data elements simultaneously. This drastically improves performance for data-parallel tasks.
+
+SSE uses 128-bit XMM registers, which can hold four single-precision floats.
+
+AVX extends this with 256-bit YMM registers, which can hold eight single-precision floats. AVX is essentially twice as wide as SSE, enabling more computations in a single instruction.
+
+Code Breakdown
+The program defines two vectors, vector_a and vector_b, each containing eight single-precision floats (dd).
+
+vector_multiply_avx (AVX)
+This function performs a vector multiplication on all eight elements.
+
+vmovups ymm0, [vector_a] & vmovups ymm1, [vector_b]: The vmovups (move unaligned packed single-precision floats) instruction loads all eight elements of vector_a and vector_b into the 256-bit YMM registers ymm0 and ymm1.
+
+vmulps ymm2, ymm0, ymm1: The vmulps (vector multiply packed single-precision) instruction multiplies the corresponding elements of ymm0 and ymm1 in parallel. The results are stored in ymm2.
+
+vmovups [vector_result], ymm2: The result vector is stored back into memory.
+
+vzeroupper: This is an important instruction. It clears the upper 128 bits of all YMM registers. This is a best practice to avoid performance penalties when transitioning back from AVX to legacy SSE instructions.
+
+vector_add_sse (SSE)
+This function performs a vector addition using the older SSE instruction set.
+
+movups xmm0, [vector_a] & movups xmm1, [vector_b]: The movups instruction loads only the first four elements of each vector into the 128-bit XMM registers xmm0 and xmm1.
+
+addps xmm0, xmm1: The addps (add packed single-precision) instruction adds the corresponding elements of xmm0 and xmm1 in parallel. The result is stored back in xmm0.
+
+movups [vector_result], xmm0: The result (the first four elements) is stored in the vector_result memory location, overwriting the previous result.
+
+This code clearly shows the advantage of AVX's wider registers, allowing it to process twice the data with a single instruction compared to SSE.
