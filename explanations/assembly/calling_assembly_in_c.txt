@@ -1,0 +1,10 @@
+The purpose of this code is to demonstrate interoperability between C and assembly language.
+
+C Code Breakdown
+The C code serves as the driver for the assembly function.
+
+extern long asm_add(long a, long b);: This is the function prototype that tells the C compiler that a function named asm_add exists in an external file. It specifies that it takes two long integers and returns a long.
+
+long result = asm_add(10, 20);: This line calls the assembly function, passing the values 10 and 20.
+
+printf("Result: %ld\n", result);: The C code then prints the value returned from the assembly function.
