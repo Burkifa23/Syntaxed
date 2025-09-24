@@ -1,0 +1,34 @@
+This x86-64 assembly code is a basic performance benchmark program. It measures the execution time of various common operations, such as memory access, integer math, floating-point math, and function calls. The program uses the RDTSC (Read Time-Stamp Counter) instruction to get a high-resolution, CPU-cycle-based timestamp for performance measurement.
+
+How it works
+The program runs a series of tests, timing each one to get a performance metric. The Time-Stamp Counter (TSC) is a register that counts the number of clock cycles since the CPU was reset. By reading this counter at the start and end of an operation, you can determine how many cycles the operation took.
+
+Data and Setup
+test_iterations: A constant set to 1,000,000 to ensure the tests run long enough for a meaningful measurement.
+
+benchmark_start & benchmark_end: These variables store the TSC values before and after each test.
+
+init_benchmark_data: This routine initializes the test_data array with a simple sequential pattern.
+
+The Benchmarks
+Each benchmark routine follows a similar pattern:
+
+Start Timer: rdtsc reads the Time-Stamp Counter into RDX:RAX. For simplicity, this code only uses RAX. The start time is saved to [benchmark_start].
+
+Execute Test: A loop runs the target operation (test_iterations times).
+
+End Timer: rdtsc is called again, and the end time is saved to [benchmark_end].
+
+The key routines and their purpose:
+
+benchmark_sequential_access: Measures performance of accessing memory sequentially. This operation is highly optimized by the CPU's cache, as the processor can prefetch data.
+
+benchmark_random_access: Measures performance of accessing memory in a non-sequential, "random" pattern. This simulates a cache miss scenario and will generally be much slower than sequential access.
+
+benchmark_integer_math: Measures the speed of integer multiplication (mul) and division (div). Integer math is typically very fast.
+
+benchmark_floating_point_math: Measures the speed of floating-point multiplication (mulsd) and division (divsd). Floating-point operations can be slower than integer operations, especially on older processors.
+
+benchmark_function_calls: Measures the overhead of a function call itself (call dummy_function). This includes pushing the return address onto the stack, jumping to the function, and then returning. This test helps determine the cost of modularizing code into functions.
+
+This program is a raw example of how to measure performance at a low level, bypassing operating system overhead to get a true measure of CPU-level execution time.
