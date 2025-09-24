@@ -1,0 +1,41 @@
+This x86-64 assembly code demonstrates a stack canary, a common security mechanism used to detect stack buffer overflow attacks. The program places a secret value (the canary) on the stack before a local buffer and checks its integrity before returning from the function. If the canary's value has changed, it indicates that a buffer overflow has occurred.
+
+How a Stack Canary Works
+A stack canary is a sentinel value placed on the stack between a local buffer and the function's return address. A buffer overflow attack attempts to write past the end of the buffer to overwrite the return address. When a canary is present, the overflow will first corrupt the canary's value. The function checks the canary's value just before it returns. If the value has been altered, the program can abort execution, preventing the attacker from hijacking the program's control flow.
+
+Code Breakdown
+secure_function
+This function simulates a scenario where a stack canary would be used.
+
+Prologue:
+
+push rbp & mov rbp, rsp: A new stack frame is set up.
+
+Canary Placement:
+
+push qword [canary_value]: The canary value (0xDEADBEEFCAFEBABE) is pushed onto the stack. This places it directly above the local buffer's intended location and just below the return address.
+
+Buffer Allocation:
+
+sub rsp, 64: 64 bytes of space are allocated on the stack for the local buffer.
+
+Simulated Buffer Usage:
+
+rep movsb: This instruction copies the message string into the local buffer on the stack. In a real-world scenario, a malicious input could be larger than the buffer, causing an overflow.
+
+Canary Check:
+
+add rsp, 64: The stack pointer is adjusted to the location of the canary.
+
+pop rax: The value on the top of the stack (the canary) is popped into rax.
+
+cmp rax, [canary_value]: The value popped from the stack is compared with the original, stored canary value.
+
+jne stack_overflow_detected: If the values are not equal (meaning the canary was corrupted), the program jumps to the error-handling routine.
+
+Epilogue:
+
+pop rbp & ret: If the canary is intact, the function's stack frame is restored, and the program returns normally.
+
+stack_overflow_detected
+This label is the error-handling routine. If reached, the program exits with a non-zero exit code (1), indicating that a potential security vulnerability was detected. This prevents the program from executing the corrupted return address, thereby mitigating the attack.
