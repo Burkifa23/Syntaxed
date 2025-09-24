@@ -1,0 +1,44 @@
+This x86-64 assembly code provides a simple example of a menu-driven command-line application. It demonstrates fundamental programming constructs like loops, conditional branching, and input/output operations from the perspective of an assembly language program.
+
+Code Breakdown
+The program's logic is structured around a central loop that interacts with the user.
+
+Data and BSS Sections
+section .data: This section holds initialized data, such as the text for the menu, prompts, and messages.
+
+section .bss: This section reserves uninitialized space for variables, such as the input_buffer to temporarily store user input and num1, num2, and choice to store program data.
+
+_start and main_loop
+This is the program's main execution loop.
+
+call print_menu: The program begins by displaying a simple menu to the user.
+
+call get_choice: It then waits for and reads a single character from the user's input. The character is stored in the choice variable.
+
+Conditional Branching: The code then compares the user's input character to the ASCII values for '1', '2', and '3'.
+
+cmp al, '1', je do_addition: If the input is '1', it jumps to the do_addition routine.
+
+Similar jumps exist for do_subtraction ('2') and exit_app ('3').
+
+jmp main_loop: If the user's input doesn't match any of the valid options, the program jumps back to the beginning of the main_loop, effectively re-displaying the menu and asking for input again.
+
+Helper Routines
+The program is broken down into modular functions to perform specific tasks.
+
+print_menu: Uses the sys_write system call to print the menu text to standard output (stdout).
+
+get_choice: First prints the prompt and then uses the sys_read system call to read a single character from standard input (stdin) into the choice variable.
+
+get_numbers: This function is a placeholder. In a real-world application, it would contain complex logic to convert user-entered ASCII numbers from the input_buffer into binary values. For simplicity, this example hardcodes 10 and 5 into num1 and num2.
+
+print_result: Prints the "Result: " message. This is also a simplified routine; it lacks the logic to convert the final calculated number (rax) into a string of ASCII characters before printing it.
+
+exit_app
+mov rax, 60: The system call number for sys_exit is loaded into rax.
+
+mov rdi, 0: A status code of 0 (success) is loaded into rdi.
+
+syscall: The program terminates.
+
+This code provides a clear, albeit simplified, example of how a console application can be built from the ground up using assembly language.
