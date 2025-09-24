@@ -1,0 +1,36 @@
+This x86-64 assembly code demonstrates atomic operations and their use in building thread-safe primitives, such as a spinlock. Atomic operations are instructions that execute as a single, indivisible unit, preventing other processors or threads from interrupting them. This is crucial for maintaining data integrity in multithreaded environments.
+
+The lock Prefix
+The core of atomic operations in this code is the lock prefix. When placed before certain instructions, it guarantees that the operation is performed atomically on a multiprocessor system. The CPU's memory controller ensures exclusive access to the memory location being modified by locking the memory bus.
+
+Atomic Operations
+lock inc: The inc (increment) instruction, when paired with lock, atomically increments the value at shared_counter. No other processor can read or write to that memory location during the operation.
+
+lock add: Similarly, the add instruction performs an atomic addition, preventing race conditions.
+
+lock xchg (Exchange): This instruction atomically exchanges the value in a register (rax) with the value in memory ([shared_counter]). This is one of the most powerful atomic instructions and is fundamental to implementing locks. It's often used as the basis for a spinlock.
+
+lock cmpxchg (Compare and Exchange): This instruction is the basis for lock-free programming. It atomically compares the value in a destination ([shared_counter]) with an expected value in rax. If they match, it replaces the value in the destination with the value in rbx. If they don't match, the destination remains unchanged. The Zero Flag is set if the values matched.
+
+Spinlock Implementation
+The test_spinlock function uses a combination of lock xchg and a loop to implement a spinlock.
+
+Acquiring the Lock:
+
+The code attempts to swap a 1 into the lock_variable (which starts at 0).
+
+The lock xchg instruction atomically exchanges the value.
+
+The xchg instruction also copies the original value of lock_variable into rax.
+
+test rax, rax: This checks the value that was originally in lock_variable.
+
+jnz acquire_lock: If the original value was not zero (i.e., someone else had the lock), the code enters a tight loop, or "spins," until it successfully acquires the lock.
+
+Critical Section: Once the lock is acquired, the code enters the critical section, where it can safely access and modify shared resources (inc qword [shared_counter]).
+
+Releasing the Lock:
+
+mov qword [lock_variable], 0: The lock is released by simply writing 0 back to the lock variable. This operation does not need to be atomic because it is performed while the thread holds the lock.
+
+This code illustrates how simple atomic instructions can be used to build robust synchronization primitives for multithreaded applications.
