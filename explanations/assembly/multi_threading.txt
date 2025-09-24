@@ -1,0 +1,32 @@
+This x86-64 assembly code demonstrates multithreading on a Linux system using the clone system call. The program creates a new process (a "thread" in this context), which shares its memory space with the parent, and then both the parent and child processes execute different code paths.
+
+How It Works
+The clone system call is a powerful primitive that creates a new process, but with more fine-grained control over what resources are shared with the parent. When CLONE_VM is used, the new process shares the same virtual memory space, effectively acting as a thread.
+
+Main Thread: The main program first prints a message, "Main thread".
+
+sys_clone: The clone system call is executed with the following arguments:
+
+rax=56: The system call number for sys_clone.
+
+rdi=0x00010000: This is the CLONE_VM flag. It tells the kernel to make the new process share the same virtual memory as the parent, creating a thread.
+
+rsi=stack_top: The stack pointer for the new thread. Each thread requires its own stack to manage its function calls and local variables independently.
+
+The other arguments (rdx, r10, r8) are set to 0 for this simple example.
+
+Return Value and Execution Paths: The clone call returns to both the parent and the child, but with different return values:
+
+In the child thread: clone returns 0.
+
+In the parent thread: clone returns the Process ID (PID) of the new child.
+
+Conditional Execution:
+
+test rax, rax & jz thread_function: If rax is 0 (the child), the program jumps to the thread_function label.
+
+Parent Path: The parent continues and executes the sys_wait4 system call to wait for the child thread to terminate. After the child exits, the parent then exits gracefully with an exit code of 0.
+
+Child Path (thread_function): The child thread prints its own message, "Thread executed", and then exits with a status code of 0.
+
+This program demonstrates the core mechanics of creating a thread in assembly by leveraging the clone system call's ability to share the address space.
