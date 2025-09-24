@@ -1,0 +1,53 @@
+This x86-64 assembly code demonstrates inter-process communication (IPC) using a pipe. A pipe is a unidirectional data channel that allows data to be passed from one process to another. The program creates a pipe, forks into two processes (parent and child), and then uses the pipe to send a message from the parent to the child.
+
+How Pipes Work
+Creation: The sys_pipe system call creates a pipe and returns two new file descriptors. One is the read end and the other is the write end.
+
+Duplication: When a process forks, all open file descriptors, including the pipe's, are duplicated in the child process.
+
+Communication: For the parent to write and the child to read, a crucial step is to close the unused ends:
+
+The parent closes its read end.
+
+The child closes its write end.
+
+Data Flow: Data written to the write end of the pipe can be read from the read end.
+
+Code Breakdown
+1. Creating the Pipe
+mov rax, 22 ; sys_pipe: The system call number for sys_pipe is loaded.
+
+mov rdi, pipe_fds: The address of the pipe_fds array is loaded into rdi. This is where the kernel will store the two new file descriptors. pipe_fds[0] will be the read end and pipe_fds[1] will be the write end.
+
+syscall: The pipe is created.
+
+2. Forking the Process
+mov rax, 57 ; sys_fork: The sys_fork system call is executed, creating a child process.
+
+test rax, rax & jz child_process: This check determines whether the code is running in the parent (rax contains the child's PID) or the child (rax is 0).
+
+3. Parent Process Logic
+parent_process::
+
+mov rax, 3 ; sys_close: The parent closes the read end of its pipe (pipe_fds[0]).
+
+mov rax, 1 ; sys_write: It then writes the pipe_msg to the write end (pipe_fds[1]).
+
+mov rax, 3 ; sys_close: The parent closes the write end after writing.
+
+mov rax, 61 ; sys_wait4: The parent waits for the child process to terminate to ensure the message has been read before exiting.
+
+4. Child Process Logic
+child_process::
+
+mov rax, 3 ; sys_close: The child closes its write end of the pipe (pipe_fds[1]).
+
+mov rax, 0 ; sys_read: It then reads from the read end (pipe_fds[0]) into the read_buffer.
+
+mov rdx, rax: The number of bytes read is moved into rdx for the next system call.
+
+mov rax, 1 ; sys_write: The child writes the contents of the read_buffer to standard output (stdout).
+
+mov rax, 3 ; sys_close: The child closes its read end.
+
+Finally, both processes exit with a status code of 0.
