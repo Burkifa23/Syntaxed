@@ -1,0 +1,24 @@
+The assembly code you've provided demonstrates a cooperative multitasking model, also known as a scheduler. The program manually switches between two "tasks" or code paths. It implements a basic round-robin scheduling algorithm by managing task contexts.
+
+How it works
+Unlike an operating system's scheduler, which uses interrupts to preemptively switch tasks, this code manually saves and restores a task's execution state (its context) to allow each task to run in turns.
+
+_start: This is the program's entry point. It calls init_tasks to set up the tasks, and then enters the scheduler_loop.
+
+scheduler_loop: This loop is the heart of the scheduler. It continuously calls schedule_next_task to decide which task to run and then context_switch to run it.
+
+schedule_next_task: This function implements the round-robin logic.
+
+It reads the current task ID (current_task).
+
+It performs a division by 2 (mov rbx, 2; div rbx) and checks the remainder (rdx).
+
+If the remainder is 0, it selects task1; otherwise, it selects task2.
+
+It updates the current_task variable to reflect the next task to be run.
+
+context_switch: This is the most crucial part of a scheduler. It would save the state of the currently running task (all its registers, stack pointer, and instruction pointer) and then restore the state of the next task to be run.
+
+The code provided is a simplified placeholder. A real context switch would involve pushing many registers onto the stack to save their state, updating the stack pointer, and then ret or jmp to the saved instruction pointer of the new task.
+
+The scheduler loop continues to switch between tasks until a simple exit condition (dec qword [current_task]) is met, at which point the program exits.
