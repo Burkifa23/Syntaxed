@@ -1,0 +1,28 @@
+This assembly code demonstrates external linking, a fundamental concept in software development where a program uses a function or a variable that is not defined within its own source file.
+
+Code Breakdown
+section .text: This is the code segment where the program's executable instructions are stored.
+
+global _start: This directive makes the _start label visible to the linker. By convention, _start is the default entry point for a program on Linux systems.
+
+extern utility_function: This is the key line. The extern directive tells the assembler that a symbol named utility_function is defined in another source file. The assembler will not be able to find the address of this function, so it will leave a placeholder for the linker to fill in later.
+
+Program Flow
+_start: The program begins execution at this label.
+
+call utility_function: The program attempts to call the utility_function. The assembler generates a CALL instruction, but since it doesn't know the function's address, it puts a placeholder in the instruction.
+
+mov rax, 60 & mov rdi, 0 & syscall: After the utility_function returns, the program prepares to exit by loading the sys_exit system call number (60) and a success status code (0) into the appropriate registers.
+
+Linking Process
+To create a final executable, you would need to compile this assembly file into an object file (.o) and then link it with another object file that contains the definition of utility_function.
+
+For example, if utility_function is defined in utility.asm, the build process would look like this:
+
+Bash
+
+nasm -f elf64 main.asm -o main.o
+nasm -f elf64 utility.asm -o utility.o
+ld main.o utility.o -o my_program
+
+The linker (ld) is the tool that resolves the extern symbols. It finds the definition of utility_function in utility.o and replaces the placeholder in main.o with the correct address, creating the final executable. This process allows large programs to be modularized across multiple source files.
