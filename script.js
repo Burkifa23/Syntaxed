@@ -205,7 +205,8 @@ document.addEventListener("DOMContentLoaded", () => {
             start: 'snippets/csharp/hello.txt'
         },
         dart: {
-            start: 'snippets/dart/hello.txt'
+            start: 'snippets/dart/hello.txt',
+            variables: 'snippets/dart/variables.txt'
         },
         elixir: {
             start: 'snippets/elixir/hello.txt'
