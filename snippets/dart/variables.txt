@@ -1,0 +1,38 @@
+void main() {
+    // Using 'var' - type is inferred from the initial value
+    var name = 'Bob';
+    var year = 1977;
+    var antennaDiameter = 3.7;
+    
+    print('Name: $name'); // String
+    print('Year: $year'); // int
+    print('Antenna diameter: $antennaDiameter'); // double
+    
+    // Explicit type annotations (optional but can be used)
+    String greeting = 'Hello';
+    int count = 42;
+    double price = 19.99;
+    
+    print('\nExplicit types:');
+    print('Greeting: $greeting');
+    print('Count: $count');
+    print('Price: \$$price');
+    
+    // Variables can be reassigned (they're mutable by default)
+    name = 'Alice';
+    year = 2025;
+    print('\nAfter reassignment:');
+    print('Name: $name');
+    print('Year: $year');
+    
+    // Object type - can hold any type of object
+    Object dynamicValue = 'Can be anything';
+    print('\nObject type: $dynamicValue');
+    dynamicValue = 42;
+    print('Now a number: $dynamicValue');
+    
+    // Uninitialized variables have an initial value of null
+    // (when using nullable types)
+    int? nullableNumber;
+    print('\nUninitialized nullable variable: $nullableNumber');
+}
