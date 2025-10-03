@@ -1,58 +1,52 @@
 void main() {
-    // Non-nullable types
+    
     int age = 25;
-    String name = 'Alice';
-    // Error: Can't assign null to non-nullable type
-    // age = null; 
+    String name = 'Alice';    
     
     print('Non-nullable values:');
     print('Age: $age');
     print('Name: $name');
     
-    // Nullable types - use ? to allow null values
+    
     int? nullableAge;
     String? nullableName = null;
     
     print('\nNullable types:');
-    print('Nullable age: $nullableAge'); // null
-    print('Nullable name: $nullableName'); // null
+    print('Nullable age: $nullableAge');
+    print('Nullable name: $nullableName'); 
     
-    // Null-aware operators
     
-    // 1. ?. - Safe navigation (returns null if object is null)
+    
     String? text = 'Hello';
     print('\nNull-aware access (?.)');
-    print('Length: ${text?.length}'); // 5
+    print('Length: ${text?.length}');
     
     text = null;
-    print('Length when null: ${text?.length}'); // null (no error)
+    print('Length when null: ${text?.length}'); 
     
-    // 2. ?? - Null-coalescing (provides default value)
+    
     String? username;
     String displayName = username ?? 'Guest';
     print('\nNull-coalescing (??)');
-    print('Display name: $displayName'); // Guest
+    print('Display name: $displayName');
     
     username = 'Bob';
     displayName = username ?? 'Guest';
-    print('Display name with value: $displayName'); // Bob
+    print('Display name with value: $displayName');
     
-    // 3. ??= - Null-aware assignment (assigns only if null)
+    
     String? message;
     message ??= 'Hello';
     print('\nNull-aware assignment (??=)');
-    print('Message: $message'); // Hello
+    print('Message: $message');
     
-    message ??= 'World'; // Doesn't assign because message is not null
-    print('Message after second assignment: $message'); // Still Hello
+    message ??= 'World'; 
+    print('Message after second assignment: $message');
     
-    // 4. ! - Null assertion (tells compiler value is not null)
+
     String? maybeNull = 'Definitely not null';
-    String definitelyNotNull = maybeNull!; // Assert it's not null
+    String definitelyNotNull = maybeNull!;
     print('\nNull assertion (!)');
     print('Value: $definitelyNotNull');
     
-    // Caution: Using ! on null throws an error at runtime
-    // String? nullValue = null;
-    // String error = nullValue!; // Runtime error!
 }
