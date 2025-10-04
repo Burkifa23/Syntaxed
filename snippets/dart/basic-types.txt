@@ -1,0 +1,69 @@
+void main() {
+    // NUMBERS - int (integers, whole numbers)
+    int age = 25;
+    int year = 2025;
+    int negativeNumber = -42;
+    
+    print('Integers (int):');
+    print('Age: $age');
+    print('Year: $year');
+    print('Negative: $negativeNumber');
+    
+    // NUMBERS - double (floating-point numbers)
+    double price = 19.99;
+    double temperature = -3.5;
+    double pi = 3.14159;
+    
+    print('\nFloating-point (double):');
+    print('Price: \$$price');
+    print('Temperature: ${temperature}°C');
+    print('Pi: $pi');
+    
+    // num type - can be either int or double
+    num flexibleNumber = 10;
+    flexibleNumber = 10.5; // Can change to double
+    print('\nFlexible num type: $flexibleNumber');
+    
+    // STRING - text data
+    String name = 'Alice';
+    String greeting = "Hello, World!";
+    String multiline = '''This is a
+    multi-line string''';
+    
+    print('\nStrings:');
+    print(name);
+    print(greeting);
+    print(multiline);
+    
+    // String interpolation
+    print('\nString interpolation:');
+    print('My name is $name and I am $age years old');
+    print('Next year I will be ${age + 1}');
+    
+    // BOOLEAN - true or false values
+    bool isActive = true;
+    bool isComplete = false;
+    
+    print('\nBooleans:');
+    print('Is active: $isActive');
+    print('Is complete: $isComplete');
+    
+    // Type conversions
+    print('\nType conversions:');
+    
+    // String to int
+    int parsedInt = int.parse('42');
+    print('String to int: $parsedInt');
+    
+    // String to double
+    double parsedDouble = double.parse('3.14');
+    print('String to double: $parsedDouble');
+    
+    // int to String
+    String intToString = 100.toString();
+    print('Int to String: $intToString');
+    
+    // double to String with precision
+    String doubleToString = 3.14159.toStringAsFixed(2);
+    print('Double to String (2 decimals): $doubleToString');
+}
