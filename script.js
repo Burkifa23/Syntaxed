@@ -207,7 +207,8 @@ document.addEventListener("DOMContentLoaded", () => {
         dart: {
             start: 'snippets/dart/hello.txt',
             variables: 'snippets/dart/variables.txt',
-            null_safety: 'snippets/dart/null-safety.txt'
+            null_safety: 'snippets/dart/null-safety.txt',
+            basic_types: 'snippets/dart/basic-types.txt'
         },
         elixir: {
             start: 'snippets/elixir/hello.txt'
