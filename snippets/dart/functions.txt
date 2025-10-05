@@ -1,0 +1,75 @@
+void main() {
+  
+  int fibonacci(int n) {
+    if (n == 0 || n == 1) return n;
+    return fibonacci(n - 1) + fibonacci(n - 2);
+  }
+  
+  print('Basic function:');
+  var result = fibonacci(10);
+  print('Fibonacci(10) = $result');
+  
+  
+  int square(int n) => n * n;
+  
+  print('\nArrow function:');
+  print('Square of 5 = ${square(5)}');
+  
+  
+  String say(String from, String msg, [String? device]) {
+    var result = '$from says $msg';
+    if (device != null) {
+      result = '$result with a $device';
+    }
+    return result;
+  }
+  
+  print('\nOptional positional parameters:');
+  print(say('Bob', 'Howdy'));
+  print(say('Bob', 'Howdy', 'smoke signal'));
+  
+  
+  String greet(String name, [String greeting = 'Hello']) {
+    return '$greeting, $name!';
+  }
+  
+  print('\nDefault parameter values:');
+  print(greet('Alice'));
+  print(greet('Bob', 'Hi'));
+  
+  
+  void printInfo({required String name, int age = 0, String? city}) {
+    print('Name: $name, Age: $age, City: ${city ?? 'Unknown'}');
+  }
+  
+  print('\nNamed parameters:');
+  printInfo(name: 'Alice', age: 25, city: 'New York');
+  printInfo(name: 'Bob');
+  
+  
+  var multiply = (int a, int b) => a * b;
+  print('\nFunction assigned to variable:');
+  print('3 * 4 = ${multiply(3, 4)}');
+  
+  
+  const list = ['apples', 'bananas', 'oranges'];
+  
+  print('\nAnonymous function:');
+  list.forEach((item) {
+    print('${item}: ${item.length}');
+  });
+  
+  
+  print('\nArrow syntax with forEach:');
+  var numbers = [1, 2, 3, 4, 5];
+  numbers.forEach((n) => print(n * 2));
+  
+  
+  void executeOperation(int a, int b, Function operation) {
+    print('Result: ${operation(a, b)}');
+  }
+  
+  print('\nFunction as parameter:');
+  executeOperation(10, 5, (a, b) => a + b);
+  executeOperation(10, 5, (a, b) => a - b);
+}
