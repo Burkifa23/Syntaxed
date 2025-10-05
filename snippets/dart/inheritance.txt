@@ -1,0 +1,170 @@
+void main() {
+  
+  print('Basic inheritance:');
+  
+  var tv = Television();
+  tv.turnOn();
+  
+  
+  print('\nSubclass with additional properties:');
+  
+  var smartTv = SmartTelevision();
+  smartTv.turnOn(); 
+  
+  
+  print('\nCalling super constructor:');
+  
+  var orbiter = Orbiter('ISS', DateTime(1998, 11, 20), 408);
+  print('Name: ${orbiter.name}');
+  print('Altitude: ${orbiter.altitude} km');
+  
+  
+  print('\nMethod overriding:');
+  
+  var account = BankAccount(balance: 100);
+  print(account);
+  
+  var savings = SavingAccount(balance: 200, interestRate: 0.05);
+  print(savings);
+  
+  
+  print('\nUsing super in overridden method:');
+  
+  var car = Car('Generic Car');
+  car.drive();
+  
+  var electricCar = ElectricCar('Tesla', 75.0);
+  electricCar.drive();
+}
+
+
+class Television {
+  void turnOn() {
+    _illuminateDisplay();
+    _activateIrSensor();
+  }
+  
+  void _illuminateDisplay() {
+    print('Display illuminated');
+  }
+  
+  void _activateIrSensor() {
+    print('IR sensor activated');
+  }
+}
+
+
+class SmartTelevision extends Television {
+  @override
+  void turnOn() {
+    super.turnOn();
+    _bootNetworkInterface();
+    _initializeMemory();
+    _upgradeApps();
+  }
+  
+  void _bootNetworkInterface() {
+    print('Network interface booted');
+  }
+  
+  void _initializeMemory() {
+    print('Memory initialized');
+  }
+  
+  void _upgradeApps() {
+    print('Apps upgraded');
+  }
+}
+
+
+class Spacecraft {
+  String name;
+  DateTime? launchDate;
+  
+  Spacecraft(this.name, this.launchDate);
+}
+
+
+class Orbiter extends Spacecraft {
+  double altitude;
+  
+  
+  Orbiter(super.name, super.launchDate, this.altitude);
+}
+
+
+class BankAccount {
+  double _balance = 0;
+  
+  BankAccount({double balance = 0}) : _balance = balance;
+  
+  double get balance => _balance;
+  
+  void deposit(double amount) {
+    _balance += amount;
+  }
+  
+  bool withdraw(double amount) {
+    if (amount <= _balance) {
+      _balance -= amount;
+      return true;
+    }
+    return false;
+  }
+  
+  @override
+  String toString() {
+    return 'The balance is $balance USD.';
+  }
+}
+
+
+class SavingAccount extends BankAccount {
+  double _interestRate = 0;
+  
+  SavingAccount({double balance = 0, double interestRate = 0})
+      : _interestRate = interestRate,
+        super(balance: balance);
+  
+  double get interestRate => _interestRate;
+  
+  set interestRate(double value) {
+    if (value > 0) {
+      _interestRate = value;
+    }
+  }
+  
+  void addInterest() {
+    double interest = balance * _interestRate;
+    deposit(interest);
+  }
+  
+  
+  @override
+  String toString() {
+    return super.toString() + ' The interest rate is $interestRate.';
+  }
+}
+
+
+class Car {
+  String name;
+  
+  Car(this.name);
+  
+  void drive() {
+    print('Driving a $name');
+  }
+}
+
+class ElectricCar extends Car {
+  double batteryCapacity;
+  
+  ElectricCar(String name, this.batteryCapacity) : super(name);
+  
+  @override
+  void drive() {
+    super.drive();
+    print('Silently with ${batteryCapacity}kWh battery');
+  }
+}
