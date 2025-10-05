@@ -1,6 +1,8 @@
 Dart Basic Data Types Explained
 
-This document covers the core built-in data types in Dart, which are essential for building any application.
+Learn more: https://dart.dev/language/built-in-types
+
+This covers the core built-in data types in Dart, which are essential for building any application.
 
 Numbers (int, double, num)
 
