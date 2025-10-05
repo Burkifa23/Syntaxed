@@ -1,36 +1,36 @@
 void main() {
-    
-    var name = 'Bob';
-    var year = 1977;
-    var antennaDiameter = 3.7;
-    
-    print('Name: $name'); 
-    print('Year: $year'); 
-    print('Antenna diameter: $antennaDiameter');
-    
-    
-    String greeting = 'Hello';
-    int count = 42;
-    double price = 19.99;
-    
-    print('\nExplicit types:');
-    print('Greeting: $greeting');
-    print('Count: $count');
-    print('Price: \$$price');
-    
-    
-    name = 'Alice';
-    year = 2025;
-    print('\nAfter reassignment:');
-    print('Name: $name');
-    print('Year: $year');
-    
-    
-    Object dynamicValue = 'Can be anything';
-    print('\nObject type: $dynamicValue');
-    dynamicValue = 42;
-    print('Now a number: $dynamicValue');
-    
-    int? nullableNumber;
-    print('\nUninitialized nullable variable: $nullableNumber');
+
+  var name = 'Bob';
+  var year = 1977;
+  var antennaDiameter = 3.7;
+
+  print('Name: $name'); 
+  print('Year: $year'); 
+  print('Antenna diameter: $antennaDiameter');
+
+
+  String greeting = 'Hello';
+  int count = 42;
+  double price = 19.99;
+
+  print('\nExplicit types:');
+  print('Greeting: $greeting');
+  print('Count: $count');
+  print('Price: \$$price');
+
+
+  name = 'Alice';
+  year = 2025;
+  print('\nAfter reassignment:');
+  print('Name: $name');
+  print('Year: $year');
+
+
+  Object dynamicValue = 'Can be anything';
+  print('\nObject type: $dynamicValue');
+  dynamicValue = 42;
+  print('Now a number: $dynamicValue');
+
+  int? nullableNumber;
+  print('\nUninitialized nullable variable: $nullableNumber');
 }

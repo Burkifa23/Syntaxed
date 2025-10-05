@@ -1,52 +1,52 @@
 void main() {
     
-    int age = 25;
-    String name = 'Alice';    
+  int age = 25;
+  String name = 'Alice';    
     
-    print('Non-nullable values:');
-    print('Age: $age');
-    print('Name: $name');
-    
-    
-    int? nullableAge;
-    String? nullableName = null;
-    
-    print('\nNullable types:');
-    print('Nullable age: $nullableAge');
-    print('Nullable name: $nullableName'); 
+  print('Non-nullable values:');
+  print('Age: $age');
+  print('Name: $name');
     
     
+  int? nullableAge;
+  String? nullableName = null;
     
-    String? text = 'Hello';
-    print('\nNull-aware access (?.)');
-    print('Length: ${text?.length}');
+  print('\nNullable types:');
+  print('Nullable age: $nullableAge');
+  print('Nullable name: $nullableName'); 
+    
+    
+    
+  String? text = 'Hello';
+  print('\nNull-aware access (?.)');
+  print('Length: ${text?.length}');
     
     text = null;
-    print('Length when null: ${text?.length}'); 
+  print('Length when null: ${text?.length}'); 
     
     
-    String? username;
-    String displayName = username ?? 'Guest';
-    print('\nNull-coalescing (??)');
-    print('Display name: $displayName');
+  String? username;
+  String displayName = username ?? 'Guest';
+  print('\nNull-coalescing (??)');
+  print('Display name: $displayName');
     
-    username = 'Bob';
-    displayName = username ?? 'Guest';
-    print('Display name with value: $displayName');
+  username = 'Bob';
+  displayName = username ?? 'Guest';
+  print('Display name with value: $displayName');
     
     
-    String? message;
-    message ??= 'Hello';
-    print('\nNull-aware assignment (??=)');
-    print('Message: $message');
+  String? message;
+  message ??= 'Hello';
+  print('\nNull-aware assignment (??=)');
+  print('Message: $message');
     
-    message ??= 'World'; 
-    print('Message after second assignment: $message');
+  message ??= 'World'; 
+  print('Message after second assignment: $message');
     
 
-    String? maybeNull = 'Definitely not null';
-    String definitelyNotNull = maybeNull!;
-    print('\nNull assertion (!)');
-    print('Value: $definitelyNotNull');
+  String? maybeNull = 'Definitely not null';
+  String definitelyNotNull = maybeNull!;
+  print('\nNull assertion (!)');
+  print('Value: $definitelyNotNull');
     
 }
