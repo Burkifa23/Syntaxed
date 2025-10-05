@@ -1,0 +1,129 @@
+void main() {
+  
+  print('Using mixins:');
+  
+  var performer = Performer();
+  performer.entertainMe();
+  
+  
+  print('\nMultiple mixins:');
+  
+  var maestro = Maestro('Leonard Bernstein');
+  maestro.canConduct = true;
+  maestro.canCompose = true;
+  maestro.entertainMe();
+  
+  
+  print('\nMixin with abstract methods:');
+  
+  var virtuoso = Virtuoso();
+  virtuoso.playPiano();
+  virtuoso.playFlute();
+  
+  
+  print('\nMixin with superclass constraint:');
+  
+  var dog = Dog('Buddy');
+  dog.eat();
+  dog.hunt();
+}
+
+
+mixin Musical {
+  bool canPlayPiano = false;
+  bool canCompose = false;
+  bool canConduct = false;
+  
+  void entertainMe() {
+    if (canPlayPiano) {
+      print('Playing piano');
+    } else if (canConduct) {
+      print('Waving hands');
+    } else {
+      print('Humming to self');
+    }
+  }
+}
+
+
+class Performer with Musical {
+  
+}
+
+
+mixin Aggressive {
+  void intimidate() {
+    print('Being aggressive!');
+  }
+}
+
+mixin Demented {
+  void act() {
+    print('Acting demented!');
+  }
+}
+
+
+class Maestro with Musical, Aggressive, Demented {
+  String name;
+  
+  Maestro(this.name);
+}
+
+
+mixin Musician {
+  
+  void playInstrument(String instrumentName);
+  
+  void playPiano() {
+    playInstrument('Piano');
+  }
+  
+  void playFlute() {
+    playInstrument('Flute');
+  }
+}
+
+class Virtuoso with Musician {
+  @override
+  void playInstrument(String instrumentName) {
+    print('Plays the $instrumentName beautifully');
+  }
+}
+
+
+class Animal {
+  String name;
+  
+  Animal(this.name);
+  
+  void eat() {
+    print('$name is eating');
+  }
+}
+
+
+mixin Carnivore on Animal {
+  void hunt() {
+    print('$name is hunting');
+    eat(); 
+  }
+}
+
+
+class Dog extends Animal with Carnivore {
+  Dog(String name) : super(name);
+}
+
+
+mixin class MusicalPerformer {
+  void perform() {
+    print('Performing on stage');
+  }
+}
+
+
+class Singer with MusicalPerformer {}
+
+
+class Actor extends MusicalPerformer {}
