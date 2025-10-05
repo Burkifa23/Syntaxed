@@ -215,6 +215,8 @@ document.addEventListener("DOMContentLoaded", () => {
             functions: 'snippets/dart/functions.txt',
             collections: 'snippets/dart/collections.txt',
             classes: 'snippets/dart/classes.txt',
+            constructors: 'snippets/dart/constructors.txt',
+            inheritance: 'snippets/dart/inheritance.txt',
             
         },
         elixir: {
