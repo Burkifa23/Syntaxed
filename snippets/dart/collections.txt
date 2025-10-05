@@ -1,0 +1,80 @@
+void main() {
+  
+  print('LISTS - Ordered collections:');  
+  var list = [1, 2, 3];
+  print('List: $list');
+  
+  var fruits = ['apple', 'banana', 'orange'];
+  print('Fruits: $fruits');
+  
+  print('First fruit: ${fruits[0]}');
+  print('List length: ${fruits.length}');
+  
+  fruits.add('mango');
+  print('After add: $fruits');
+  
+  fruits.remove('banana');
+  print('After remove: $fruits');
+  
+  
+  print('\nSETS - Unique elements:');  
+  var halogens = {'fluorine', 'chlorine', 'bromine', 'iodine', 'astatine'};
+  print('Halogens: $halogens');
+  
+  
+  var names = <String>{};
+  names.add('Alice');
+  names.add('Bob');
+  names.add('Alice');
+  print('Names (no duplicates): $names');
+  
+  
+  var set1 = {1, 2, 3};
+  var set2 = {3, 4, 5};
+  print('Set 1: $set1');
+  print('Set 2: $set2');
+  print('Union: ${set1.union(set2)}');
+  print('Intersection: ${set1.intersection(set2)}');
+  
+  
+  print('\nMAPS - Key-value pairs:');
+  var gifts = {    
+    'first': 'partridge',
+    'second': 'turtledoves',
+    'fifth': 'golden rings',
+  };
+  print('Gifts: $gifts');
+  
+  var nobleGases = {
+    2: 'helium',
+    10: 'neon',
+    18: 'argon',
+  };
+  print('Noble gases: $nobleGases');
+  
+  
+  print('First gift: ${gifts['first']}');
+  
+  
+  gifts['third'] = 'french hens';
+  print('After adding: $gifts');
+  
+  
+  print('Contains "first": ${gifts.containsKey('first')}');
+  
+  
+  print('\nIterating over map:');
+  gifts.forEach((key, value) {
+    print('  $key: $value');
+  });
+  
+  
+  print('\nCommon collection methods:');
+  var numbers = [1, 2, 3, 4, 5];
+  print('Numbers: $numbers');
+  print('First: ${numbers.first}');
+  print('Last: ${numbers.last}');
+  print('Is empty: ${numbers.isEmpty}');
+  print('Is not empty: ${numbers.isNotEmpty}');
+  print('Contains 3: ${numbers.contains(3)}');
+}
