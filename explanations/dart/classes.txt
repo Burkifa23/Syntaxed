@@ -2,7 +2,7 @@ Dart Classes
 
 Learn more: https://dart.dev/language/classes
 
-This code provides a comprehensive overview of class and object-oriented programming fundamentals in Dart, which is essential for structuring data models (like those corresponding to your Supabase tables) and application logic.
+This code provides a comprehensive overview of class and object-oriented programming fundamentals in Dart, which is essential for structuring data models (like those corresponding to a Firebase/Supabase tables) and application logic.
 
 Basic Class Definition
 

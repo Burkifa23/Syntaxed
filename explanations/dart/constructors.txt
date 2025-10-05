@@ -2,7 +2,7 @@ Dart Constructors
 
 Learn more: https://dart.dev/language/constructors
 
-This document provides a detailed overview of class construction and initialization in Dart, essential for defining data models (like those corresponding to your Supabase tables) and managing complex object creation.
+This document provides a detailed overview of class construction and initialization in Dart, essential for defining data models (like those corresponding to Firebase/Supabase tables) and managing complex object creation.
 
 1. Class Definition & Basic Members
 Classes serve as blueprints for objects, defining properties (instance variables) and behavior (methods).
@@ -53,7 +53,7 @@ Purpose and Use Case: Shortest syntax. Automatically assigns parameters to insta
 Named Constructor
 Syntax Example: Point.origin(); Point.fromJson(Map json);
 
-Purpose and Use Case: Allows for multiple, clearly labeled ways to create an object, such as creating objects from JSON data fetched from Supabase.
+Purpose and Use Case: Allows for multiple, clearly labeled ways to create an object, such as creating objects from JSON data fetched from Firebase/Supabase.
 
 Initializer List
 Syntax Example: PointWithInit.fromJson(Map json) : x = json['x']!, y = json['y']!;

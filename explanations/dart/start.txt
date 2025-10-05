@@ -18,4 +18,4 @@ print(): This is a built-in Dart function used to display output to the standard
 
 'Hello, World!': This is a simple String literal being passed to the 'print' function to be displayed.
 
-In summary, this code tells the Dart runtime: "Start here, and display this text to the user." All other application logic, including calling functions and fetching data from Supabase, will begin inside this 'main' function.
+In summary, this code tells the Dart runtime: "Start here, and display this text to the user." All other application logic, including calling functions and fetching data will begin inside this 'main' function.
