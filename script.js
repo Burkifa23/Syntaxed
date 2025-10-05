@@ -210,7 +210,9 @@ document.addEventListener("DOMContentLoaded", () => {
             null_safety: 'snippets/dart/null-safety.txt',
             basic_types: 'snippets/dart/basic-types.txt',
             strings: 'snippets/dart/strings.txt',
-            control_flow: 'snippets/dart/control-flow.txt'
+            control_flow: 'snippets/dart/control-flow.txt',
+            functions: 'snippets/dart/functions.txt',
+            collections: 'snippets/dart/collections.txt'
             
         },
         elixir: {
