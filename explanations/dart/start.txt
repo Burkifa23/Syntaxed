@@ -1,0 +1,21 @@
+Hello, World!
+
+This code snippet is the minimal, required structure for running any standalone Dart application.
+
+void main()
+
+This defines the primary starting function of the Dart program.
+
+main: This function is the mandatory entry point. Dart execution always begins here.
+
+void: This keyword specifies that the 'main' function does not return any value (it simply executes code and finishes).
+
+print('Hello, World!');
+
+This line executes the program's intended action.
+
+print(): This is a built-in Dart function used to display output to the standard output device (usually the terminal or console).
+
+'Hello, World!': This is a simple String literal being passed to the 'print' function to be displayed.
+
+In summary, this code tells the Dart runtime: "Start here, and display this text to the user." All other application logic, including calling functions and fetching data from Supabase, will begin inside this 'main' function.
