@@ -1,0 +1,126 @@
+void main() {
+  
+  print('Basic class with properties:');
+  var point = Point();
+  point.x = 4;
+  point.y = 3;
+  
+  print('Point: (${point.x}, ${point.y})');
+  print('Point z (default): ${point.z}');
+  
+  
+  print('\nClass with constructor:');
+  var spacecraft = Spacecraft('Voyager I', DateTime(1977, 9, 5));
+  spacecraft.describe();
+  
+  
+  print('\nNamed constructor:');  
+  var voyager3 = Spacecraft.unlaunched('Voyager III');
+  voyager3.describe();
+  
+  
+  print('\nClass with methods:');  
+  var p1 = PointWithMethods(2, 3);
+  var p2 = PointWithMethods(5, 7);
+  
+  var distance = p1.distanceTo(p2);
+  print('Distance: ${distance.toStringAsFixed(2)}');
+  
+  
+  print('\nGetters and setters:');  
+  var rect = Rectangle(3, 4, 20, 15);
+  print('Left: ${rect.left}');
+  print('Right (calculated): ${rect.right}');
+  
+  rect.right = 12;
+  print('After setting right to 12, left: ${rect.left}');
+  
+  
+  print('\nStatic methods:');
+  
+  var a = PointStatic(2, 2);
+  var b = PointStatic(4, 4);
+  var dist = PointStatic.distanceBetween(a, b);
+  print('Distance between points: ${dist.toStringAsFixed(2)}');
+}
+
+
+class Point {
+  double? x;
+  double? y;
+  double z = 0;
+}
+
+
+class Spacecraft {
+  String name;
+  DateTime? launchDate;
+  
+  
+  int? get launchYear => launchDate?.year;
+  
+  
+  Spacecraft(this.name, this.launchDate) {
+    
+  }
+  
+  
+  Spacecraft.unlaunched(String name) : this(name, null);
+  
+  
+  void describe() {
+    print('Spacecraft: $name');
+    var launchDate = this.launchDate;
+    if (launchDate != null) {
+      int years = DateTime.now().difference(launchDate).inDays ~/ 365;
+      print('Launched: $launchYear ($years years ago)');
+    } else {
+      print('Unlaunched');
+    }
+  }
+}
+
+
+class PointWithMethods {
+  final double x;
+  final double y;
+  
+  PointWithMethods(this.x, this.y);
+  
+  
+  double distanceTo(PointWithMethods other) {
+    var dx = x - other.x;
+    var dy = y - other.y;
+    return (dx * dx + dy * dy) / 1;
+  }
+}
+
+
+class Rectangle {
+  double left, top, width, height;
+  
+  Rectangle(this.left, this.top, this.width, this.height);
+  
+  
+  double get right => left + width;
+  
+  
+  set right(double value) => left = value - width;
+  
+  double get bottom => top + height;
+  set bottom(double value) => top = value - height;
+}
+
+
+class PointStatic {
+  double x, y;
+  
+  PointStatic(this.x, this.y);
+  
+  
+  static double distanceBetween(PointStatic a, PointStatic b) {
+    var dx = a.x - b.x;
+    var dy = a.y - b.y;
+    return (dx * dx + dy * dy) / 1;
+  }
+}
