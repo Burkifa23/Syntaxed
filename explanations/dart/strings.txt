@@ -1,0 +1,60 @@
+Dart String Manipulation Analysis
+
+Learn more: https://dart.dev/language/built-in-types#strings
+
+This code demonstrates the various ways to declare, format, and manipulate text data (Strings) in Dart. Strings are sequences of UTF-16 code units.
+
+String Literals and Quotes
+
+Dart allows flexibility in defining strings using either single (') or double (") quotes.
+
+Single vs. Double Quotes: They are interchangeable, which helps in avoiding the need to escape characters within the string itself.
+Example: var s4 = "It's even easier to use the other delimiter.";
+
+Escaping: Use the backslash () to include the quote character used to define the string.
+Example: var s3 = 'It's easy to escape the string delimiter.';
+
+String Interpolation
+
+This is the preferred way to embed variable values or expressions directly into a string.
+
+Simple Interpolation: Use the dollar sign ($) followed by the variable name for simple identifiers.
+Example: print('My name is $name');
+
+Expression Interpolation: Use the dollar sign followed by curly braces (${}) for expressions, calculations, or method calls.
+Example:
+print('Next year I will be ${age + 1}');
+print('Uppercase: ${text.toUpperCase()}');
+
+String Formatting
+
+Multi-line Strings: Use triple quotes (''' or """) to create a string that naturally spans multiple lines, preserving the line breaks.
+Example:
+var multiLine1 = '''
+You can create
+multi-line strings...
+''';
+
+Raw Strings: Precede the string literal with 'r' (e.g., r''). This treats backslashes and dollar signs literally, ignoring interpolation and escape sequences. This is mainly useful for file paths or regular expressions.
+Example: var rawString = r'In a raw string, not even \n gets special treatment.';
+
+Concatenation: Adjacent string literals are automatically concatenated by the Dart compiler. This is often used for neatly breaking up very long strings across multiple lines of code.
+Example: var combined = 'String concatenation ' 'works...';
+
+String Methods and Utilities
+
+The code shows several essential methods available on all String objects:
+
+length: Returns the number of characters in the string.
+
+toUpperCase() / toLowerCase(): Converts the string's case.
+
+trim(): Removes leading and trailing whitespace from the string.
+Example: print('Trimmed: "${sample.trim()}"'); // Removes spaces from "  Hello World  "
+
+contains("text"): Checks if the string contains a specific substring (returns a boolean).
+
+startsWith("text") / endsWith("text"): Checks if the string begins or ends with a specific sequence.
+
+Equality: Strings are compared using the double equals operator (==). This compares the content of the strings (character by character), not their memory location.
+Example: print('str1 == str2: ${str1 == str2}'); // true
