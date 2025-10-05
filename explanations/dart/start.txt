@@ -1,4 +1,4 @@
-Hello, World!
+Dart Hello, World!
 
 This code snippet is the minimal, required structure for running any standalone Dart application.
 

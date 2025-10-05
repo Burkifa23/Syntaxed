@@ -1,4 +1,4 @@
-Dart Basic Data Types Explained
+Dart Basic Data Types 
 
 Learn more: https://dart.dev/language/built-in-types
 

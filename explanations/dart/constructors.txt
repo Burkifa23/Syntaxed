@@ -1,0 +1,76 @@
+Dart Constructors
+
+Learn more: https://dart.dev/language/constructors
+
+This document provides a detailed overview of class construction and initialization in Dart, essential for defining data models (like those corresponding to your Supabase tables) and managing complex object creation.
+
+1. Class Definition & Basic Members
+Classes serve as blueprints for objects, defining properties (instance variables) and behavior (methods).
+
+Instance Variables: Properties defined within a class.
+
+class Point {
+    double? x; // Nullable
+    double z = 0; // Non-nullable with default value
+}
+
+
+
+Getters & Setters: Provide calculated properties and controlled mutation.
+
+// Getter: Calculates the 'right' edge based on 'left' and 'width'.
+double get right => left + width;
+
+// Setter: Updates 'left' when 'right' is assigned a value.
+set right(double value) => left = value - width;
+
+
+
+Static Members: Belong to the class itself, used for utility functions or constants.
+
+static double distanceBetween(PointStatic a, PointStatic b) { ... }
+
+
+
+2. Constructors (Creating and Initializing Objects)
+Constructors are special methods used to create and initialize instances of a class.
+
+Default (Implicit) Constructor
+Syntax Example: var emptyPoint = EmptyPoint();
+
+Purpose and Use Case: Automatically generated if no constructor is defined. Used for simple initialization where fields might have defaults.
+
+Generative Constructor
+Syntax Example: Point(double x, double y) { this.x = x; this.y = y; }
+
+Purpose and Use Case: The standard method for generating a new instance.
+
+Syntactic Sugar (Initializing Formal Parameters)
+Syntax Example: PointShort(this.x, this.y);
+
+Purpose and Use Case: Shortest syntax. Automatically assigns parameters to instance fields (this.x = parameter x). Highly recommended for clean data model definitions.
+
+Named Constructor
+Syntax Example: Point.origin(); Point.fromJson(Map json);
+
+Purpose and Use Case: Allows for multiple, clearly labeled ways to create an object, such as creating objects from JSON data fetched from Supabase.
+
+Initializer List
+Syntax Example: PointWithInit.fromJson(Map json) : x = json['x']!, y = json['y']!;
+
+Purpose and Use Case: Used before the constructor body to initialize final fields or perform assertions. Essential for immutable classes.
+
+Redirecting Constructor
+Syntax Example: PointRedirect.alongXAxis(double x) : this(x, 0);
+
+Purpose and Use Case: Delegates the initialization to another constructor in the same class (using this(...)). Simplifies creation logic by avoiding duplication.
+
+Const Constructor
+Syntax Example: const ImmutablePoint(this.x, this.y);
+
+Purpose and Use Case: Creates compile-time constants. The class must use only final fields. Optimizes memory by ensuring identical objects share the same instance.
+
+Factory Constructor
+Syntax Example: factory Logger(String name) { ... }
+
+Purpose and Use Case: Does not necessarily create a new instance. Can return a cached instance (Singleton pattern, as shown in Logger) or an instance of a subtype (Shape).

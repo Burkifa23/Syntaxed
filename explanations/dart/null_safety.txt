@@ -1,4 +1,4 @@
-Dart Null Safety Explained
+Dart Null Safety 
 
 This code shows how Dart prevents null reference errors using Sound Null Safety. All types in modern Dart are non-nullable by default.
 
