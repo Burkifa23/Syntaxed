@@ -1,0 +1,150 @@
+void main() {
+  
+  print('Default constructor:');
+  var emptyPoint = EmptyPoint();
+  print('Empty point created: $emptyPoint');
+  
+  
+  print('\nGenerative constructor:');
+  var point = Point(2, 3);
+  print('Point: (${point.x}, ${point.y})');
+  
+  
+  print('\nInitializing formal parameters:');
+  var p = PointShort(5, 7);
+  print('Point: (${p.x}, ${p.y})');
+  
+  
+  print('\nNamed constructors:');
+  var origin = Point.origin();
+  print('Origin: (${origin.x}, ${origin.y})');
+  
+  var fromJson = Point.fromJson({'x': 10, 'y': 20});
+  print('From JSON: (${fromJson.x}, ${fromJson.y})');
+  
+  
+  print('\nConstructor with initializer list:');
+  var pointFromJson = PointWithInit.fromJson({'x': 4.0, 'y': 8.0});
+  print('Point from init: (${pointFromJson.x}, ${pointFromJson.y})');
+  
+  
+  print('\nRedirecting constructor:');
+  var redirected = PointRedirect.alongXAxis(5);
+  print('Along X axis: (${redirected.x}, ${redirected.y})');
+  
+  
+  print('\nConst constructor:');
+  const immutablePoint = ImmutablePoint(3, 4);
+  print('Immutable: (${immutablePoint.x}, ${immutablePoint.y})');
+  
+  
+  print('\nFactory constructor:');
+  var logger1 = Logger('UI');
+  var logger2 = Logger('UI');
+  print('Same logger instance: ${identical(logger1, logger2)}');
+  
+  var shape1 = Shape.circle();
+  var shape2 = Shape.square();
+  print('Circle type: ${shape1.runtimeType}');
+  print('Square type: ${shape2.runtimeType}');
+}
+
+
+class EmptyPoint {
+  double x = 0;
+  double y = 0;
+  
+  @override
+  String toString() => 'EmptyPoint($x, $y)';
+}
+
+
+class Point {
+  double x;
+  double y;
+  
+  
+  Point(double x, double y) {
+    this.x = x;
+    this.y = y;
+  }
+  
+  
+  Point.origin() {
+    x = 0;
+    y = 0;
+  }
+  
+  
+  Point.fromJson(Map<String, dynamic> json) {
+    x = json['x'];
+    y = json['y'];
+  }
+}
+
+
+class PointShort {
+  double x;
+  double y;
+  
+  
+  PointShort(this.x, this.y);
+}
+
+
+class PointWithInit {
+  final double x;
+  final double y;
+  
+  
+  PointWithInit.fromJson(Map<String, double> json)
+      : x = json['x']!,
+        y = json['y']! {
+    print('In PointWithInit.fromJson(): ($x, $y)');
+  }
+}
+
+
+class PointRedirect {
+  double x;
+  double y;
+  
+  PointRedirect(this.x, this.y);
+  
+  
+  PointRedirect.alongXAxis(double x) : this(x, 0);
+}
+
+
+class ImmutablePoint {
+  final double x;
+  final double y;
+  
+  
+  const ImmutablePoint(this.x, this.y);
+}
+
+
+class Logger {
+  final String name;
+  
+  
+  static final Map<String, Logger> _cache = {};
+  
+  
+  Logger._internal(this.name);
+  
+  
+  factory Logger(String name) {
+    return _cache.putIfAbsent(name, () => Logger._internal(name));
+  }
+}
+
+
+abstract class Shape {
+  factory Shape.circle() => Circle();
+  factory Shape.square() => Square();
+}
+
+class Circle implements Shape {}
+class Square implements Shape {}
