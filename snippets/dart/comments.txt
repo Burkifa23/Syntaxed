@@ -1,0 +1,13 @@
+void main(){
+
+  // This is a single line comment
+
+  print('Hello, World!'); // This is an inline comment
+
+  /* 
+  This is a 
+  multi-line comment
+  */
+
+  /// Documentation comments are multi-line or single-line comments.
+}
