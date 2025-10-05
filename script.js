@@ -213,7 +213,8 @@ document.addEventListener("DOMContentLoaded", () => {
             strings: 'snippets/dart/strings.txt',
             control_flow: 'snippets/dart/control-flow.txt',
             functions: 'snippets/dart/functions.txt',
-            collections: 'snippets/dart/collections.txt'
+            collections: 'snippets/dart/collections.txt',
+            classes: 'snippets/dart/classes.txt',
             
         },
         elixir: {
