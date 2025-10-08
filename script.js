@@ -299,7 +299,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let currentLanguage = 'assembly';
     let currentTopic = 'start';
-    let currentLayout = 'vertical';
+    let currentLayout = 'horizontal';
     let codeSnippet = '';
     let monacoEditor;
     let blurLevel = 0; // 0 = off, 1 = 10%, 2 = 30%, 3 = 50%, 4 = 70%, 5 = 90%
