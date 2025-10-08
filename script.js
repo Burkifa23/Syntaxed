@@ -1121,7 +1121,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Enhanced explanation functions
     async function showExplanation() {
-        const explanationPath = `explanations/${currentLanguage}/${currentTopic}.txt`;
+        const explanationPath = `explanations/${currentLanguage}/${currentTopic}.md`;
         
         // Create modal
         const modal = document.createElement('div');
