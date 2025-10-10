@@ -1,0 +1,35 @@
+void main() {
+  int a = 10;
+  int b = 3;
+
+  int sum = a + b;
+  int difference = a - b;
+  int product = a * b;
+  double quotient = a / b;
+  int remainder = a % b;
+  int integerDivision = a ~/ b;
+
+  print('--- Arithmetic Operators ---');
+  print('Sum (10 + 3): $sum');
+  print('Difference (10 - 3): $difference');
+  print('Product (10 * 3): $product');
+  print('Quotient (10 / 3): $quotient');
+  print('Remainder (10 % 3): $remainder');
+  print('Integer Division (10 ~/ 3): $integerDivision');
+
+  int counter = 5;
+
+  counter += 5;
+  print('\nAssignment Operator (counter += 5): $counter');
+
+  counter *= 2;
+  print('Assignment Operator (counter *= 2): $counter');
+
+  int i = 0;
+  i++;
+  print('\nIncrement Operator (i++): $i');
+
+  int j = 10;
+  j--;
+  print('Decrement Operator (j--): $j');
+}
