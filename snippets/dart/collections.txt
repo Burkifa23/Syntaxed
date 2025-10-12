@@ -1,15 +1,15 @@
 void main() {
   
-  print('LISTS - Ordered collections:');  
+  print('--- LISTS - Ordered collections ---');  
+  // Lists maintain insertion order and allow duplicates.
   var list = [1, 2, 3];
-  print('List: $list');
-  
   var fruits = ['apple', 'banana', 'orange'];
-  print('Fruits: $fruits');
   
+  print('List: $list');
   print('First fruit: ${fruits[0]}');
   print('List length: ${fruits.length}');
   
+  // Basic list mutation methods
   fruits.add('mango');
   print('After add: $fruits');
   
@@ -17,27 +17,27 @@ void main() {
   print('After remove: $fruits');
   
   
-  print('\nSETS - Unique elements:');  
+  print('\n--- SETS - Unique, Unordered elements ---');  
+  // Sets store unique values; adding a duplicate has no effect.
   var halogens = {'fluorine', 'chlorine', 'bromine', 'iodine', 'astatine'};
   print('Halogens: $halogens');
   
-  
+  // Explicitly creating a Set of type String (required for an empty set).
   var names = <String>{};
   names.add('Alice');
   names.add('Bob');
-  names.add('Alice');
+  names.add('Alice'); // Ignored, already exists
   print('Names (no duplicates): $names');
   
   
   var set1 = {1, 2, 3};
   var set2 = {3, 4, 5};
-  print('Set 1: $set1');
-  print('Set 2: $set2');
   print('Union: ${set1.union(set2)}');
   print('Intersection: ${set1.intersection(set2)}');
   
   
-  print('\nMAPS - Key-value pairs:');
+  print('\n--- MAPS - Key-value pairs ---');
+  // Maps associate keys with values. Keys must be unique.
   var gifts = {    
     'first': 'partridge',
     'second': 'turtledoves',
@@ -55,7 +55,7 @@ void main() {
   
   print('First gift: ${gifts['first']}');
   
-  
+  // Adding a new key-value pair
   gifts['third'] = 'french hens';
   print('After adding: $gifts');
   
@@ -63,18 +63,16 @@ void main() {
   print('Contains "first": ${gifts.containsKey('first')}');
   
   
-  print('\nIterating over map:');
+  print('\n--- Iterating over map ---');
   gifts.forEach((key, value) {
     print('  $key: $value');
   });
   
   
-  print('\nCommon collection methods:');
+  print('\n--- Common Collection Properties ---');
   var numbers = [1, 2, 3, 4, 5];
-  print('Numbers: $numbers');
   print('First: ${numbers.first}');
   print('Last: ${numbers.last}');
   print('Is empty: ${numbers.isEmpty}');
-  print('Is not empty: ${numbers.isNotEmpty}');
   print('Contains 3: ${numbers.contains(3)}');
 }
