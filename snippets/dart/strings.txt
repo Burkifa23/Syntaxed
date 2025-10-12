@@ -1,67 +1,67 @@
 void main() {
-    
+
   var s1 = 'Single quotes work well for string literals.';
   var s2 = "Double quotes work just as well.";
   var s3 = 'It\'s easy to escape the string delimiter.';
   var s4 = "It's even easier to use the other delimiter.";
-    
-  print('String literals:');
+
+  print('--- String Literals ---');
   print(s1);
   print(s2);
   print(s3);
   print(s4);
-    
-    
+
+
   var name = 'Alice';
   var age = 25;
-    
-  print('\nString interpolation:');
+
+  print('\n--- String Interpolation ---');
   print('My name is $name');
-    
-    
+
+
   print('I am ${age} years old');
   print('Next year I will be ${age + 1}');
-    
-    
+
+
   var text = 'dart programming';
   print('Uppercase: ${text.toUpperCase()}');
-    
-    
+
+
   var multiLine1 = '''
-  You can create
-  multi-line strings like this one.
-  ''';
-    
+You can create
+multi-line strings like this one.
+''';
+
   var multiLine2 = """This is also a
-  multi-line string.""";
-    
-  print('\nMulti-line strings:');
+multi-line string.""";
+
+  print('\n--- Multi-line and Raw Strings ---');
   print(multiLine1);
   print(multiLine2);
-    
-    
+
+
   var rawString = r'In a raw string, not even \n gets special treatment.';
-  print('\nRaw string:');
+  print('Raw string:');
   print(rawString);
-    
-    
+
+
   var combined = 'String concatenation '
     'works by placing adjacent '
     'string literals next to each other.';
   print('\nAdjacent string literals:');
   print(combined);
-    
-    
+
+
   var str1 = 'hello';
   var str2 = 'hello';
   var str3 = 'world';
-    
-  print('\nString equality:');
+
+  print('\n--- String Equality ---');
   print('str1 == str2: ${str1 == str2}');
   print('str1 == str3: ${str1 == str3}');
-    
-    
-  print('\nString methods:');
+
+
+  print('\n--- String Methods ---');
   var sample = '  Hello World  ';
   print('Original: "$sample"');
   print('Length: ${sample.length}');
