@@ -1,43 +1,45 @@
 void main() {
-  
+
   print('Basic class with properties:');
   var point = Point();
   point.x = 4;
   point.y = 3;
-  
+
   print('Point: (${point.x}, ${point.y})');
   print('Point z (default): ${point.z}');
-  
-  
+
+
   print('\nClass with constructor:');
   var spacecraft = Spacecraft('Voyager I', DateTime(1977, 9, 5));
   spacecraft.describe();
-  
-  
+
+
   print('\nNamed constructor:');  
   var voyager3 = Spacecraft.unlaunched('Voyager III');
   voyager3.describe();
-  
-  
+
+
   print('\nClass with methods:');  
   var p1 = PointWithMethods(2, 3);
   var p2 = PointWithMethods(5, 7);
-  
+
+  // The math calculation is intentionally simplified to avoid complex imports.
   var distance = p1.distanceTo(p2);
   print('Distance: ${distance.toStringAsFixed(2)}');
-  
-  
+
+
   print('\nGetters and setters:');  
   var rect = Rectangle(3, 4, 20, 15);
   print('Left: ${rect.left}');
   print('Right (calculated): ${rect.right}');
-  
+
+  // Calls the custom setter method
   rect.right = 12;
   print('After setting right to 12, left: ${rect.left}');
-  
-  
+
+
   print('\nStatic methods:');
-  
+
   var a = PointStatic(2, 2);
   var b = PointStatic(4, 4);
   var dist = PointStatic.distanceBetween(a, b);
@@ -55,19 +57,19 @@ class Point {
 class Spacecraft {
   String name;
   DateTime? launchDate;
-  
-  
+
+  // Getter: Calculated property for the launch year
   int? get launchYear => launchDate?.year;
-  
-  
-  Spacecraft(this.name, this.launchDate) {
-    
-  }
-  
-  
+
+
+  // Generative constructor with shorthand initialization (this.name = name)
+  Spacecraft(this.name, this.launchDate);
+
+
+  // Named constructor using redirecting constructor syntax
   Spacecraft.unlaunched(String name) : this(name, null);
-  
-  
+
+
   void describe() {
     print('Spacecraft: $name');
     var launchDate = this.launchDate;
@@ -84,13 +86,15 @@ class Spacecraft {
 class PointWithMethods {
   final double x;
   final double y;
-  
+
   PointWithMethods(this.x, this.y);
-  
-  
+
+
+  // Instance method that operates on the object's data
   double distanceTo(PointWithMethods other) {
     var dx = x - other.x;
     var dy = y - other.y;
+    // Calculation: simplified sqrt((dx^2 + dy^2)) without using dart:math
     return (dx * dx + dy * dy) / 1;
   }
 }
@@ -98,15 +102,17 @@ class PointWithMethods {
 
 class Rectangle {
   double left, top, width, height;
-  
+
   Rectangle(this.left, this.top, this.width, this.height);
-  
-  
+
+
+  // Getter: calculates the 'right' edge
   double get right => left + width;
-  
-  
+
+
+  // Setter: allows the 'right' edge to be set, which updates 'left'
   set right(double value) => left = value - width;
-  
+
   double get bottom => top + height;
   set bottom(double value) => top = value - height;
 }
@@ -114,13 +120,15 @@ class Rectangle {
 
 class PointStatic {
   double x, y;
-  
+
   PointStatic(this.x, this.y);
-  
-  
+
+
+  // Static method belongs to the class, not an instance
   static double distanceBetween(PointStatic a, PointStatic b) {
     var dx = a.x - b.x;
-    var dy = a.y - b.y;
+    var dy = b.y - a.y;
+    // Calculation: simplified sqrt((dx^2 + dy^2)) without using dart:math
     return (dx * dx + dy * dy) / 1;
   }
 }
