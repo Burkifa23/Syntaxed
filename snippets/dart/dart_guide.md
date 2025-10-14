@@ -27,10 +27,11 @@ This curriculum is updated to cover 54 focused concepts, including essential fea
 
 ---
 
-basic-types.dart
-Concept Taught: int, double, String, bool basic usage
+`basic-types.dart`
 
-Documentation Focus: dart.dev/language/built-in-types
+**Concept Taught:** int, double, String, bool basic usage
+
+**Documentation Focus:** [https://dart.dev/language/built-in-types](https://dart.dev/language/built-in-types)
 
 strings.dart
 Concept Taught: String interpolation ($, ${}), literals, multi-line strings
