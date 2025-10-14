@@ -19,10 +19,13 @@ This curriculum is updated to cover 54 focused concepts, including essential fea
 
 --- 
 
-null-safety.dart
-Concept Taught: Nullable types, null assertion (!), null-aware operators (?., ??)
+`null-safety.dart`
 
-Documentation Focus: dart.dev/null-safety/understanding-null-safety
+**Concept Taught:** Nullable types, null assertion (!), null-aware operators (?., ??)
+
+**Documentation Focus:** [https://dart.dev/null-safety/understanding-null-safety](https://dart.dev/null-safety/understanding-null-safety)
+
+---
 
 basic-types.dart
 Concept Taught: int, double, String, bool basic usage
