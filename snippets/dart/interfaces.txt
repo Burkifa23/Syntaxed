@@ -1,0 +1,46 @@
+void main() {
+  var homework = TodoItem('Math Homework', 'High');
+  homework.markCompleted();
+  
+  print('Task Name: ${homework.name}');
+  print('Status: ${homework.isCompleted ? "Done" : "Pending"}');
+  
+  // Demonstrating polymorphism: assigning the instance to the interface type.
+  TaskContract taskInterface = homework;
+  taskInterface.markCompleted();
+  
+  print('Priority from Interface: ${taskInterface.priority}');
+}
+
+
+class TaskContract {
+  String name;
+  bool isCompleted = false;
+  String priority;
+  
+  TaskContract(this.name, this.priority);
+  
+  void markCompleted() {
+    isCompleted = true;
+  }
+}
+
+
+class TodoItem implements TaskContract {
+  @override
+  String name;
+  
+  @override
+  bool isCompleted = false;
+  
+  @override
+  String priority;
+  
+  TodoItem(this.name, this.priority);
+  
+  @override
+  void markCompleted() {
+    isCompleted = true;
+    print('TASK: "$name" implemented and marked complete.');
+  }
+}
