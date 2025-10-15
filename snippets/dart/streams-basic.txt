@@ -1,0 +1,40 @@
+import 'dart:async';
+
+Stream<int> countStream(int max) async* {
+  for (int i = 1; i <= max; i++) {
+    
+    await Future.delayed(Duration(milliseconds: 500));
+    
+    yield i; 
+  }
+}
+
+void main() async {
+  print('1. Program Start. Subscribing to Stream...');
+  
+  
+  Stream<int> stream = countStream(5);
+  int sum = 0;
+  
+  
+  await for (int number in stream) {
+    print('  Received Stream value: $number');
+    sum += number;
+  }
+  
+  print('3. Stream Finished. Total Sum: $sum');
+  
+  Stream<String> squaredStrings = countStream(3)
+      .map((number) => 'Squared: ${number * number}');
+      
+  print('\n4. Consuming Transformed Stream...');
+  
+  
+  squaredStrings.listen(
+    (data) => print('  Transformed Data: $data'),
+    onError: (e) => print('  Stream Error: $e'),
+    onDone: () => print('5. Transformation Stream Completed.'),
+  );
+  
+  await Future.delayed(Duration(seconds: 3));
+}
