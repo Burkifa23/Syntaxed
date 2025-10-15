@@ -227,6 +227,7 @@ document.addEventListener("DOMContentLoaded", () => {
             streams_basics: 'snippets/dart/streams-basic.txt',
             error_handling: 'snippets/dart/error-handling.txt',
             records_patterns: 'snippets/dart/records-patterns.txt',
+            json_serialization: 'snippets/dart/json-serialization.txt'
             
         },
         elixir: {
