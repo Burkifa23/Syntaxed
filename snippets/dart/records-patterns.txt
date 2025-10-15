@@ -1,0 +1,65 @@
+// 1. Function returning a positional Record: (String, int)
+(String, int) getProfile() {
+  return ('Alice', 30);
+}
+
+// 2. Function returning a named Record: ({double, double})
+({double latitude, double longitude}) getLocation() {
+  return (latitude: 34.05, longitude: -118.25);
+}
+
+// Example class for demonstrating Object Patterns
+class Square {
+  final double side;
+  Square(this.side);
+}
+
+class Circle {
+  final double radius;
+  Circle(this.radius);
+}
+
+// Helper function to process a shape object
+String processShape(Object shape) {
+  // 3. Switch expression with Object Patterns for deconstruction and matching
+  return switch (shape) {
+    Square(side: 0) => 'Zero-area square',
+    Square(side: var s) => 'Square with side: $s',
+    Circle(radius: var r) when r > 10.0 => 'Large circle', // Pattern with a guard clause
+    Circle(radius: var r) => 'Circle with radius: $r',
+    // Exhaustive default pattern
+    _ => 'Unknown shape'
+  };
+}
+
+void main() {
+  // A. Records Destructuring (Positional)
+  // 4. Pattern: final (name, age) assigns values based on position.
+  final (name, age) = getProfile();
+  print('--- Positional Records & Patterns ---');
+  print('Name: $name, Age: $age');
+
+  // B. Records Destructuring (Named)
+  // 5. Pattern: final (:latitude, :longitude) assigns values based on key name.
+  final (:latitude, :longitude) = getLocation();
+  print('\n--- Named Records & Patterns ---');
+  print('Lat: $latitude, Lon: $longitude');
+  
+  // C. Patterns in Control Flow (Object Patterns)
+  print('\n--- Object Patterns in switch ---');
+  final smallSquare = Square(5.0);
+  final bigCircle = Circle(15.0);
+
+  print('Shape 1: ${processShape(smallSquare)}');
+  print('Shape 2: ${processShape(bigCircle)}');
+  
+  // 6. if-case statement for precise matching and local assignment
+  final dynamic result = [101, 'Success'];
+  
+  if (result case [int id, String status]) {
+    print('\n--- List Pattern in if-case ---');
+    print('ID: $id, Status: $status');
+  } else {
+    print('Pattern did not match');
+  }
+}
