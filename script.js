@@ -222,7 +222,7 @@ document.addEventListener("DOMContentLoaded", () => {
             interfaces: 'snippets/dart/interfaces.txt',
             abstract_classes: 'snippets/dart/abstract-classes.txt',
             generics: 'snippets/dart/generics.txt',
-            extension_methods: 'snippets/dart/extension-methods.txt',
+            extension_method: 'snippets/dart/extension-methods.txt',
             
         },
         elixir: {

@@ -1,0 +1,40 @@
+import 'dart:async';
+
+
+Future<String> fetchUserData(String userId) async {
+  // Use Future.delayed to simulate a time-consuming I/O operation.
+  await Future.delayed(Duration(seconds: 2));
+  
+  if (userId == '42') {
+    return 'User Data for ID 42: Alice Smith';
+  } else {
+    // Return a Future with an error (used in error-handling later)
+    throw Exception('User $userId not found');
+  }
+}
+
+
+void main() async {
+  print('1. Program Start (Synchronous code executes immediately).');
+  
+  
+  try {
+    print('2. Calling fetchUserData for ID 42...');
+    
+    
+    String data = await fetchUserData('42'); 
+    
+    print('3. Data Received: $data');
+    print('4. Continuing synchronous execution.');
+    
+    
+    print('\n5. Calling fetchUserData for ID 99 (will fail)...');
+    String errorData = await fetchUserData('99');
+    print('This line will not execute: $errorData');
+
+  } on Exception catch (e) {
+        print('6. Caught Error: ${e.toString()}');
+  }
+
+  print('7. Program End.');
+}
