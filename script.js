@@ -225,7 +225,8 @@ document.addEventListener("DOMContentLoaded", () => {
             extension_method: 'snippets/dart/extension-methods.txt',
             async_await: 'snippets/dart/async-awaits.txt',
             streams_basics: 'snippets/dart/streams-basic.txt',
-            error_handling: 'snippets/dart/error-handling.txt'
+            error_handling: 'snippets/dart/error-handling.txt',
+            records_patterns: 'snippets/dart/records-patterns.txt',
             
         },
         elixir: {
