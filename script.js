@@ -223,6 +223,7 @@ document.addEventListener("DOMContentLoaded", () => {
             abstract_classes: 'snippets/dart/abstract-classes.txt',
             generics: 'snippets/dart/generics.txt',
             extension_method: 'snippets/dart/extension-methods.txt',
+            async_await: 'snippets/dart/async-awaits.txt',
             
         },
         elixir: {
