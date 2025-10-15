@@ -1,0 +1,42 @@
+void main() {
+  var name = 'syntaxed platform';
+  
+  print('Original string: "$name"');
+  
+  var capitalized = name.capitalize();
+  print('Extension capitalized: "$capitalized"');
+
+  var isCapitalized = name.isCapitalized;
+  print('Extension getter (isCapitalized): $isCapitalized');
+  
+  var sentence = 'hello world';
+  print('Is "hello world" capitalized? ${sentence.isCapitalized}');
+
+  var numbers = [1, 2, 3, 4, 5];
+  var total = numbers.sum();
+  print('\nList sum extension: $total');
+
+  var strings = ['a', 'b'];
+  print('List of strings length: ${strings.length}');
+}
+
+
+extension StringExtensions on String {
+  String capitalize() {
+    if (isEmpty) return this;
+    return '${this[0].toUpperCase()}${substring(1)}';
+  }
+  
+  bool get isCapitalized => isNotEmpty && this[0] == this[0].toUpperCase();
+}
+
+
+extension ListSum on List<int> {
+  int sum() {
+    var total = 0;
+    for (var element in this) {
+      total += element;
+    }
+    return total;
+  }
+}
