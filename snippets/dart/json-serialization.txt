@@ -1,0 +1,58 @@
+import 'dart:convert';
+
+// 1. The data model class.
+class UserModel {
+  final int id;
+  final String email;
+  final String? bio;
+
+  // Generative constructor
+  UserModel({required this.id, required this.email, this.bio});
+
+  // 2. DESERIALIZATION: Factory constructor to create a UserModel from a Map.
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return UserModel(
+      id: json['id'] as int,
+      email: json['email'] as String,
+      // Handle optional/nullable fields safely
+      bio: json['bio'] as String?,
+    );
+  }
+
+  // 3. SERIALIZATION: Method to convert a UserModel instance back to a Map.
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      'id': id,
+      'email': email,
+      'bio': bio,
+    };
+  }
+}
+
+void main() {
+  // A. DESERIALIZATION (JSON String -> Dart Object)
+  final String jsonString =
+      '{"id": 42, "email": "test@example.com", "bio": "Dart enthusiast"}';
+
+  // 4. Use jsonDecode to parse the raw string into a Dart Map.
+  final Map<String, dynamic> userMap = jsonDecode(jsonString);
+
+  // 5. Use the fromJson factory constructor to create the type-safe object.
+  final UserModel user = UserModel.fromJson(userMap);
+
+  print('--- JSON Deserialization ---');
+  print('Decoded Email: ${user.email}');
+  print('Decoded ID Type: ${user.id.runtimeType}');
+
+  // B. SERIALIZATION (Dart Object -> JSON String)
+  final UserModel newUser = UserModel(id: 99, email: 'new@user.org', bio: null);
+  
+  // 6. Use the toJson method to get the Dart Map representation.
+  final Map<String, dynamic> newUserMap = newUser.toJson();
+
+  // 7. Use jsonEncode to convert the map back to a JSON string.
+  final String newJson = jsonEncode(newUserMap);
+
+  print('\n--- JSON Serialization ---');
+  print('Encoded JSON String: $newJson');
+}
