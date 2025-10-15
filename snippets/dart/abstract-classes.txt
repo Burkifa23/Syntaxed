@@ -1,0 +1,67 @@
+import 'dart:math';
+
+void main() {
+ 
+  print('Creating concrete shapes:');
+  
+  var circle = Circle(radius: 5.0);
+  print('Circle area: ${circle.calculateArea().toStringAsFixed(2)}');
+  circle.draw();
+  
+  var rectangle = Rectangle(width: 4.0, height: 6.0);
+  print('Rectangle area: ${rectangle.calculateArea().toStringAsFixed(2)}');
+  rectangle.draw();
+  
+  // Demonstrating polymorphism:
+  // A list of the abstract type holds concrete implementations.
+  print('\nProcessing shapes in a list:');
+  List<Shape> shapes = [circle, rectangle];
+  
+  for (var s in shapes) {
+    print('${s.runtimeType} Area: ${s.calculateArea().toStringAsFixed(2)}');
+    s.draw();
+  }
+}
+
+
+abstract class Shape {
+  // 1. Concrete method with an implementation body
+  void draw() {
+    print('Drawing a generic shape boundary.');
+  }
+  
+  double calculateArea();
+}
+
+
+class Circle extends Shape {
+  final double radius;
+  
+  Circle({required this.radius});
+  
+  // Must implement the abstract method calculateArea
+  @override
+  double calculateArea() {
+    return pi * radius * radius;
+  }
+  
+  // Optional: override the concrete draw method
+  @override
+  void draw() {
+    print('Drawing a perfect circle of radius $radius.');
+  }
+}
+
+
+class Rectangle extends Shape {
+  final double width;
+  final double height;
+  
+  Rectangle({required this.width, required this.height});
+  
+  // Must implement the abstract method calculateArea
+  @override
+  double calculateArea() {
+    return width * height;
+  }
+}
