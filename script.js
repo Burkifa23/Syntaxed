@@ -220,6 +220,7 @@ document.addEventListener("DOMContentLoaded", () => {
             inheritance: 'snippets/dart/inheritance.txt',
             mixins: 'snippets/dart/mixins.txt',
             interfaces: 'snippets/dart/interfaces.txt',
+            abstract_classes: 'snippets/dart/abstract-classes.txt',
             
         },
         elixir: {
