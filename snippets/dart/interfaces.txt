@@ -5,7 +5,6 @@ void main() {
   print('Task Name: ${homework.name}');
   print('Status: ${homework.isCompleted ? "Done" : "Pending"}');
   
-  // Demonstrating polymorphism: assigning the instance to the interface type.
   TaskContract taskInterface = homework;
   taskInterface.markCompleted();
   

@@ -14,7 +14,7 @@ class UserModel {
     return UserModel(
       id: json['id'] as int,
       email: json['email'] as String,
-      // Handle optional/nullable fields safely
+      
       bio: json['bio'] as String?,
     );
   }
