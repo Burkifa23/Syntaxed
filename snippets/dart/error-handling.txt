@@ -1,50 +1,36 @@
-// 1. Define a Custom Exception class
 class CustomDataException implements Exception {
   final String message;
-  
   const CustomDataException(this.message);
   
   @override
   String toString() => 'CustomDataException: $message';
 }
 
-// 2. A function that simulates an async operation that might fail
+
 Future<String> fetchData(bool shouldThrow) async {
-  if (shouldThrow) {
-    // 3. Throwing a custom, specific exception
+  if (shouldThrow) {    
     throw CustomDataException('Connection to data source failed.');
   }
   return 'Data successfully fetched.';
 }
 
 void main() async {
-  print('--- Starting Error Handling Demo ---');
-  
+  print('--- Starting Error Handling Demo ---');  
   try {
-    // Attempt 1: Success
     String result = await fetchData(false);
     print('Result 1 (Success): $result');
-
-    // Attempt 2: Failure - will be caught by the 'on' block below
     await fetchData(true); 
-
-  } on CustomDataException catch (e) {
-    // 4. Catch a specific exception type first
-    print('Caught Specific Custom Exception: ${e.message}');
-
-    // Demonstrate catching a built-in error (e.g., from parsing)
+  } on CustomDataException catch (e) {    
+    print('Caught Specific Custom Exception: ${e.message}');   
     try {
       int.parse('not-a-number');
     } on FormatException {
       print('Caught Built-in Exception: FormatException occurred.');
     }
 
-  } catch (e) {
-    // 5. Catch any other general exception
+  } catch (e) {    
     print('Caught General Exception: $e');
-
   } finally {
-    // 6. Cleanup code that always runs
     print('Finally block executed. Cleanup complete.');
   }
 }
