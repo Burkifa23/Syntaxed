@@ -1,7 +1,5 @@
 void main() {
-  
   print('--- LISTS - Ordered collections ---');  
-  // Lists maintain insertion order and allow duplicates.
   var list = [1, 2, 3];
   var fruits = ['apple', 'banana', 'orange'];
   
@@ -9,7 +7,6 @@ void main() {
   print('First fruit: ${fruits[0]}');
   print('List length: ${fruits.length}');
   
-  // Basic list mutation methods
   fruits.add('mango');
   print('After add: $fruits');
   
@@ -18,15 +15,13 @@ void main() {
   
   
   print('\n--- SETS - Unique, Unordered elements ---');  
-  // Sets store unique values; adding a duplicate has no effect.
   var halogens = {'fluorine', 'chlorine', 'bromine', 'iodine', 'astatine'};
   print('Halogens: $halogens');
   
-  // Explicitly creating a Set of type String (required for an empty set).
   var names = <String>{};
   names.add('Alice');
   names.add('Bob');
-  names.add('Alice'); // Ignored, already exists
+  names.add('Alice');
   print('Names (no duplicates): $names');
   
   
@@ -36,8 +31,7 @@ void main() {
   print('Intersection: ${set1.intersection(set2)}');
   
   
-  print('\n--- MAPS - Key-value pairs ---');
-  // Maps associate keys with values. Keys must be unique.
+  print('\n--- MAPS - Key-value pairs ---');  
   var gifts = {    
     'first': 'partridge',
     'second': 'turtledoves',
@@ -55,7 +49,6 @@ void main() {
   
   print('First gift: ${gifts['first']}');
   
-  // Adding a new key-value pair
   gifts['third'] = 'french hens';
   print('After adding: $gifts');
   
