@@ -2,13 +2,11 @@ import 'dart:async';
 
 
 Future<String> fetchUserData(String userId) async {
-  // Use Future.delayed to simulate a time-consuming I/O operation.
   await Future.delayed(Duration(seconds: 2));
   
   if (userId == '42') {
     return 'User Data for ID 42: Alice Smith';
   } else {
-    // Return a Future with an error (used in error-handling later)
     throw Exception('User $userId not found');
   }
 }
