@@ -1,22 +1,21 @@
 void main() {
-  // 1. Using a generic class with an explicit type (String)
   var stringBox = Box<String>();
   stringBox.set('Hello Generics');
   print('String Box Content: ${stringBox.get()}');
   
-  // 2. Using a generic class with type inference (int)
+  
   var intBox = Box<int>();
   intBox.set(12345);
   print('Integer Box Content: ${intBox.get()}');
 
-  // 3. Using a type-constrained generic class (must be Comparable)
+  
   var stringProcessor = Processor<String>();
   print('\nString comparison result: ${stringProcessor.compare('apple', 'banana')}');
   
   var intProcessor = Processor<int>();
   print('Integer comparison result: ${intProcessor.compare(100, 50)}');
   
-  // 4. Using a generic function
+  
   var items = [10.5, 20.5, 30.5];
   var firstItem = getItem(items, 0);
   print('\nGeneric function result: ${firstItem}');
@@ -24,30 +23,27 @@ void main() {
 }
 
 
-// 1. Generic class definition: T is the type parameter
 class Box<T> {
   T? _content;
 
-  // Uses T as the type for the parameter
+  
   void set(T value) {
     _content = value;
   }
   
-  // Uses T as the return type
+  
   T? get() {
     return _content;
   }
 }
 
-// 3. Generic class with an upper bound constraint: T must extend Comparable
-// This constraint allows us to safely call compareTo().
 class Processor<T extends Comparable> {
   int compare(T a, T b) {
     return a.compareTo(b);
   }
 }
 
-// 4. Generic function definition
+
 T getItem<T>(List<T> items, int index) {
   return items[index];
 }
