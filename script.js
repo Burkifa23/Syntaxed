@@ -252,7 +252,9 @@ document.addEventListener("DOMContentLoaded", () => {
             start: 'snippets/kotlin/hello.txt'
         },
         java: {
-            start: 'snippets/java/hello.txt'
+            start: 'snippets/java/hello.txt',
+            variables_data_types: 'snippets/java/variables-data-types.txt'
+
         },
         javascript: {
             start: 'snippets/javascript/hello.txt',
