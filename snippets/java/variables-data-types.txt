@@ -1,0 +1,48 @@
+import java.util.ArrayList;
+import java.util.List;
+
+public class VariablesDataTypes {
+
+    public static void main(String[] args) {
+        
+        int age = 30;
+        long population = 8000000000L;
+        byte temperature = -10;
+        short sensorValue = 1024;
+        
+        
+        double price = 19.99;
+        float pi = 3.14159f;
+        
+        
+        char initial = 'S';
+
+        boolean isActive = true;
+
+        System.out.println("Age: " + age);
+        System.out.println("Population: " + population);
+        System.out.println("Is Active: " + isActive);
+
+
+        String name = "Syntaxed";
+        List<String> userList = new ArrayList<>();
+        
+        System.out.println("\nName: " + name);
+        
+
+        var inferredMessage = "Using var for local variables";
+        var inferredNumber = 42;
+        
+        System.out.println("Inferred Message Type: " + inferredMessage.getClass().getName());
+        System.out.println("Inferred Number Value: " + inferredNumber);
+
+
+        double largeDouble = 10.98;
+        
+        int castedInt = (int) largeDouble; 
+        
+        double wideDouble = castedInt; 
+
+        System.out.println("\nCasted Int (loss of .98): " + castedInt); 
+    }
+}
