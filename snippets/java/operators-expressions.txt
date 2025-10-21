@@ -1,0 +1,45 @@
+public class OperatorsExpressions {
+
+    public static void main(String[] args) {
+        
+        int a = 20;
+        int b = 5;
+        int result;
+        
+        result = a + b;
+        System.out.println("Addition (20 + 5): " + result);
+
+        result = a / b;
+        System.out.println("Division (20 / 5): " + result);
+
+        result = 21 % 5;
+        System.out.println("Modulo (21 % 5): " + result);
+
+        int counter = 10;
+        counter++;
+        System.out.println("\nCounter after ++: " + counter); 
+
+        
+        int total = 100;
+        total += 50;
+        System.out.println("Total after += 50: " + total);
+
+        
+        boolean isGreater = (a > b);
+        boolean isEquals = (a == 20);
+        
+        boolean complexCondition = isGreater && isEquals;
+        System.out.println("\nIs greater AND is equals (T && T): " + complexCondition); 
+
+        boolean shortCircuit = (b != 0) && (a / b > 3); 
+        System.out.println("Short-circuit result: " + shortCircuit); 
+
+        
+        String status = (a >= 20) ? "High" : "Low";
+        System.out.println("Status (Ternary Operator): " + status);
+        
+        
+        int precedenceExample = 5 + 10 * 2;
+        System.out.println("\nPrecedence (5 + 10 * 2): " + precedenceExample); 
+    }
+}
