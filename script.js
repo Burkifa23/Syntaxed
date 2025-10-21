@@ -253,7 +253,8 @@ document.addEventListener("DOMContentLoaded", () => {
         },
         java: {
             start: 'snippets/java/hello.txt',
-            variables_data_types: 'snippets/java/variables-data-types.txt'
+            variables_data_types: 'snippets/java/variables-data-types.txt',
+            operators_expressions: 'snippets/java/operators-expressions.txt',
 
         },
         javascript: {
