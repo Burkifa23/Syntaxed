@@ -1,0 +1,35 @@
+public class ArraysBasics {
+    public static void main(String[] args) {
+        String[] names = new String[3];
+        names[0] = "Alice";
+        names[1] = "Bob";
+        names[2] = "Charlie";
+        System.out.println("First name: " + names[0]);
+        System.out.println("Array length: " + names.length);
+
+        
+        int[] primes = {2, 3, 5, 7, 11};
+        System.out.print("Primes: ");
+        for (int prime : primes) {
+            System.out.print(prime + " ");
+        }
+        System.out.println();
+        
+        
+        int[][] matrix = new int[2][3];
+        matrix[0][0] = 1; matrix[0][1] = 2; matrix[0][2] = 3;
+        matrix[1][0] = 4; matrix[1][1] = 5; matrix[1][2] = 6;
+        
+        
+        System.out.println("Element at (1, 2): " + matrix[1][2]);
+
+        
+        System.out.println("Matrix content:");
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                System.out.print(matrix[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
+}
