@@ -264,6 +264,7 @@ document.addEventListener("DOMContentLoaded", () => {
             inheritance: 'snippets/java/inheritance.txt',
             polymorphism: 'snippets/java/polymorphism.txt',
             abstract_classes: 'snippets/java/abstract-classes.txt',
+            interfaces: 'snippets/java/interfaces.txt',
             
             
             
