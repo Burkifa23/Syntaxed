@@ -1,0 +1,44 @@
+public class Main {
+    public static void main(String[] args) {
+        CoffeeMaker maker1 = new CoffeeMaker();
+        maker1.brew();
+
+
+        CoffeeMaker maker2 = new CoffeeMaker("Espresso", true);
+        maker2.brew();
+
+
+        CoffeeMaker maker3 = new CoffeeMaker("Latte");
+        maker3.brew();
+    }
+}
+
+class CoffeeMaker {
+    String coffeeType;
+    boolean hasMilk;
+
+
+    public CoffeeMaker() {
+        this.coffeeType = "Drip Coffee";
+        this.hasMilk = false;
+        System.out.println("Maker created: Default to Drip Coffee.");
+    }
+
+    public CoffeeMaker(String coffeeType, boolean hasMilk) {
+        this.coffeeType = coffeeType;
+        this.hasMilk = hasMilk;
+        System.out.println("Maker created: Customized " + this.coffeeType + " setup.");
+    }
+
+    
+    public CoffeeMaker(String coffeeType) {
+        this("Americano", true);
+        this.coffeeType = coffeeType;
+        System.out.println("Maker created: Chained constructor used for " + this.coffeeType + ".");
+    }
+
+    public void brew() {
+        String milkStatus = this.hasMilk ? "with milk." : "black.";
+        System.out.println("Brewing " + this.coffeeType + " " + milkStatus);
+    }
+}
