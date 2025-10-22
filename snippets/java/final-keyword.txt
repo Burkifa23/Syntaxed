@@ -1,0 +1,77 @@
+public class Main {
+    // 1. Final Field (Constant)
+    private final String API_VERSION = "v1.25.0";
+    private final int MAX_CONNECTIONS;
+
+    public FinalKeywordUsage(int maxConnections) {
+        this.MAX_CONNECTIONS = maxConnections; 
+    }
+
+    public static void main(String[] args) {
+        FinalKeywordUsage config1 = new FinalKeywordUsage(100);
+        FinalKeywordUsage config2 = new FinalKeywordUsage(200);
+
+        System.out.println("Config 1 Version: " + config1.API_VERSION + ", Max Connections: " + config1.MAX_CONNECTIONS);
+        System.out.println("Config 2 Version: " + config2.API_VERSION + ", Max Connections: " + config2.MAX_CONNECTIONS);
+        
+        
+        // Final local primitive variable (cannot be reassigned)
+        final int INITIAL_PORT = 8080;
+        // ERROR: Cannot reassign
+        // INITIAL_PORT = 8081;
+
+        // Final reference variable
+        final Configuration cfg = new Configuration("Default");
+        System.out.println("Initial Config Name: " + cfg.getName());
+        
+        // ERROR: Cannot reassign the reference
+        // cfg = new Configuration("New");
+        
+
+        cfg.setName("Updated Configuration"); 
+        System.out.println("Updated Config Name: " + cfg.getName());
+        
+
+        FinalChild finalObj = new FinalChild();
+        finalObj.printFixedValue();
+    }
+}
+
+
+class Configuration {
+    private String name;
+    
+    public Configuration(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}
+
+
+final class FinalParent {    
+    public final void printFixedValue() {
+        System.out.println("Fixed value: 42. (Method cannot be overridden)");
+    }
+}
+
+// ERROR: Cannot extend a final class. Uncommenting this will cause a compile error.
+/*
+class FinalChild extends FinalParent {
+    // Cannot override printFixedValue()
+}
+*/
+
+class FinalChild {
+    private FinalParent parent = new FinalParent();
+
+    public void printFixedValue() {
+        parent.printFixedValue();
+    }
+}
