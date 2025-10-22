@@ -262,6 +262,7 @@ document.addEventListener("DOMContentLoaded", () => {
             classes_objects: 'snippets/java/classes-objects.txt',
             constructors: 'snippets/java/constructors.txt',
             inheritance: 'snippets/java/inheritance.txt',
+            polymorphism: 'snippets/java/polymorphism.txt',
             
             
             
