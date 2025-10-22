@@ -1,0 +1,43 @@
+public class Methods {
+
+    public static int addNumbers(int x, int y) {
+        return x + y;
+    }
+
+
+    public static double addNumbers(double x, double y) {
+        return x + y;
+    }
+
+    public static void greetUser(String name) {
+        System.out.println("Hello, " + name + "! Welcome to Syntaxed.");
+    }
+
+    public static int sumAll(int... numbers) {
+        int sum = 0;
+        for (int number : numbers) {
+            sum += number;
+        }
+        return sum;
+    }
+
+    public static void main(String[] args) {
+        int sumInt = addNumbers(10, 20);
+        System.out.println("Sum of two integers: " + sumInt);
+        
+
+        double sumDouble = addNumbers(10.5, 20.3);
+        System.out.println("Sum of two doubles (overloaded): " + sumDouble);
+        
+
+        greetUser("Java Learner");
+        
+
+        int sumVarargs = sumAll(1, 2, 3, 4, 5);
+        System.out.println("Sum of multiple arguments (varargs): " + sumVarargs);
+
+
+        int sumZero = sumAll();
+        System.out.println("Sum of zero arguments (varargs): " + sumZero);
+    }
+}
