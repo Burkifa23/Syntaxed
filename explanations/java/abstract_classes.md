@@ -1,4 +1,4 @@
-### Snippet: `abstract-classes.java`
+### Snippet: `Abstract Classes in Java`
 
 This snippet introduces the concept of **abstraction** in Java through the use of **abstract classes** and **abstract methods**. This allows you to define common interfaces and partially implemented logic for a group of related classes.
 

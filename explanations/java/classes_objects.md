@@ -1,4 +1,4 @@
-### Snippet: `classes-objects.java`
+### Snippet: `Classes and Objects in Java`
 
 This snippet introduces the core building blocks of Java's object-oriented paradigm: **classes** (the blueprint) and **objects** (the instance). It demonstrates defining state using instance variables and behavior using methods.
 

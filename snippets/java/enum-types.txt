@@ -1,0 +1,74 @@
+public class Main {
+    public static void main(String[] args) {
+        
+        TicketStatus currentStatus = TicketStatus.IN_PROGRESS;
+        
+        String statusMessage = switch (currentStatus) {
+            case OPEN -> "Ticket requires immediate attention.";
+            case IN_PROGRESS -> "Ticket is currently being resolved.";
+            case CLOSED -> "Ticket resolution is complete.";
+        };
+
+        System.out.println("Status: " + currentStatus);
+        System.out.println("Message: " + statusMessage);
+        
+        
+        System.out.println("\n--- Complex Enum Usage ---");
+        
+        
+        System.out.println("Role ADMIN has level: " + UserRole.ADMIN.getLevel());
+        System.out.println("Role GUEST can view: " + UserRole.GUEST.canView());
+
+        
+        System.out.println("\nAvailable User Roles:");
+        for (UserRole role : UserRole.values()) {
+            System.out.println(role.name() + " (" + role.getDisplayName() + ")");
+        }
+
+        
+        try {
+            UserRole requestedRole = UserRole.valueOf("EDITOR");
+            System.out.println("\nRequested Role: " + requestedRole.getDisplayName());
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: Role not found.");
+        }
+    }
+}
+
+
+enum TicketStatus {
+    OPEN,
+    IN_PROGRESS,
+    CLOSED
+}
+
+
+enum UserRole {
+    ADMIN(10, "Administrator"),
+    EDITOR(5, "Content Editor"),
+    GUEST(1, "Site Guest");
+
+
+    private final int level;
+    private final String displayName;
+
+
+    UserRole(int level, String displayName) {
+        this.level = level;
+        this.displayName = displayName;
+    }
+
+
+    public int getLevel() {
+        return level;
+    }
+
+
+    public boolean canView() {
+        return this.level >= 1;
+    }
+    
+    public String getDisplayName() {
+        return displayName;
+    }
+}
