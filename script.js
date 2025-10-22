@@ -269,6 +269,7 @@ document.addEventListener("DOMContentLoaded", () => {
             static: 'snippets/java/static.txt',
             composition_aggregation: 'snippets/java/composition-aggregation.txt',
             final_keyword: 'snippets/java/final-keyword.txt',
+            enum_types: 'snippets/java/enum-types.txt',
             
             
 
