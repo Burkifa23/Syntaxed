@@ -259,6 +259,9 @@ document.addEventListener("DOMContentLoaded", () => {
             loops_iteration: 'snippets/java/loops-iteration.txt',
             methods_: 'snippets/java/methods-parameters.txt',
             array_basics: 'snippets/java/array-basics.txt',
+            classes_objects: 'snippets/java/classes-objects.txt',
+            
+            
             
 
 
