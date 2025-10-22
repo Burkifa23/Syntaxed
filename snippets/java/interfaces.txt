@@ -1,0 +1,65 @@
+public class Main {
+    public static void main(String[] args) {
+        DatabaseConnection mysql = new MySqlConnection();
+        DatabaseConnection postgres = new PostgresConnection();
+
+        System.out.println("--- Executing Database Operations via Interface ---");
+        processDatabaseOperation(mysql);
+        System.out.println();
+        processDatabaseOperation(postgres);
+
+        System.out.println("\nMySQL Driver Version: " + DatabaseConnection.DRIVER_VERSION);
+    }
+    
+
+    public static void processDatabaseOperation(DatabaseConnection db) {
+        db.connect();
+        db.executeQuery("SELECT * FROM users");
+        db.disconnect();
+    }
+}
+
+
+interface DatabaseConnection {
+    String DRIVER_VERSION = "25.0 LTS";
+    
+
+    void connect();
+    void disconnect();
+    
+
+    default void executeQuery(String sql) {
+        System.out.println("Executing generic query: " + sql);
+    }
+}
+
+
+class MySqlConnection implements DatabaseConnection {
+    @Override
+    public void connect() {
+        System.out.println("MySQL: Connecting via JDBC driver.");
+    }
+    
+    @Override
+    public void disconnect() {
+        System.out.println("MySQL: Connection closed.");
+    }
+    
+    
+    @Override
+    public void executeQuery(String sql) {
+        System.out.println("MySQL: Executing optimized query: " + sql);
+    }
+}
+
+class PostgresConnection implements DatabaseConnection {
+    @Override
+    public void connect() {
+        System.out.println("PostgreSQL: Connecting securely with SSL.");
+    }
+    
+    @Override
+    public void disconnect() {
+        System.out.println("PostgreSQL: Connection gracefully terminated.");
+    }
+}
