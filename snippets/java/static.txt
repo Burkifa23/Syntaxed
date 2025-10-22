@@ -1,0 +1,59 @@
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("--- Initial State ---");
+        System.out.println("Total resources initialized (Static Field): " + ResourceTracker.totalResources);
+        System.out.println("Current unique ID (Static Method): " + ResourceTracker.getNextId());
+
+        
+        Resource resource1 = new Resource("Cache");
+        
+        Resource resource2 = new Resource("Database");
+
+        System.out.println("\n--- Instance Access ---");
+        System.out.println("R1 Static Count (Discouraged): " + resource1.totalResources);
+        System.out.println("R2 Static Count (Discouraged): " + resource2.totalResources);
+        
+        System.out.println("\n--- Class Access (Recommended) ---");
+        System.out.println("Total Resources: " + ResourceTracker.totalResources);
+        System.out.println("Next available ID: " + ResourceTracker.getNextId());
+
+        
+        ResourceTracker.displayStatus();
+    }
+}
+
+class ResourceTracker {
+    public static int totalResources = 0;
+    private static int nextId = 1000;
+
+    
+    public static int getNextId() {
+        return nextId++;
+    }
+
+    
+    static {
+        System.out.println("ResourceTracker class loaded: Initializing static resources.");
+    }
+    
+    
+    public static void displayStatus() {
+        System.out.println("Status: ResourceTracker is active. Current ID Pool: " + nextId);
+    }
+}
+
+class Resource {
+    private String name;
+    private int id;
+    private long creationTimestamp;
+
+    public Resource(String name) {
+        this.name = name;
+        ResourceTracker.totalResources++; 
+        
+        this.id = ResourceTracker.getNextId(); 
+        this.creationTimestamp = System.currentTimeMillis();
+        
+        System.out.println("Created Resource: " + this.name + " (ID: " + this.id + ")");
+    }
+}
