@@ -268,6 +268,7 @@ document.addEventListener("DOMContentLoaded", () => {
             encapsulation: 'snippets/java/encapsulation.txt',
             static: 'snippets/java/static.txt',
             composition_aggregation: 'snippets/java/composition-aggregation.txt',
+            final_keyword: 'snippets/java/final-keyword.txt',
             
             
 
