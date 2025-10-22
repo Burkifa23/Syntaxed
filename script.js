@@ -267,7 +267,7 @@ document.addEventListener("DOMContentLoaded", () => {
             interfaces: 'snippets/java/interfaces.txt',
             encapsulation: 'snippets/java/encapsulation.txt',
             static: 'snippets/java/static.txt',
-            
+            composition_aggregation: 'snippets/java/composition-aggregation.txt',
             
             
 
