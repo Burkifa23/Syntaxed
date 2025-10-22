@@ -1,0 +1,76 @@
+public class Main {
+    public static void main(String[] args) {
+        Shape circle = new Circle(10.0);
+        Shape rectangle = new Rectangle(8.0, 5.0);
+
+        System.out.println("--- Calculations for Concrete Shapes ---");        
+        System.out.println("Circle Area: " + circle.calculateArea());
+        circle.describe();
+
+        System.out.println("Rectangle Area: " + rectangle.calculateArea());
+        rectangle.describe();
+
+
+        System.out.println("\nCircle perimeter description: " + circle.getPerimeterDescription());
+        System.out.println("Rectangle perimeter description: " + rectangle.getPerimeterDescription());
+    }
+}
+
+
+abstract class Shape {
+    protected String name;
+
+    public Shape(String name) {
+        this.name = name;
+    }
+
+    public abstract double calculateArea();
+
+    public String getPerimeterDescription() {
+        return "This " + name + " defines its perimeter by summing its bounding edges or curve length.";
+    }
+    
+    public abstract void describe();
+}
+
+
+class Circle extends Shape {
+    private double radius;
+
+    public Circle(double radius) {
+        super("Circle");
+        this.radius = radius;
+    }
+
+    @Override
+    public double calculateArea() {
+        return Math.PI * radius * radius;
+    }
+
+    @Override
+    public void describe() {
+        System.out.println("This is a " + super.name + " with radius " + this.radius);
+    }
+}
+
+
+class Rectangle extends Shape {
+    private double length;
+    private double width;
+
+    public Rectangle(double length, double width) {
+        super("Rectangle");
+        this.length = length;
+        this.width = width;
+    }
+
+    @Override
+    public double calculateArea() {
+        return length * width;
+    }
+
+    @Override
+    public void describe() {
+        System.out.println("This is a " + super.name + " with dimensions " + this.length + "x" + this.width);
+    }
+}
