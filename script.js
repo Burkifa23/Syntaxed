@@ -266,6 +266,7 @@ document.addEventListener("DOMContentLoaded", () => {
             abstract_classes: 'snippets/java/abstract-classes.txt',
             interfaces: 'snippets/java/interfaces.txt',
             encapsulation: 'snippets/java/encapsulation.txt',
+            static: 'snippets/java/static.txt',
             
             
             
