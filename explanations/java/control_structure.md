@@ -1,4 +1,4 @@
-### Snippet: `Control Structures`
+### Snippet: `Control Structures in Java`
 
 This snippet focuses on control flow, allowing a program to make decisions and execute different blocks of code based on specific conditions. This is essential for implementing logic and rules in an application.
 

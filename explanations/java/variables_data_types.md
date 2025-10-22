@@ -1,4 +1,4 @@
-### Snippet: `Variables & Data Types`
+### Snippet: `Variables & Data Types in Java`
 
 This snippet establishes the foundation of Java's type system by demonstrating the declaration, initialization, and use of both **primitive** and **reference** data types, along with modern **local variable type inference**.
 

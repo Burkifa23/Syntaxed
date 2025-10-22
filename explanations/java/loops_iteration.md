@@ -1,4 +1,4 @@
-### Snippet: `loops-iteration.java`
+### Snippet: `Loops iteration in Java`
 
 This snippet covers Java's primary iteration constructs, which allow a block of code to be executed repeatedly. Mastering these loops is essential for processing collections, performing calculations, and managing application flow.
 

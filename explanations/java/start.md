@@ -1,4 +1,4 @@
-### Snippet: `Hello, World!`
+### Snippet: `Hello, World! in Java`
 
 This snippet introduces the absolute minimum structure required to compile and execute a Java program, establishing the core components necessary for any application.
 

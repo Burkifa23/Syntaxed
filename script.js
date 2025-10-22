@@ -255,7 +255,9 @@ document.addEventListener("DOMContentLoaded", () => {
             start: 'snippets/java/hello.txt',
             variables_data_types: 'snippets/java/variables-data-types.txt',
             operators_expressions: 'snippets/java/operators-expressions.txt',
-            control_structure: 'snippets/java/control-structure.txt'
+            control_structure: 'snippets/java/control-structure.txt',
+            loops_iteration: 'snippets/java/loops-iteration.txt',
+
 
         },
         javascript: {
