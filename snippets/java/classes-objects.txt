@@ -1,0 +1,55 @@
+public class ClassesAndObjects {
+    public static void main(String[] args) {
+        Car myCar = new Car();
+        myCar.make = "Toyota";
+        myCar.model = "Camry";
+        myCar.year = 2022;
+        
+
+        Car yourCar = new Car();
+        yourCar.make = "Honda";
+        yourCar.model = "Accord";
+        yourCar.year = 2024;
+        
+        System.out.println("--- My Car ---");
+        myCar.displayState();
+        myCar.accelerate();
+        myCar.accelerate();
+        myCar.displayState();
+
+        System.out.println("\n--- Your Car ---");
+        yourCar.displayState();
+        yourCar.brake();
+        yourCar.displayState();
+    }
+}
+
+
+class Car {
+    
+    String make;
+    String model;
+    int year;
+    int speed = 0;
+
+    
+    public void accelerate() {
+        speed += 10;
+        System.out.println(make + " " + model + " accelerated. Speed: " + speed + " km/h.");
+    }
+
+    
+    public void brake() {
+        if (speed >= 10) {
+            speed -= 10;
+        } else {
+            speed = 0;
+        }
+        System.out.println(make + " " + model + " braked. Speed: " + speed + " km/h.");
+    }
+
+    
+    public void displayState() {
+        System.out.println("Status: " + year + " " + make + " " + model + ", current speed is " + speed + " km/h.");
+    }
+}
