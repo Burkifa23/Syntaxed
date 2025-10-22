@@ -1,0 +1,86 @@
+public class Main {
+    public static void main(String[] args) {
+        Vehicle car = new Car("Sedan", 160);
+        Vehicle truck = new Truck("Dump", 120);
+        System.out.println("--- Polymorphic Array Processing ---");
+        Vehicle[] garage = {car, truck, new Motorcycle("Cruiser", 180)};
+
+        for (Vehicle v : garage) {
+            v.describe();
+        }
+
+        System.out.println("\n--- Explicit Reference and Call ---");
+        Vehicle genericRef = new Car("Hatchback", 140);
+        genericRef.start();        
+
+        processVehicle(genericRef);
+    }
+    
+
+    public static void processVehicle(Vehicle v) {
+        System.out.println("Processing vehicle of type: " + v.getClass().getSimpleName());
+        v.performAction();
+    }
+}
+
+
+abstract class Vehicle {
+    protected String name;
+    protected int maxSpeed;
+
+    public Vehicle(String name, int maxSpeed) {
+        this.name = name;
+        this.maxSpeed = maxSpeed;
+    }
+    
+    public void start() {
+        System.out.println(name + " starts up.");
+    }
+    
+    public abstract void performAction();
+    
+    public void describe() {
+        System.out.println("Vehicle: " + name + ", Max Speed: " + maxSpeed + " km/h");
+    }
+}
+
+
+class Car extends Vehicle {
+    public Car(String name, int maxSpeed) {
+        super(name, maxSpeed);
+    }
+
+    @Override
+    public void start() {
+        System.out.println(name + " begins its smooth drive.");
+    }
+
+    @Override
+    public void performAction() {
+        System.out.println(name + " is navigating city streets.");
+    }
+}
+
+
+class Truck extends Vehicle {
+    public Truck(String name, int maxSpeed) {
+        super(name, maxSpeed);
+    }
+
+    @Override
+    public void performAction() {
+        System.out.println(name + " is hauling heavy cargo on the highway.");
+    }
+}
+
+
+class Motorcycle extends Vehicle {
+    public Motorcycle(String name, int maxSpeed) {
+        super(name, maxSpeed);
+    }
+
+    @Override
+    public void performAction() {
+        System.out.println(name + " is leaning into the turn.");
+    }
+}
