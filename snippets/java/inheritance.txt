@@ -1,0 +1,61 @@
+public class Main {
+    public static void main(String[] args) {
+        Car myCar = new Car("Generic Sedan", 160);
+        myCar.startEngine();
+        myCar.drive(50);
+        System.out.println("Car: " + myCar.getModel() + ", Speed: " + myCar.getCurrentSpeed());
+
+        
+        ElectricCar tesla = new ElectricCar("Model S", 250, 100);
+        tesla.startEngine();
+        tesla.drive(70);
+        System.out.println("ElectricCar: " + tesla.getModel() + ", Range: " + tesla.getBatteryRange());
+    }
+}
+
+class Car {
+    private String model;
+    private int maxSpeed;
+    private int currentSpeed;
+
+    public Car(String model, int maxSpeed) {
+        this.model = model;
+        this.maxSpeed = maxSpeed;
+        this.currentSpeed = 0;
+    }
+
+    public void startEngine() {
+        System.out.println("The standard internal combustion engine roars to life.");
+    }
+
+    public void drive(int speedIncrease) {
+        this.currentSpeed = Math.min(this.currentSpeed + speedIncrease, this.maxSpeed);
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public int getCurrentSpeed() {
+        return currentSpeed;
+    }
+}
+
+class ElectricCar extends Car {
+    private int batteryRange;
+
+    public ElectricCar(String model, int maxSpeed, int batteryRange) {
+        super(model, maxSpeed); 
+        this.batteryRange = batteryRange;
+    }
+
+    @Override
+    public void startEngine() {
+        System.out.println("The electric motor silently initializes.");
+    }
+    
+
+    public int getBatteryRange() {
+        return batteryRange;
+    }
+}
