@@ -261,6 +261,7 @@ document.addEventListener("DOMContentLoaded", () => {
             array_basics: 'snippets/java/array-basics.txt',
             classes_objects: 'snippets/java/classes-objects.txt',
             constructors: 'snippets/java/constructors.txt',
+            inheritance: 'snippets/java/inheritance.txt',
             
             
             
