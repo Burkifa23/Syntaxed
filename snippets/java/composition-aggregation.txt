@@ -1,0 +1,98 @@
+public class Main {
+    public static void main(String[] args) {
+        Car myCar = new Car("V8");
+        myCar.start();
+        myCar.accelerate();
+        myCar.stop();
+
+        
+        
+        System.out.println("\n--- 2. Aggregation Example ---");
+        Driver driverA = new Driver("Alice"); 
+        
+        
+        Vehicle taxi = new Vehicle("Toyota Camry");
+        taxi.assignDriver(driverA);
+        taxi.getDriverDetails();
+    }
+}
+
+
+class Car {
+    private Engine engine; 
+    private String model;
+
+    public Car(String engineType) {
+        this.model = "Sports";
+        this.engine = new Engine(engineType); 
+        System.out.println(this.model + " car built with new " + engineType + " engine.");
+    }
+
+    public void start() {
+        engine.startEngine();
+    }
+    
+    public void accelerate() {
+        engine.injectFuel();
+    }
+    
+    public void stop() {
+        engine.stopEngine();
+    }
+}
+
+class Engine {
+    private String type;
+
+    public Engine(String type) {
+        this.type = type;
+    }
+
+    public void startEngine() {
+        System.out.println("Engine (" + type + ") starting.");
+    }
+    
+    public void stopEngine() {
+        System.out.println("Engine (" + type + ") shutting down.");
+    }
+    
+    public void injectFuel() {
+        System.out.println("Engine (" + type + ") accelerating.");
+    }
+}
+
+
+class Vehicle {
+    private String name;
+    private Driver driver; 
+
+    public Vehicle(String name) {
+        this.name = name;
+    }
+
+    
+    public void assignDriver(Driver d) {
+        this.driver = d;
+        System.out.println(name + " assigned driver: " + d.getName());
+    }
+    
+    public void getDriverDetails() {
+        if (driver != null) {
+            System.out.println(name + " is currently driven by " + driver.getName());
+        } else {
+            System.out.println(name + " has no assigned driver.");
+        }
+    }
+}
+
+class Driver {
+    private String name;
+
+    public Driver(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+}
