@@ -1,0 +1,47 @@
+public class LoopsIteration {
+
+    public static void main(String[] args) {
+        
+        
+        int sumFor = 0;
+        for (int i = 1; i <= 5; i++) {
+            sumFor += i;
+        }
+        System.out.println("Sum using for loop (1 to 5): " + sumFor);
+        
+        
+        String[] fruits = {"Apple", "Banana", "Cherry"};
+        System.out.print("\nFruits using for-each: ");
+        for (String fruit : fruits) {
+            System.out.print(fruit + " ");
+        }
+        System.out.println();
+        
+        
+        int countWhile = 0;
+        while (countWhile < 3) {
+            System.out.println("While loop iteration: " + countWhile);
+            countWhile++;
+        }
+        
+        int countDoWhile = 5;
+        System.out.println("\nDo-While loop demonstration:");
+        do {
+            System.out.println("Do-While count: " + countDoWhile);
+            countDoWhile++;
+        } while (countDoWhile < 5);
+        
+        
+        System.out.print("\nBreak and Continue example: ");
+        for (int j = 1; j <= 10; j++) {
+            if (j == 3) {
+                continue;
+            }
+            if (j == 7) {
+                break;
+            }
+            System.out.print(j + " ");
+        }
+        System.out.println();
+    }
+}
