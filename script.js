@@ -260,6 +260,7 @@ document.addEventListener("DOMContentLoaded", () => {
             methods_: 'snippets/java/methods-parameters.txt',
             array_basics: 'snippets/java/array-basics.txt',
             classes_objects: 'snippets/java/classes-objects.txt',
+            constructors: 'snippets/java/constructors.txt',
             
             
             
