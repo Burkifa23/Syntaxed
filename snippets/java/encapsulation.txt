@@ -1,0 +1,62 @@
+public class Main {
+    public static void main(String[] args) {
+        UserProfile user = new UserProfile("John.Doe", "jd@example.com");
+
+        System.out.println("--- Initial State (Access via Getters) ---");
+        System.out.println("Username: " + user.getUsername());
+        System.out.println("Email: " + user.getEmail());
+        System.out.println("Status Code: " + user.getStatusCode());
+
+        System.out.println("\n--- Attempting Valid State Change (Setters) ---");
+        user.setStatusCode(2); 
+        user.setUsername("Johnathan.D");
+        System.out.println("New Username: " + user.getUsername());
+        System.out.println("New Status Code: " + user.getStatusCode());
+
+        System.out.println("\n--- Attempting Invalid State Change (Validation) ---");
+        user.setStatusCode(99); 
+        System.out.println("Status Code remains: " + user.getStatusCode());
+    }
+}
+
+class UserProfile {
+    private String username;
+    private String email;
+    private int statusCode;
+
+    
+    public UserProfile(String username, String email) {
+        this.username = username;
+        this.email = email;
+        this.statusCode = 1;
+    }
+
+
+    public String getUsername() {
+        return this.username;
+    }
+
+    public String getEmail() {
+        return this.email;
+    }
+    
+    public int getStatusCode() {
+        return this.statusCode;
+    }
+
+
+    public void setUsername(String username) {
+        if (username != null && username.length() > 3) {
+            this.username = username;
+        }
+    }
+
+    public void setStatusCode(int statusCode) {
+        if (statusCode >= 1 && statusCode <= 3) {
+            this.statusCode = statusCode;
+            System.out.println("SUCCESS: Status code updated to " + statusCode);
+        } else {
+            System.out.println("ERROR: Invalid status code attempted: " + statusCode + ". Update rejected.");
+        }
+    }
+}
