@@ -1,0 +1,66 @@
+public class Main {
+    public static void main(String[] args) {
+        ConfigurationManager config1 = ConfigurationManager.getInstance();
+        ConfigurationManager config2 = ConfigurationManager.getInstance();
+
+        System.out.println("--- 1. Singleton Pattern ---");
+        System.out.println("Config 1 Hash: " + config1.hashCode());
+        System.out.println("Config 2 Hash: " + config2.hashCode());
+        System.out.println("Are references the same? " + (config1 == config2));
+
+
+        System.out.println("\n--- 2. Factory Method Pattern ---");
+        Notification email = NotificationFactory.createNotification("EMAIL");
+        Notification sms = NotificationFactory.createNotification("SMS");
+        
+        email.send("Invoice ready.");
+        sms.send("Login alert.");
+    }
+}
+
+class ConfigurationManager {
+    private static ConfigurationManager instance;
+
+    private ConfigurationManager() {
+        System.out.println("Singleton: ConfigurationManager initialized.");
+    }
+
+    public static ConfigurationManager getInstance() {
+        if (instance == null) {
+            instance = new ConfigurationManager();
+        }
+        return instance;
+    }
+}
+
+
+
+interface Notification {
+    void send(String message);
+}
+
+class EmailNotification implements Notification {
+    @Override
+    public void send(String message) {
+        System.out.println("EMAIL sent: " + message);
+    }
+}
+
+class SMSNotification implements Notification {
+    @Override
+    public void send(String message) {
+        System.out.println("SMS sent: " + message);
+    }
+}
+
+class NotificationFactory {
+    public static Notification createNotification(String type) {
+        if ("EMAIL".equalsIgnoreCase(type)) {
+            return new EmailNotification();
+        } else if ("SMS".equalsIgnoreCase(type)) {
+            return new SMSNotification();
+        } else {
+            throw new IllegalArgumentException("Unknown notification type: " + type);
+        }
+    }
+}
