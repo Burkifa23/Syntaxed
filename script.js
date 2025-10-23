@@ -271,6 +271,7 @@ document.addEventListener("DOMContentLoaded", () => {
             final_keyword: 'snippets/java/final-keyword.txt',
             enum_types: 'snippets/java/enum-types.txt',
             inner_classes: 'snippets/java/inner-classes.txt',
+            reflection_api: 'snippets/java/reflection-api.txt',
             
             
 
