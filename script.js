@@ -270,6 +270,7 @@ document.addEventListener("DOMContentLoaded", () => {
             composition_aggregation: 'snippets/java/composition-aggregation.txt',
             final_keyword: 'snippets/java/final-keyword.txt',
             enum_types: 'snippets/java/enum-types.txt',
+            inner_classes: 'snippets/java/inner-classes.txt',
             
             
 
