@@ -273,6 +273,8 @@ document.addEventListener("DOMContentLoaded", () => {
             inner_classes: 'snippets/java/inner-classes.txt',
             reflection_api: 'snippets/java/reflection-api.txt',
             object_class_methods: 'snippets/java/object-class-methods.txt',
+            design_patterns: 'snippets/java/design-patterns.txt',
+            
             
             
 
