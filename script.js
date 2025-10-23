@@ -274,7 +274,8 @@ document.addEventListener("DOMContentLoaded", () => {
             reflection_api: 'snippets/java/reflection-api.txt',
             object_class_methods: 'snippets/java/object-class-methods.txt',
             design_patterns: 'snippets/java/design-patterns.txt',
-            
+            solid_principles: 'snippets/java/solid-principles.txt',
+
             
             
 
