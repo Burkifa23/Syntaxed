@@ -1,0 +1,81 @@
+public class Main {
+    public static void main(String[] args) {
+        NotificationService service = new NotificationService();
+        
+        System.out.println("--- S.R.P. and O.C.P. Demonstration ---");      
+        ReportData report = new ReportData("Monthly Sales Summary", 500);
+        ReportGenerator generator = new ReportGenerator();
+        ReportPrinter printer = new ReportPrinter();
+
+        String generatedContent = generator.generateReport(report);
+        printer.print(generatedContent);
+
+        System.out.println("\n--- L.S.P. and D.I.P. Demonstration ---");       
+        service.send(new EmailNotifier(), "System update available.");
+        service.send(new SMSNotifier(), "OTP: 123456.");
+        service.send(new PushNotifier(), "New server deployed.");
+    }
+}
+
+class ReportData {
+    private String title;
+    private int lines;
+    
+    public ReportData(String title, int lines) {
+        this.title = title;
+        this.lines = lines;
+    }
+    
+    public String getTitle() { return title; }
+    public int getLines() { return lines; }
+}
+
+
+class ReportGenerator {
+    public String generateReport(ReportData data) {
+        return "--- Generated Report: " + data.getTitle() + " (" + data.getLines() + " lines of data) ---";
+    }
+}
+
+
+class ReportPrinter {
+    public void print(String content) {
+        System.out.println("Printing to Console:\n" + content);
+    }
+}
+
+
+interface Notifier {
+    void sendNotification(String recipient, String message);
+}
+
+
+class EmailNotifier implements Notifier {
+    @Override
+    public void sendNotification(String recipient, String message) {
+        System.out.println("Email Sent to: " + recipient + " | Msg: " + message);
+    }
+}
+
+
+class SMSNotifier implements Notifier {
+    @Override
+    public void sendNotification(String recipient, String message) {
+        System.out.println("SMS Sent to: " + recipient + " | Msg: " + message);
+    }
+}
+
+
+class PushNotifier implements Notifier {
+    @Override
+    public void sendNotification(String recipient, String message) {
+        System.out.println("Push Notification to App: " + recipient + " | Payload: " + message);
+    }
+}
+
+
+class NotificationService {
+    public void send(Notifier notifier, String message) {
+        notifier.sendNotification("user@example.com", message);
+    }
+}
