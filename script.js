@@ -272,6 +272,7 @@ document.addEventListener("DOMContentLoaded", () => {
             enum_types: 'snippets/java/enum-types.txt',
             inner_classes: 'snippets/java/inner-classes.txt',
             reflection_api: 'snippets/java/reflection-api.txt',
+            object_class_methods: 'snippets/java/object-class-methods.txt',
             
             
 
