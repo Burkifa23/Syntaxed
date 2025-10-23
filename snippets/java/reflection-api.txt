@@ -1,0 +1,71 @@
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
+public class Main {
+    public static void main(String[] args) {
+        try {
+            Class<?> userClass = Class.forName("ReflectionAPIDemo$User");
+            System.out.println("--- 1. Class Inspection ---");
+            System.out.println("Class Name: " + userClass.getName());
+            
+            
+            System.out.println("Public Methods:");
+            for (Method m : userClass.getMethods()) {
+                if (m.getDeclaringClass().equals(userClass)) {
+                    System.out.println(" - " + m.getName());
+                }
+            }
+
+            
+            Object userInstance = userClass.getDeclaredConstructor(String.class, int.class).newInstance("Alice", 30);
+            
+            
+            System.out.println("\n--- 2. Field Modification ---");
+            Field ageField = userClass.getDeclaredField("age");
+            
+            
+            ageField.setAccessible(true); 
+            
+            System.out.println("Initial Age: " + ageField.get(userInstance));
+            
+            
+            ageField.set(userInstance, 31);
+            System.out.println("Modified Age: " + ageField.get(userInstance));
+            
+            
+            System.out.println("\n--- 3. Private Method Invocation ---");
+            Method internalMethod = userClass.getDeclaredMethod("internalCheck", int.class);
+            
+            
+            internalMethod.setAccessible(true);
+            
+            String result = (String) internalMethod.invoke(userInstance, 31);
+            System.out.println("Internal Check Result: " + result);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    static class User {
+        private String name;
+        private int age;
+        
+        public User(String name, int age) {
+            this.name = name;
+            this.age = age;
+        }
+        
+        public String getName() {
+            return name;
+        }
+        
+        private String internalCheck(int currentAge) {
+            if (currentAge > 30) {
+                return "User is over thirty.";
+            } else {
+                return "User is thirty or younger.";
+            }
+        }
+    }
+}
