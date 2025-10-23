@@ -1,0 +1,65 @@
+public class Main {
+    public static void main(String[] args) {
+        Product itemA = new Product("P001", "Laptop", 1200.00);
+        Product itemB = new Product("P001", "Laptop", 1200.00);
+        Product itemC = new Product("P002", "Mouse", 25.00);
+
+        System.out.println("--- 1. toString() Demonstration ---");
+        System.out.println("Item A: " + itemA);
+        System.out.println("Item C: " + itemC);
+
+        System.out.println("\n--- 2. equals() and hashCode() Demonstration ---");
+        System.out.println("Item A equals Item B? " + itemA.equals(itemB)); 
+
+    
+        System.out.println("Item A == Item B? " + (itemA == itemB)); 
+
+    
+        System.out.println("Hash A: " + itemA.hashCode());
+        System.out.println("Hash B: " + itemB.hashCode());
+        System.out.println("Hash C: " + itemC.hashCode()); 
+        
+    
+        System.out.println("Item A equals Item C? " + itemA.equals(itemC));
+    }
+}
+
+class Product {
+    private String sku;
+    private String name;
+    private double price;
+
+    public Product(String sku, String name, double price) {
+        this.sku = sku;
+        this.name = name;
+        this.price = price;
+    }
+
+    
+    @Override
+    public String toString() {
+        return "Product [SKU=" + sku + ", Name=" + name + ", Price=" + price + "]";
+    }
+    
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true; 
+        
+    
+        if (o == null || getClass() != o.getClass()) return false;
+        
+    
+        Product product = (Product) o;
+        
+    
+        return Double.compare(price, product.price) == 0 &&
+               sku.equals(product.sku) &&
+               name.equals(product.name);
+    }
+    
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(sku, name, price);
+    }
+}
