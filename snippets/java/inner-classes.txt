@@ -1,0 +1,57 @@
+public class Main {
+    private String outerMessage = "Outer class message.";
+
+    class MemberInner {
+        public void display() {
+            System.out.println("Member Inner: " + outerMessage);
+        }
+    }
+
+
+    static class StaticNested {
+        private static String staticMessage = "Static nested message.";
+        
+        public static void displayStatic() {
+            System.out.println("Static Nested: " + staticMessage); 
+            
+        }
+    }
+
+    public void runDemo() {
+        MemberInner member = new MemberInner();
+        member.display();
+
+        
+        class LocalInner {
+            public void greet(String name) {
+                System.out.println("Local Inner: Hello, " + name);
+            }
+        }
+        LocalInner local = new LocalInner();
+        local.greet("Alice");
+    }
+
+    public static void main(String[] args) {
+        System.out.println("--- Instance-based Inner Class ---");
+        InnerClassesDemo outerInstance = new InnerClassesDemo();
+        InnerClassesDemo.MemberInner memberInner = outerInstance.new MemberInner();
+        memberInner.display();
+
+        System.out.println("\n--- Static Nested Class ---");
+        InnerClassesDemo.StaticNested.displayStatic();
+        
+        System.out.println("\n--- Local Inner Class ---");
+        outerInstance.runDemo();
+
+        System.out.println("\n--- Anonymous Inner Class (Common in old Java) ---");
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("Anonymous Inner: Running a task.");
+            }
+        }).start();
+        
+        
+        new Thread(() -> System.out.println("Lambda: Running a task.")).start();
+    }
+}
