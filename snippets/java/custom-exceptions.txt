@@ -1,0 +1,46 @@
+public class Main {
+
+    public static void main(String[] args) {
+        System.out.println("--- Demo: Custom Checked Exception ---");
+        try {
+            validateUserId(100);
+        } catch (InvalidIdException e) {
+            System.out.println("CAUGHT CHECKED EXCEPTION: " + e.getMessage());
+        }
+
+        System.out.println("\n--- Demo: Custom Unchecked Exception ---");
+        try {
+            processTransaction(-500.00);
+        } catch (InvalidTransactionException e) {
+            System.out.println("CAUGHT UNCHECKED EXCEPTION: " + e.getMessage());
+        }
+    }
+
+    public static void validateUserId(int id) throws InvalidIdException {
+        if (id < 1000) {
+            throw new InvalidIdException("User ID " + id + " is too low. Must be 1000 or greater.");
+        }
+        System.out.println("User ID " + id + " validated successfully.");
+    }
+    
+    public static void processTransaction(double amount) {
+        if (amount <= 0) {
+            throw new InvalidTransactionException("Transaction amount " + amount + " cannot be zero or negative.");
+        }
+        System.out.println("Transaction of " + amount + " processed successfully.");
+    }
+}
+
+
+class InvalidIdException extends Exception {
+    public InvalidIdException(String message) {
+        super(message);
+    }
+}
+
+
+class InvalidTransactionException extends RuntimeException {
+    public InvalidTransactionException(String message) {
+        super(message);
+    }
+}
