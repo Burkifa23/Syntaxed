@@ -275,7 +275,7 @@ document.addEventListener("DOMContentLoaded", () => {
             object_class_methods: 'snippets/java/object-class-methods.txt',
             design_patterns: 'snippets/java/design-patterns.txt',
             solid_principles: 'snippets/java/solid-principles.txt',
-            exception_basics: 'snippets/java/exception-basics.txt',
+            exception_basics: 'snippets/java/exceptions-basics.txt',
             custom_exceptions: 'snippets/java/custom-exceptions.txt'
 
             
