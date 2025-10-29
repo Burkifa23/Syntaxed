@@ -276,7 +276,8 @@ document.addEventListener("DOMContentLoaded", () => {
             design_patterns: 'snippets/java/design-patterns.txt',
             solid_principles: 'snippets/java/solid-principles.txt',
             exception_basics: 'snippets/java/exceptions-basics.txt',
-            custom_exceptions: 'snippets/java/custom-exceptions.txt'
+            custom_exceptions: 'snippets/java/custom-exceptions.txt',
+            multi_catch_resources: 'snippets/java/multi-catch-resources.txt',
 
             
             
