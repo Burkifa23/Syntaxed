@@ -1,0 +1,54 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.sql.SQLException;
+
+public class MultiCatchResourcesDemo {
+
+    public static void main(String[] args) {
+        System.out.println("--- 1. Try-With-Resources (Automatic Resource Management) ---");
+        try (BufferedReader reader = new BufferedReader(new FileReader("config.txt"))) {
+            String line = reader.readLine();
+            System.out.println("File Line: " + line);
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e.getMessage());
+        }
+
+        System.out.println("\n--- 2. Multi-Catch Block ---");
+        handleMultipleExceptions(true);
+    }
+
+    public static void handleMultipleExceptions(boolean causeSqlError) {
+        try {
+            if (causeSqlError) {
+                throw new SQLException("Database connection lost.");
+            } else {
+                throw new IOException("Unable to write logs.");
+            }
+        } 
+        catch (SQLException | IOException e) {
+            System.out.println("CAUGHT MULTI-EXCEPTION: " + e.getClass().getSimpleName());
+            System.out.println("Recovery message: Attempting graceful shutdown for service failure.");
+        }
+    }
+}
+
+
+class CustomResource implements AutoCloseable {
+    private String name;
+
+    public CustomResource(String name) {
+        this.name = name;
+        System.out.println("Resource " + name + " opened.");
+    }
+    
+    
+    @Override
+    public void close() throws Exception {
+        System.out.println("Resource " + name + " closed automatically.");
+    }
+    
+    public void operate() {
+        System.out.println("Resource " + name + " is operating.");
+    }
+}
