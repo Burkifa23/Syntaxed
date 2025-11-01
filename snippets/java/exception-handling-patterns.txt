@@ -1,0 +1,67 @@
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+public class Main {
+    private static final Logger LOGGER = Logger.getLogger(ExceptionHandlingPatterns.class.getName());
+
+    public static void main(String[] args) {
+        System.out.println("--- 1. Exception Wrapping and Chaining Demo ---");
+        try {
+            loadConfiguration("settings.xml");
+        } catch (ConfigurationException e) {
+            LOGGER.log(Level.SEVERE, "Failed to initialize application configuration.", e);
+        }
+
+        System.out.println("\n--- 2. Recovery and Fallback Demo ---");
+        String data = readServiceData("slow_service");
+        System.out.println("Received Data: " + data);
+    }
+
+    
+    public static void loadConfiguration(String fileName) throws ConfigurationException {
+        try {
+            simulateIoOperation(fileName);
+        } catch (IOException e) {
+            throw new ConfigurationException("Failed to read required file: " + fileName, e);
+        }
+    }
+
+    
+    public static String readServiceData(String serviceName) {
+        try {
+            return callExternalService(serviceName);
+        } catch (ServiceUnavailableException e) {
+            LOGGER.warning("Service " + serviceName + " unavailable. Using cached fallback data.");
+            return "{\"status\": \"FALLBACK\", \"data\": \"LocalCache\"}";
+        }
+    }
+
+    
+    private static void simulateIoOperation(String fileName) throws IOException {
+        if (fileName.equals("settings.xml")) {
+            throw new IOException("Permission denied reading " + fileName);
+        }
+    }
+    
+    private static String callExternalService(String name) {
+        if (name.equals("slow_service")) {
+            throw new ServiceUnavailableException("External service timed out.");
+        }
+        return "{\"status\": \"OK\", \"data\": \"LiveData\"}";
+    }
+}
+
+
+class ConfigurationException extends Exception {
+    public ConfigurationException(String message, Throwable cause) {
+        super(message, cause);
+    }
+}
+
+
+class ServiceUnavailableException extends RuntimeException {
+    public ServiceUnavailableException(String message) {
+        super(message);
+    }
+}
