@@ -1,0 +1,39 @@
+import java.io.IOException;
+
+public class Main {
+
+    public static void main(String[] args) {
+        System.out.println("Main: Application started.");
+        try {
+            methodLevel1();
+        } catch (IOException e) {            
+            System.out.println("\nCATCH BLOCK (Level 0): Caught propagated exception.");
+            System.out.println("Exception message: " + e.getMessage());
+        }
+        System.out.println("Main: Application finished normally after handling exception.");
+    }
+
+    
+    public static void methodLevel1() throws IOException {
+        System.out.println("Level 1: Executing business logic.");    
+        methodLevel2();
+        System.out.println("Level 1: Exiting normally (if exception was caught below, this would print).");
+    }
+
+    
+    public static void methodLevel2() throws IOException {
+        System.out.println("Level 2: Executing utility operation.");
+        methodLevel3(true);
+        System.out.println("Level 2: Exiting normally (if exception was caught below, this would print).");
+    }
+
+    
+    public static void methodLevel3(boolean throwError) throws IOException {
+        System.out.println("Level 3: Performing low-level operation.");
+        if (throwError) {
+            System.out.println("Level 3: !!! Throwing IOException !!!");
+            throw new IOException("Simulated file access denied error.");
+        }
+        System.out.println("Level 3: Operation completed without error.");
+    }
+}

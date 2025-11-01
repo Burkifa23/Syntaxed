@@ -3,7 +3,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.sql.SQLException;
 
-public class MultiCatchResourcesDemo {
+public class Main {
 
     public static void main(String[] args) {
         System.out.println("--- 1. Try-With-Resources (Automatic Resource Management) ---");
