@@ -278,6 +278,7 @@ document.addEventListener("DOMContentLoaded", () => {
             exception_basics: 'snippets/java/exceptions-basics.txt',
             custom_exceptions: 'snippets/java/custom-exceptions.txt',
             multi_catch_resources: 'snippets/java/multi-catch-resources.txt',
+            exception_propagation: 'snippets/java/exception-propagation.txt',
 
             
             
