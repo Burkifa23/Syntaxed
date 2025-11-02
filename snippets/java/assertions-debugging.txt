@@ -1,0 +1,32 @@
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("--- Assertions Demo ---");
+        checkPreconditions(10);
+        System.out.println("Passed check for value 10.");
+
+        System.out.println("Attempting check for value 0...");
+        try {
+            checkPreconditions(0);
+        } catch (AssertionError e) {
+            System.out.println("CAUGHT ASSERTION ERROR: " + e.getMessage());
+        }
+    }
+
+
+    public static void checkPreconditions(int value) {
+        assert value > 0;
+        assert value % 2 == 0 : "Value must be even, but was " + value;
+    }
+    
+    public static int calculateFactorial(int n) {
+        int result = 1;
+        int i = 1;
+
+        while (i <= n) {
+            result = result * i;
+            i++;
+        }
+        
+        return result;
+    }
+}
