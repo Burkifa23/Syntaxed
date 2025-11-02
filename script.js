@@ -280,7 +280,8 @@ document.addEventListener("DOMContentLoaded", () => {
             multi_catch_resources: 'snippets/java/multi-catch-resources.txt',
             exception_propagation: 'snippets/java/exception-propagation.txt',
             exception_handling_patterns: 'snippets/java/exception-handling-patterns.txt',
-            
+            assertions_debugging: 'snippets/java/assertions-debugging.txt',
+
 
             
             
