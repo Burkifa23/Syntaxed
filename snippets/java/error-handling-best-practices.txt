@@ -1,0 +1,67 @@
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("--- 1. Best Practice: Fail Fast (Input Validation) ---");
+        try {
+            // Fails Fast: Validates inputs immediately, reducing execution risk
+            processUserQuery(null);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Caught Unchecked Exception: " + e.getMessage());
+        }
+
+        System.out.println("\n--- 2. Best Practice: Catching Specificity ---");
+        // General handler calls the method that throws a specific exception
+        handleDataOperation();
+    }
+
+    // Best Practice 1: Use Unchecked Exceptions (RuntimeException) for Invalid Arguments/State
+    public static void processUserQuery(String query) {
+        if (query == null || query.trim().isEmpty()) {
+            // Throwing unchecked exception for programming errors/invalid input
+            throw new IllegalArgumentException("Query cannot be null or empty. Fail Fast!");
+        }
+        System.out.println("Query processed successfully: " + query);
+    }
+    
+    // Best Practice 2: Catch Specific Exceptions
+    public static void handleDataOperation() {
+        try {
+            retrieveData();
+        } 
+        // Catch the specific exception first
+        catch (DataNotFoundException e) {
+            System.out.println("Specific Catch: Data missing, user notified.");
+        } 
+        // Catch the general exception type last
+        catch (DataAccessException e) {
+            System.out.println("General Catch: Failed to access data source, logging details.");
+        }
+    }
+
+    // Best Practice 3: Never Hide/Swallow Exceptions
+    public static void retrieveData() throws DataAccessException {
+        try {
+            // Simulates an operation that might fail with a specific checked exception
+            boolean dataExists = false; 
+            if (!dataExists) {
+                throw new DataNotFoundException("Item with ID 404 not found in primary store.");
+            }
+        } catch (DataNotFoundException e) {
+            // DO NOT CATCH AND DO NOTHING! 
+            // Instead, rethrow, wrap, or log and return a fallback
+            throw e; 
+        }
+    }
+}
+
+// Custom Exception Hierarchy for Catching Specificity Demo
+class DataAccessException extends Exception {
+    public DataAccessException(String message) {
+        super(message);
+    }
+}
+
+class DataNotFoundException extends DataAccessException {
+    public DataNotFoundException(String message) {
+        super(message);
+    }
+}
