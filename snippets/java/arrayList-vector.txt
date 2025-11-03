@@ -1,0 +1,43 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
+
+public class Main {
+    public static void main(String[] args) {
+        List<String> userList = new ArrayList<>();
+        System.out.println("--- 1. ArrayList Operations (Fast Access, Slow Insert) ---");
+
+        // O(1) Amortized: Add to end
+        userList.add("Alice");
+        userList.add("Bob");
+        userList.add("Charlie");
+        System.out.println("Initial List: " + userList);
+
+        // O(1): Indexed access (fastest operation)
+        String user = userList.get(1);
+        System.out.println("Accessed user at index 1: " + user);
+
+        // O(N): Insertion in the middle
+        // This is a costly operation for large lists
+        userList.add(1, "Dana");
+        System.out.println("After insertion at index 1: " + userList); 
+
+        // O(N): Removal from the middle (requires shifting all elements)
+        userList.remove(2); 
+        System.out.println("After removal (index 2): " + userList);
+
+        // 2. Vector: Legacy, Synchronized List
+        System.out.println("\n--- 2. Vector Operations (Synchronized and Thread-Safe) ---");
+        Vector<Integer> counterVector = new Vector<>();
+        
+        // Operations are synchronized (thread-safe, but slow)
+        counterVector.add(1);
+        counterVector.add(2);
+        
+        // Legacy: Vector has an old method name
+        counterVector.addElement(3);
+        
+        System.out.println("Vector elements: " + counterVector);
+        System.out.println("Vector capacity: " + counterVector.capacity());
+    }
+}
