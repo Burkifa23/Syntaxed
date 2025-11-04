@@ -1,0 +1,43 @@
+import java.util.LinkedList;
+import java.util.Deque;
+import java.util.List;
+
+public class Main {
+    public static void main(String[] args) {
+        List<String> userList = new LinkedList<>();
+        System.out.println("--- 1. LinkedList as a List (O(N) Access) ---");
+        userList.add("Atlanta");
+        userList.add("Boston");
+        userList.add("Chicago");
+        String city = userList.get(1); 
+        System.out.println("Accessed City (Index 1): " + city); 
+
+        userList.add(0, "Dallas"); 
+        System.out.println("After O(1) insertion at index 0: " + userList);
+        userList.add(2, "Denver"); 
+        System.out.println("After O(N) insertion in middle: " + userList);
+        
+        
+        Deque<String> taskQueue = new LinkedList<>();
+        
+        System.out.println("\n--- 2. LinkedList as a Deque (O(1) Queue Operations) ---");
+        
+        taskQueue.addLast("Task 1: Email");
+        taskQueue.addLast("Task 2: DB Write");
+        taskQueue.addFirst("Task 0: Priority Alert");
+        
+        System.out.println("Initial Queue: " + taskQueue);
+        
+        
+        String nextTask = taskQueue.pollFirst(); 
+        System.out.println("Next Task (pollFirst): " + nextTask);
+        
+        
+        String lastTask = taskQueue.peekLast(); 
+        System.out.println("Last Task (peekLast): " + lastTask);
+        
+        
+        taskQueue.removeLast(); 
+        System.out.println("Queue after operations: " + taskQueue);
+    }
+}
