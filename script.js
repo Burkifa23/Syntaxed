@@ -283,6 +283,7 @@ document.addEventListener("DOMContentLoaded", () => {
             assertions_debugging: 'snippets/java/assertions-debugging.txt',
             error_handling_best_practices: 'snippets/java/error-handling-best-practices.txt',
             arrayList_vector: 'snippets/java/arrayList-vector.txt',
+            linkedList_deque: 'snippets/java/linked-list-deque.txt'
             
 
             
