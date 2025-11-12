@@ -1,0 +1,59 @@
+import java.util.HashSet;
+import java.util.Set;
+import java.util.TreeSet;
+
+public class Main {
+    public static void main(String[] args) {
+        Set<String> hashSet = new HashSet<>();
+        
+        System.out.println("--- 1. HashSet (O(1) Average Case, Unordered) ---");
+        hashSet.add("Apple");
+        hashSet.add("Banana");
+        hashSet.add("Cherry");
+        
+        hashSet.add("Apple"); 
+        
+        
+        System.out.println("Contains Cherry? " + hashSet.contains("Cherry"));
+        System.out.println("Final size: " + hashSet.size());
+        System.out.println("HashSet elements (Order may vary): " + hashSet);
+
+        Set<String> treeSet = new TreeSet<>();
+        
+        System.out.println("\n--- 2. TreeSet (O(log N) Performance, Sorted) ---");
+        treeSet.add("Zebra");
+        treeSet.add("Fox");
+        treeSet.add("Ape");
+        
+        System.out.println("TreeSet elements (Sorted): " + treeSet);
+
+        
+        Set<CustomObject> customSet = new TreeSet<>();
+        customSet.add(new CustomObject(3, "High"));
+        customSet.add(new CustomObject(1, "Low"));
+        
+        System.out.println("Custom TreeSet (Sorted by ID): " + customSet);
+    }
+}
+
+
+class CustomObject implements Comparable<CustomObject> {
+    private int id;
+    private String value;
+
+    public CustomObject(int id, String value) {
+        this.id = id;
+        this.value = value;
+    }
+
+
+    @Override
+    public int compareTo(CustomObject other) {
+        return Integer.compare(this.id, other.id); 
+    }
+
+    @Override
+    public String toString() {
+        return id + ":" + value;
+    }
+}
