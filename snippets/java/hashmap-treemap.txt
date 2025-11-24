@@ -1,0 +1,48 @@
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
+
+public class HashMapTreeMapDemo {
+
+    public static void main(String[] args) {
+        
+        Map<String, Integer> hashMap = new HashMap<>();
+        
+        System.out.println("--- 1. HashMap (O(1) Average Case, Unordered) ---");
+        hashMap.put("Bob", 25);
+        hashMap.put("Alice", 30);
+        hashMap.put("Charlie", 40);
+        hashMap.put("Bob", 26);
+        
+        
+        System.out.println("Alice's age: " + hashMap.get("Alice"));
+        System.out.println("HashMap entries (Unordered): " + hashMap);
+        
+        
+        System.out.print("HashMap keys: ");
+        for (String key : hashMap.keySet()) {
+            System.out.print(key + " ");
+        }
+        System.out.println();
+
+
+        
+        Map<String, Integer> treeMap = new TreeMap<>();
+        
+        System.out.println("\n--- 2. TreeMap (O(log N) Performance, Sorted by Key) ---");
+        treeMap.put("Zebra", 1);
+        treeMap.put("Fox", 2);
+        treeMap.put("Ape", 3);
+        
+        
+        System.out.println("TreeMap entries (Sorted by Key): " + treeMap);
+
+        
+        System.out.print("TreeMap keys: ");
+        for (String key : treeMap.keySet()) {
+            System.out.print(key + " ");
+        }
+        System.out.println();
+        
+    }
+}
