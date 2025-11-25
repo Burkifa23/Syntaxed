@@ -285,6 +285,7 @@ document.addEventListener("DOMContentLoaded", () => {
             arrayList_vector: 'snippets/java/arrayList-vector.txt',
             linkedList_deque: 'snippets/java/linkedList-deque.txt',
             hashSet_treeset: 'snippets/java/hashset-treeset.txt',
+            hashMap_treemap: 'snippets/java/hashmap-treemap.txt'
             
 
             
