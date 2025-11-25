@@ -82,137 +82,185 @@
 </head>
 
 <body>
-    <div class="content-wrapper">
-        <img src="full_Logo.png" alt="Syntaxed Logo" class="logo">
-
-        <div class="language-topic-selectors" role="region" aria-label="Code snippet selection">
-            <div class="selector-group">
-                <label for="language-select" id="language-label">Programming Language:</label>
-                <select id="language-select" aria-labelledby="language-label" aria-describedby="language-help">
-
-                </select>
-                <div id="language-help" class="sr-only">
-                    Choose the programming language for your typing practice
-                </div>
-            </div>
-
-            <div class="selector-group">
-                <label for="topic-select" id="topic-label">Topic:</label>
-                <select id="topic-select" aria-labelledby="topic-label" aria-describedby="topic-help">
-
-                </select>
-                <div id="topic-help" class="sr-only">
-                    Choose the coding topic to practice
-                </div>
-            </div>
-        </div>
-
-        <!-- Layout Control Buttons -->
-        <div class="layout-controls">
-            <button id="vertical-layout-btn" class="active">
-                📱 Vertical Layout
-            </button>
-            <button id="horizontal-layout-btn">
-                💻 Horizontal Layout
-            </button>
-        </div>
-
-        <!-- Main Content Area -->
-        <div class="main-content vertical" id="main-content">
-            <div class="snippet-section">
-                <div class="snippet-header">
-                    📖 Code to Type
-                </div>
-                <div id="snippet" role="region" aria-label="Code to type" aria-live="polite" tabindex="0"></div>
-            </div>
-
-            <div class="editor-section">
-                <div class="editor-header">
-                    ⌨️ Your Code
-                </div>
-                <div id="monaco-editor-container" role="textbox" aria-label="Type the code here"
-                    aria-describedby="typing-instructions"></div>
-            </div>
-        </div>
-
-        <div id="typing-instructions" class="sr-only">
-            Type the code shown above. Your progress will be tracked in real-time.
-        </div>
-
-        <div class="control-buttons" role="toolbar" aria-label="Test controls">
-            <button id="reset-button" type="button" aria-describedby="reset-help" title="Reset Test (Alt+R)">
-                <span class="button-icon" aria-hidden="true">↺</span>
-                <span class="button-text">Reset</span>
-            </button>
-            <div id="reset-help" class="sr-only">Reset the current typing test</div>
-
-            <button id="stop-button" type="button" aria-describedby="stop-help" title="Stop Test (Alt+Q)">
-                <span class="button-icon" aria-hidden="true">■</span>
-                <span class="button-text">Stop</span>
-            </button>
-            <div id="stop-help" class="sr-only">Stop the current typing test</div>
-
-            <button id="dark-mode-button" type="button" aria-describedby="dark-help" title="Dark Mode (Alt+B)">
-                <span class="button-icon" aria-hidden="true">🌙</span>
-                <span class="button-text">Dark</span>
-            </button>
-            <div id="dark-help" class="sr-only">Switch to dark theme</div>
-
-            <button id="light-mode-button" type="button" aria-describedby="light-help" title="Light Mode (Alt+W)">
-                <span class="button-icon" aria-hidden="true">☀️</span>
-                <span class="button-text">Light</span>
-            </button>
-            <div id="light-help" class="sr-only">Switch to light theme</div>
-
-            <button id="stats-button" type="button" aria-describedby="stats-help" title="View Stats (Alt+S)">
-                <span class="button-icon" aria-hidden="true">📊</span>
-                <span class="button-text">Stats</span>
-            </button>
-            <div id="stats-help" class="sr-only">View your typing statistics</div>
-
-
-            <button id="blur-button" type="button" aria-describedby="blur-help" title="Toggle Blur (Alt+U)">
-                <span class="button-icon" aria-hidden="true">👁️</span>
-                <span class="button-text">Blur</span>
-            </button>
-            <div id="blur-help" class="sr-only">Toggle code blur levels for memory practice</div>
-
-
-            <div id="blur-indicator" class="blur-indicator" style="display: none;">
-                <span>Blur Level: <span id="blur-level-text">Off</span></span>
-            </div>
-
-            
-            <button id="explain-button" type="button" aria-describedby="explain-help" title="Show Explanation (Alt+T)">
-                <span class="button-icon" aria-hidden="true">💡</span>
-                <span class="button-text">Explain</span>
-            </button>
-            <div id="explain-help" class="sr-only">Show detailed explanation of the current code snippet</div>
-        </div>
-
-        <div id="results" role="region" aria-label="Typing test results" aria-live="polite"></div>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-left">
+      <a href="#" class="logo">
+        <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+        </svg>
+        <span class="logo-text">Syntaxed</span>
+      </a>
+      <span class="tagline">Master Your Code Typing</span>
     </div>
+    <div class="header-right">
+      <button id="vertical-layout-btn" class="icon-btn active" title="Vertical Layout (Alt+V)" aria-label="Vertical Layout">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="18" height="8" rx="2"/>
+          <rect x="3" y="13" width="18" height="8" rx="2"/>
+        </svg>
+      </button>
+      <button id="horizontal-layout-btn" class="icon-btn" title="Horizontal Layout (Alt+H)" aria-label="Horizontal Layout">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="8" height="18" rx="2"/>
+          <rect x="13" y="3" width="8" height="18" rx="2"/>
+        </svg>
+      </button>
+      <button id="theme-toggle-btn" class="icon-btn" title="Toggle Theme (Alt+T)" aria-label="Toggle Theme">
+        <!-- Moon icon (shown in light mode) -->
+        <svg class="theme-icon moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+        <!-- Sun icon (shown in dark mode) -->
+        <svg class="theme-icon sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="5"/>
+          <line x1="12" y1="1" x2="12" y2="3"/>
+          <line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/>
+          <line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+      </button>
+    </div>
+  </header>
 
-    <footer>
-        <p>Built with ❤️ by
-            <a href="https://github.com/burkifa23" target="_blank" rel="noopener noreferrer">
-                Burkifa23
-            </a> &
-            <a href="https://github.com/programmer-233" target="_blank" rel="noopener noreferrer">
-                Programmer-233
-            </a>
-            <br><strong>Syntaxed v.0.3</strong> - Professional Code Typing Trainer
-        </p>
-    </footer>
+  <!-- Main Content -->
+  <main class="main-content" id="main-content">
+    <div class="content-wrapper">
+      <!-- Selectors Row -->
+      <div class="selectors-row">
+        <div class="selector-group">
+          <label for="language-select">Language</label>
+          <select id="language-select" aria-label="Programming Language">
+          </select>
+        </div>
+        <div class="selector-group">
+          <label for="topic-select">Topic</label>
+          <select id="topic-select" aria-label="Topic">
+          </select>
+        </div>
+        <div class="selector-group blur-group">
+          <label for="blur-select">Blur Mode</label>
+          <select id="blur-select" aria-label="Blur Level">
+            <option value="0">Off</option>
+            <option value="10">10%</option>
+            <option value="30">30%</option>
+            <option value="50">50%</option>
+            <option value="70">70%</option>
+            <option value="90">90%</option>
+          </select>
+        </div>
+      </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.52.2/min/vs/loader.min.js"></script>
-    <script>
-        require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.52.2/min/vs' } });
-        require(['vs/editor/editor.main'], function () {
-            // Monaco Editor is loaded
-        });
-    </script>
-    <script src="script.js"></script>
+      <!-- Blur Indicator -->
+      <div id="blur-indicator" style="display: none;">
+        Blur Level: <span id="blur-level-text">Off</span>
+      </div>
+
+      <!-- Editors Container (affected by layout toggle) -->
+      <div class="editors-container vertical">
+        <!-- Code Panel -->
+        <div class="code-panel">
+          <div class="panel-header">
+            <div>
+              <h2 class="panel-title">Target Code</h2>
+              <p class="panel-subtitle">Read the code below</p>
+            </div>
+          </div>
+          <div class="code-display">
+            <pre id="snippet" role="region" aria-label="Code to type" aria-live="polite" tabindex="0"></pre>
+          </div>
+        </div>
+
+        <!-- Editor Panel -->
+        <div class="editor-panel">
+          <div class="panel-header">
+            <div>
+              <h2 class="panel-title">Your Code</h2>
+              <p class="panel-subtitle">Start typing to begin</p>
+            </div>
+            <div class="status-indicator">
+              <span class="status-dot" id="status-dot"></span>
+              <span id="status-text">Ready</span>
+            </div>
+          </div>
+          <div class="editor-container">
+            <div id="monaco-editor-container" role="textbox" aria-label="Type the code here"></div>
+          </div>
+        </div>
+      </div>
+
+
+
+      <!-- Controls -->
+      <div class="controls">
+        <button id="reset-button" class="control-btn primary" title="Reset Test (Alt+R)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+            <path d="M21 3v5h-5"/>
+          </svg>
+          Reset
+        </button>
+        <button id="stop-button" class="control-btn secondary" title="Stop Test (Alt+Q)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="6" y="6" width="12" height="12" rx="2"/>
+          </svg>
+          Stop
+        </button>
+        <button id="stats-button" class="control-btn secondary" title="View Stats (Alt+S)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="20" x2="18" y2="10"/>
+            <line x1="12" y1="20" x2="12" y2="4"/>
+            <line x1="6" y1="20" x2="6" y2="14"/>
+          </svg>
+          Stats
+        </button>
+        <button id="blur-button" class="control-btn secondary" title="Toggle Blur (Alt+U)" style="display: none;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
+          Blur
+        </button>
+        <button id="explain-button" class="control-btn secondary" title="Show Explanation (Alt+T)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+            <line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+          Explain
+        </button>
+      </div>
+
+      <!-- Results (old JS injects content here) -->
+      <div id="results" role="region" aria-label="Typing test results" aria-live="polite"></div>
+
+      <!-- Keyboard Shortcuts -->
+      <div class="shortcuts-info">
+        <span class="shortcut"><kbd>Alt</kbd>+<kbd>R</kbd> Reset</span>
+        <span class="shortcut"><kbd>Alt</kbd>+<kbd>Q</kbd> Stop</span>
+        <span class="shortcut"><kbd>Alt</kbd>+<kbd>S</kbd> Stats</span>
+        <span class="shortcut"><kbd>Alt</kbd>+<kbd>U</kbd> Blur</span>
+        <span class="shortcut"><kbd>Alt</kbd>+<kbd>T</kbd> Theme</span>
+        <span class="shortcut"><kbd>Alt</kbd>+<kbd>E</kbd> Explain</span>
+        <span class="shortcut"><kbd>Alt</kbd>+<kbd>V</kbd> Vertical</span>
+        <span class="shortcut"><kbd>Alt</kbd>+<kbd>H</kbd> Horizontal</span>
+      </div>
+    </div>
+  </main>
+
+  <!-- Monaco Editor -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.52.2/min/vs/loader.min.js"></script>
+  <script>
+    require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.52.2/min/vs' } });
+    require(['vs/editor/editor.main'], function () {
+      // Monaco Editor is loaded
+    });
+  </script>
+  <script src="script.js"></script>
 </body>
 
 </html>
