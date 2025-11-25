@@ -286,12 +286,6 @@ document.addEventListener("DOMContentLoaded", () => {
             linkedList_deque: 'snippets/java/linkedList-deque.txt',
             hashSet_treeset: 'snippets/java/hashset-treeset.txt',
             hashMap_treemap: 'snippets/java/hashmap-treemap.txt'
-            
-
-            
-            
-
-
         },
         javascript: {
             start: 'snippets/javascript/hello.txt',
@@ -364,9 +358,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const monacoContainer = document.getElementById("monaco-editor-container");
     const resetButton = document.getElementById('reset-button');
     const stopButton = document.getElementById('stop-button');
-    const darkModeButton = document.getElementById('dark-mode-button');
-    const lightModeButton = document.getElementById('light-mode-button');
-    
+
     // Stats tracking
     let stats = loadStats();
     
@@ -471,16 +463,18 @@ document.addEventListener("DOMContentLoaded", () => {
     // Layout Management
     function setLayout(layout) {
         currentLayout = layout;
-        const mainContent = document.getElementById('main-content');
+        const editorsContainer = document.querySelector('.editors-container');
         const verticalBtn = document.getElementById('vertical-layout-btn');
         const horizontalBtn = document.getElementById('horizontal-layout-btn');
 
-        // Update classes
-        mainContent.className = `main-content ${layout}`;
+        if (!editorsContainer) return;
+
+        // Update classes on editors container
+        editorsContainer.className = `editors-container ${layout}`;
 
         // Update button states
-        verticalBtn.classList.toggle('active', layout === 'vertical');
-        horizontalBtn.classList.toggle('active', layout === 'horizontal');
+        if (verticalBtn) verticalBtn.classList.toggle('active', layout === 'vertical');
+        if (horizontalBtn) horizontalBtn.classList.toggle('active', layout === 'horizontal');
 
         // Trigger Monaco resize
         if (monacoEditor) {
@@ -520,6 +514,7 @@ document.addEventListener("DOMContentLoaded", () => {
             this.startTime = null;
             this.errors = 0;
             this.isRunning = false;
+            this.hasCompleted = false; // Flag to prevent double completion
             this.timeUpdateId = null;
             this.lastUpdateTime = 0;
             this.updateInterval = 100; // Update every 100ms instead of every frame
@@ -530,8 +525,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         start() {
             if (this.isRunning) return;
-            
+
             this.isRunning = true;
+            this.hasCompleted = false; // Reset completion flag when starting new test
             this.startTime = performance.now();
             this.scheduleUpdate();
         }
@@ -548,6 +544,7 @@ document.addEventListener("DOMContentLoaded", () => {
             this.stop();
             this.startTime = null;
             this.errors = 0;
+            this.hasCompleted = false; // Reset completion flag
             this.clearResults();
             if (typeof monaco !== 'undefined' && monaco && monacoEditor) {
                 monacoEditor.setValue('');
@@ -587,9 +584,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 : 0;
 
             this.renderResults(timeElapsed, wpm, accuracy);
-            
-            // Check completion with normalized strings
-            if (normalizedInput === normalizedTarget && normalizedTarget) {
+
+            // Check completion with normalized strings (only if not already completed)
+            if (normalizedInput === normalizedTarget && normalizedTarget && !this.hasCompleted) {
                 this.complete();
             }
         }
@@ -622,15 +619,24 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         complete() {
-            this.stop();
-            
-            // Calculate final stats
+            // Prevent double completion
+            if (this.hasCompleted) return;
+            this.hasCompleted = true;
+
+            // Calculate final stats BEFORE stopping (to preserve startTime)
+            if (!this.startTime) {
+                console.error('startTime is null in complete()');
+                return;
+            }
             const timeElapsed = (performance.now() - this.startTime) / 1000;
             const userInput = monacoEditor?.getValue() || '';
             this.finalWPM = this.calculateWPM(userInput, timeElapsed);
             this.finalAccuracy = this.calculateAccuracy(userInput, codeSnippet);
-            
-            // Update stats FIRST
+
+            // Now stop the test
+            this.stop();
+
+            // Update stats
             updateStats(
                 currentLanguage,
                 currentTopic,
@@ -638,7 +644,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 this.finalAccuracy,
                 this.errors
             );
-            
+
             // Then REPLACE (not append) the entire results
             resultsDiv.innerHTML = `
                 <div class="metrics">
@@ -660,7 +666,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     </div>
                 </div>
                 <div class="completion-message">
-                    <p>🎉 Test Completed!</p>
+                    <p>🎉 Test Completed in ${timeElapsed.toFixed(1)} seconds!</p>
                     ${displayPersonalBest()}
                 </div>
             `;
@@ -668,7 +674,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Debounced content change handler
         handleContentChange = this.debounce(() => {
-            if (!this.isRunning && codeSnippet && monacoEditor?.getValue()) {
+            // Don't start if already completed or running
+            if (!this.isRunning && !this.hasCompleted && codeSnippet && monacoEditor?.getValue()) {
                 this.start();
             }
         }, 150);
@@ -828,23 +835,47 @@ document.addEventListener("DOMContentLoaded", () => {
         languageSelect.value = currentLanguage;
     }
 
-    function toggleDarkMode() {
-        body.classList.add("dark-mode");
-        isDarkMode = true;
-        if (isMonacoReady()) {
-            monaco.editor.setTheme('vs-dark');
+    function toggleTheme() {
+        const isCurrentlyLight = body.classList.contains("light-theme");
+
+        if (isCurrentlyLight) {
+            // Switch to dark mode
+            body.classList.remove("light-theme");
+            body.classList.add("dark-mode");
+            isDarkMode = true;
+            if (isMonacoReady()) {
+                monaco.editor.setTheme('vs-dark');
+            }
+        } else {
+            // Switch to light mode
+            body.classList.add("light-theme");
+            body.classList.remove("dark-mode");
+            isDarkMode = false;
+            if (isMonacoReady()) {
+                monaco.editor.setTheme('vs-light');
+            }
+        }
+
+        // Save preference
+        try {
+            localStorage.setItem('syntaxed-theme', isDarkMode ? 'dark' : 'light');
+        } catch (e) {
+            console.log('Could not save theme preference');
         }
     }
 
-    function goToNormalMode() {
-        body.classList.remove("dark-mode");
-        isDarkMode = false;
-        if (isMonacoReady()) {
-            monaco.editor.setTheme('vs-light');
+    // Check for saved theme preference or default to dark
+    let isDarkMode = true;
+    try {
+        const savedTheme = localStorage.getItem('syntaxed-theme');
+        if (savedTheme === 'light') {
+            isDarkMode = false;
+            body.classList.add("light-theme");
+            body.classList.remove("dark-mode");
         }
+    } catch (e) {
+        console.log('Could not load theme preference');
     }
-
-    let isDarkMode = false;
 
     require(['vs/editor/editor.main'], function () {
         monacoEditor = monaco.editor.create(monacoContainer, {
@@ -880,10 +911,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 resultsDiv.innerHTML += "<p>Test Stopped.</p>";
             } else if (e.key.toLowerCase() === "r") {
                 typingTest.reset();
-            } else if (e.key.toLowerCase() === "b") {
-                toggleDarkMode();
-            } else if (e.key.toLowerCase() === "w") {
-                goToNormalMode();
+            } else if (e.key.toLowerCase() === "t") {
+                toggleTheme();
+                e.preventDefault();
             } else if (e.key.toLowerCase() === "s") {
                 showStatsModal();
             } else if (e.key.toLowerCase() === "u") {
@@ -895,7 +925,7 @@ document.addEventListener("DOMContentLoaded", () => {
             } else if (e.key.toLowerCase() === "h") {
                 setLayout('horizontal');
                 e.preventDefault();
-            } else if (e.key.toLowerCase() === "t") {
+            } else if (e.key.toLowerCase() === "e") {
                 showExplanation();
                 e.preventDefault();
             }
@@ -946,18 +976,33 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    if (darkModeButton) {
-        darkModeButton.addEventListener('click', toggleDarkMode);
-    }
-
-    if (lightModeButton) {
-        lightModeButton.addEventListener('click', goToNormalMode);
+    // Theme toggle button
+    const themeToggleBtn = document.getElementById('theme-toggle-btn');
+    if (themeToggleBtn) {
+        themeToggleBtn.addEventListener('click', toggleTheme);
     }
 
     if (document.getElementById('stats-button')) {
         document.getElementById('stats-button').addEventListener('click', showStatsModal);
     }
-    
+
+    // Blur button - cycles through blur levels
+    if (document.getElementById('blur-button')) {
+        document.getElementById('blur-button').addEventListener('click', toggleBlurLevel);
+    }
+
+    // Blur select dropdown - sets specific blur level
+    const blurSelect = document.getElementById('blur-select');
+    if (blurSelect) {
+        blurSelect.addEventListener('change', (e) => {
+            const value = parseInt(e.target.value);
+            // Map dropdown values (0, 10, 30, 50, 70, 90) to blurLevel (0-5)
+            const blurMap = { 0: 0, 10: 1, 30: 2, 50: 3, 70: 4, 90: 5 };
+            blurLevel = blurMap[value] || 0;
+            updateBlurDisplay();
+        });
+    }
+
     function showStatsModal() {
         // Create modal container
         const modal = document.createElement('div');
@@ -1084,42 +1129,55 @@ document.addEventListener("DOMContentLoaded", () => {
         const snippetDiv = document.getElementById("snippet");
         const blurIndicator = document.getElementById("blur-indicator");
         const blurLevelText = document.getElementById("blur-level-text");
-        
+        const blurSelect = document.getElementById("blur-select");
+
         // Remove all blur classes
         snippetDiv.classList.remove('snippet-blur-10', 'snippet-blur-30', 'snippet-blur-50', 'snippet-blur-70', 'snippet-blur-90');
-        
+
         let levelText = 'Off';
         let blurClass = '';
-        
+        let selectValue = 0;
+
         switch(blurLevel) {
             case 0:
                 levelText = 'Off';
+                selectValue = 0;
                 blurIndicator.style.display = 'none';
                 isWordRevealMode = false;
                 removeWordRevealMode();
                 break;
             case 1:
                 levelText = '10%';
+                selectValue = 10;
                 blurClass = 'snippet-blur-10';
                 break;
             case 2:
                 levelText = '30%';
+                selectValue = 30;
                 blurClass = 'snippet-blur-30';
                 break;
             case 3:
                 levelText = '50%';
+                selectValue = 50;
                 blurClass = 'snippet-blur-50';
                 break;
             case 4:
                 levelText = '70%';
+                selectValue = 70;
                 blurClass = 'snippet-blur-70';
                 break;
             case 5:
                 levelText = '90%';
+                selectValue = 90;
                 blurClass = 'snippet-blur-90';
                 break;
         }
-        
+
+        // Sync the dropdown
+        if (blurSelect) {
+            blurSelect.value = selectValue;
+        }
+
         if (blurLevel > 0) {
             snippetDiv.classList.add(blurClass);
             blurIndicator.style.display = 'block';
