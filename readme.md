@@ -1,6 +1,6 @@
 ![Syntaxed](full_Logo.png)
 
-# Syntaxed v.0.3 - Professional Code Typing Trainer
+# Syntaxed v0.3.1 - Professional Code Typing Trainer
 
 **Master your coding speed with our professional typing trainer. Practice with 25+ programming languages, track your progress, and improve your development efficiency.**
 
@@ -43,16 +43,16 @@
 ### ⌨️ **Power User Features**
 - **Keyboard shortcuts** for all major functions:
   - `Alt + Q`: Stop test
-  - `Alt + R`: Reset test  
-  - `Alt + B`: Enable dark mode
-  - `Alt + W`: Enable light mode
+  - `Alt + R`: Reset test
+  - `Alt + T`: Toggle theme (Dark/Light mode)
+  - `Alt + E`: Show explanation modal
   - `Alt + S`: View statistics
   - `Alt + V`: Vertical layout
   - `Alt + H`: Horizontal layout
   - `Alt + U`: Toggle blur levels (10%, 30%, 50%, 70%, 90%)
 - **Icon-only mode** for ultra-small screens (under 360px)
 - **Automatic test detection** - starts on first keystroke
-- **Completion celebration** with personal best comparison
+- **Completion celebration** with personal best comparison and time display
 
 ### 🛡️ **Professional Quality**
 - **Error handling** with graceful degradation
@@ -171,7 +171,77 @@ Built with modern web technologies for optimal performance:
 
 ---
 
-## 👥 Contributing
+## � Recent Updates (v0.3.1)
+
+### 🎨 **UI/UX Improvements**
+
+#### **Single Theme Toggle Button**
+- Replaced separate dark/light mode buttons with one unified theme toggle
+- Dynamic icon switching: Shows sun ☀️ in dark mode, moon 🌙 in light mode
+- Keyboard shortcut updated: **Alt+T** now toggles theme (previously Alt+B/Alt+W)
+- Theme preference now persists in localStorage
+- Smooth icon transitions for better visual feedback
+
+#### **Updated Keyboard Shortcuts**
+- `Alt + T`: Toggle theme (Dark ↔ Light)
+- `Alt + E`: Show explanation modal (moved from Alt+T)
+- `Alt + Q`: Stop test
+- `Alt + R`: Reset test
+- `Alt + S`: View statistics
+- `Alt + V`: Vertical layout
+- `Alt + H`: Horizontal layout
+- `Alt + U`: Toggle blur levels
+
+### 🐛 **Critical Bug Fixes**
+
+#### **Fixed Stats Double Increment Issue**
+- **Problem**: Test completion counter was incrementing by 2 instead of 1
+- **Root Cause**: Race condition in `updateMetrics()` loop causing `complete()` to be called multiple times
+- **Solution**: Added `hasCompleted` flag to prevent duplicate completion calls
+- **Result**: Stats now accurately track test completions ✅
+
+#### **Fixed Timer Display Issue**
+- **Problem**: Completion message showed "Test Completed in 0.0 seconds"
+- **Root Cause**: Debounced `handleContentChange` was restarting the test after completion, resetting `startTime`
+- **Solution**: Added `!this.hasCompleted` check to prevent restart after completion
+- **Result**: Accurate time display in completion message ✅
+
+#### **Enhanced Completion Message**
+- **Before**: "🎉 Test Completed!"
+- **After**: "🎉 Test Completed in 15.6 seconds!"
+- Now displays the exact time taken to complete the test
+- Provides immediate feedback on performance
+
+### 🔧 **Technical Improvements**
+
+#### **State Management**
+- Added `hasCompleted` flag to `TypingTest` class for better state tracking
+- Improved test lifecycle management (start → running → complete → reset)
+- Fixed race conditions in debounced event handlers
+- Enhanced completion detection logic
+
+#### **Code Quality**
+- Removed unused button references (`darkModeButton`, `lightModeButton`)
+- Cleaned up event listener management
+- Improved code organization and readability
+- Added safety checks for null/undefined values
+
+### 🎯 **Layout System**
+- Vertical/Horizontal layout toggle now correctly affects only code editor panels
+- Target Code and Monaco Editor can be stacked or side-by-side
+- Smooth transitions between layout modes
+- Layout preference persists across sessions
+
+### 🌟 **Blur Mode Enhancements**
+- Fixed blur functionality on Target Code panel
+- Two control methods: dropdown selector and cycle button
+- Blur levels: Off, 10%, 30%, 50%, 70%, 90%
+- Word reveal mode automatically enabled with blur
+- Both controls stay synchronized
+
+---
+
+## �👥 Contributing
 
 We welcome contributions! Whether it's:
 - 🐛 **Bug reports** and fixes
